@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="jsoncpp_link_release"
+	InheritedPropertySheets=".\jsoncpp_include.vsprops"
+	>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="&quot;$(JSONCPP_ROOT)\lib_release\jsoncpp.lib&quot;"
+	/>
+</VisualStudioPropertySheet>

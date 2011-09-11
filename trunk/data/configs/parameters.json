@@ -1,0 +1,59 @@
+{
+   "Author" : "Patrick Pelletier",
+   "Content" : {
+      "ColonyModules" : [
+         {
+            "Population" : 10.0
+         },
+         {
+            "Population" : 50.0
+         },
+         {
+            "Population" : 200.0
+         },
+         {
+            "Population" : 500.0
+         }
+      ],
+      "StarDriveModules" : [
+         {
+            "DelayTurns" : 10,
+            "TravelSpeed" : 0.1
+         },
+         {
+            "DelayTurns" : 8,
+            "TravelSpeed" : 0.2
+         },
+         {
+            "DelayTurns" : 6,
+            "TravelSpeed" : 0.4
+         },
+         {
+            "DelayTurns" : 4,
+            "TravelSpeed" : 0.8
+         },
+         {
+            "DelayTurns" : 2,
+            "TravelSpeed" : 1.6
+         }
+      ],
+      "EngineModules" : [
+         {
+            "Speed" : 1
+         },
+         {
+            "Speed" : 2
+         },
+         {
+            "Speed" : 3
+         },
+         {
+            "Speed" : 4
+         },
+         {
+            "Speed" : 5
+         }
+      ]      
+   },
+   "Version" : 1.0
+}
