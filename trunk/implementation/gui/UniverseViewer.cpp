@@ -67,11 +67,11 @@ namespace
         }
     }
 
-    const int Settings_CacheMode = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/cacheMode", 2).toInt();
-    const int Settings_TileResolution = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/tileResolution", 3).toInt();
-    const int Settings_DetailLevel = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/detailLevel", 1).toInt();
-    const bool Settings_SkipEmptyTiles = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/skipEmptyTiles", true).toBool();
-    const double ReferenceSize = _referenceSize(Settings_TileResolution);
+    int Settings_CacheMode;
+    int Settings_TileResolution;
+    int Settings_DetailLevel;
+    bool Settings_SkipEmptyTiles;
+    double ReferenceSize;
 
     class StarSystemGraphicsItem;
     class SectorGraphicsItem;
@@ -600,6 +600,12 @@ UniverseViewer::UniverseViewer(QWidget * parent)
     , mZoomSlider(new QSlider(Qt::Horizontal, this))
     , mSectorView(NULL)
 {
+    Settings_CacheMode = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/cacheMode", 2).toInt();
+    Settings_TileResolution = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/tileResolution", 3).toInt();
+    Settings_DetailLevel = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/detailLevel", 1).toInt();
+    Settings_SkipEmptyTiles = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/skipEmptyTiles", true).toBool();
+    ReferenceSize = _referenceSize(Settings_TileResolution);
+
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     class PrivateGraphicsScene
