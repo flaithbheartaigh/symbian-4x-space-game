@@ -7,6 +7,6 @@
 	>
 	<Tool
 		Name="VCLinkerTool"
-		AdditionalDependencies="&quot;$(JSONCPP_ROOT)\lib_debug\jsoncpp.lib&quot;"
+		AdditionalDependencies="&quot;$(JSONCPP_ROOT)\lib_debug\win32\jsoncpp.lib&quot;"
 	/>
 </VisualStudioPropertySheet>
