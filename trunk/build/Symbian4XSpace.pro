@@ -123,44 +123,32 @@ INCLUDEPATH += ../implementation
 QT += svg
 
 win32:debug {
-    #MSVC
-    LIBS += -L../3rdparty/jsoncpp/lib_debug/ -ljsoncpp
-    #MINGW-GCC
-    #LIBS += -L../3rdparty/jsoncpp/source/jsoncpp-build-simulator/debug/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_debug/win32/ -ljsoncpp
 }
 
 win32:release {
-    #MSVC
-    LIBS += -L../3rdparty/jsoncpp/lib_release/ -ljsoncpp
-    #MINGW-GCC
-    #LIBS += -L../3rdparty/jsoncpp/source/jsoncpp-build-simulator/release/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_release/win32/ -ljsoncpp
 }
 
 simulator:debug {
-    #MSVC
-    #LIBS += -L../3rdparty/jsoncpp/lib_debug/ -ljsoncpp
-    #MINGW-GCC
-    LIBS += -L../3rdparty/jsoncpp/source/jsoncpp-build-simulator/debug/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_debug/win32/ -ljsoncpp
 }
 
 simulator:release {
-    #MSVC
-    #LIBS += -L../3rdparty/jsoncpp/lib_release/ -ljsoncpp
-    #MINGW-GCC
-    LIBS += -L../3rdparty/jsoncpp/source/jsoncpp-build-simulator/release/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_release/win32/ -ljsoncpp
 }
 
-# must be found in QtSDK\Symbian\SDKs\Symbian1Qt472\epoc32\release\armv5\udeb
+# must be found in 3rdparty\jsoncpp\lib_debug\armv5
 # if it is not there use 3rdparty\jsoncpp\source\build\jsoncpp.pro to build
 symbian:debug {
-    LIBS += -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_debug/armv5/ -ljsoncpp
     DEPLOYMENTFOLDERS = dir1
 }
 
-# must be found in QtSDK\Symbian\SDKs\Symbian1Qt472\epoc32\release\armv5\urel
+# must be found in 3rdparty\jsoncpp\lib_release\armv5
 # if it is not there use 3rdparty\jsoncpp\source\build\jsoncpp.pro to build
 symbian:release {
-    LIBS += -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_release/armv5/ -ljsoncpp
     DEPLOYMENTFOLDERS = dir1
 }
 # Please do not modify the following two lines. Required for deployment.
