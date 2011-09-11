@@ -1,0 +1,104 @@
+{
+   "Author" : "Patrick Pelletier",
+   "Content" : [
+      {
+         "HitPoints" : 4,
+         "Level" : 0,
+         "Name" : "Sublight Drive",
+         "Type" : 1,
+		 "Cost" : 10
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 1,
+         "Name" : "FTL Drive I",
+         "Type" : 1,
+		 "Cost" : 20
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 2,
+         "Name" : "FTL Drive II",
+         "Type" : 1,
+		 "Cost" : 40
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 3,
+         "Name" : "FTL Drive III",
+         "Type" : 1,
+		 "Cost" : 80
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 4,
+         "Name" : "FTL Drive IV",
+         "Type" : 1,
+		 "Cost" : 160
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 0,
+         "Name" : "Colony Module I",
+         "Type" : 2,
+		 "Cost" : 10
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 1,
+         "Name" : "Colony Module II",
+         "Type" : 2,
+		 "Cost" : 20
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 2,
+         "Name" : "Colony Module III",
+         "Type" : 2,
+		 "Cost" : 40
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 3,
+         "Name" : "Colony Module IV",
+         "Type" : 2,
+		 "Cost" : 80
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 0,
+         "Name" : "Ion Engine I",
+         "Type" : 3,
+		 "Cost" : 10
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 1,
+         "Name" : "Ion Engine II",
+         "Type" : 3,
+		 "Cost" : 20
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 2,
+         "Name" : "Ion Engine III",
+         "Type" : 3,
+		 "Cost" : 40
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 3,
+         "Name" : "Ion Engine IV",
+         "Type" : 3,
+		 "Cost" : 80
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 4,
+         "Name" : "Ion Engine V",
+         "Type" : 3,
+		 "Cost" : 160
+      }
+   ],
+   "Version" : 1.0
+}
