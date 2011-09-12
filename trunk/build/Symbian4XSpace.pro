@@ -122,19 +122,19 @@ INCLUDEPATH += ../implementation
 
 QT += svg
 
-win32:debug {
+win32:CONFIG(debug, debug|release) {
     LIBS += -L../3rdparty/jsoncpp/lib_debug/win32/ -ljsoncpp
 }
 
-win32:release {
+win32:CONFIG(release, debug|release) {
     LIBS += -L../3rdparty/jsoncpp/lib_release/win32/ -ljsoncpp
 }
 
-simulator:debug {
+simulator:CONFIG(debug, debug|release) {
     LIBS += -L../3rdparty/jsoncpp/lib_debug/win32/ -ljsoncpp
 }
 
-simulator:release {
+simulator:CONFIG(release, debug|release) {
     LIBS += -L../3rdparty/jsoncpp/lib_release/win32/ -ljsoncpp
 }
 
