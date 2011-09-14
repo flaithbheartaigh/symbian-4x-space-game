@@ -100,22 +100,11 @@ HEADERS += \
     ../implementation/gui/Soundtrack.h
 
 OTHER_FILES += \
-    ../data/images/nebulae.png \
-    ../data/images/blue.png \
-    ../data/images/red.png \
-    ../data/images/green.png \
-    ../data/images/magenta.png \
-    ../data/images/none.png \
-    ../data/universe.json \
-    ../data/savegame.json \
-    ../data/empty.json \
     ../data/configs/parameters.json \
     ../data/configs/components.json \
     ../data/names/stars.json \
     ../data/names/empires.json \
-    ../data/stylesheets/mainwindow.css \
-    ../data/sounds/Ghosts3.mp3 \
-    ../data/sounds/Ghosts9.mp3
+    ../data/stylesheets/mainwindow.css
 
 INCLUDEPATH += ../3rdparty/jsoncpp/include
 INCLUDEPATH += ../implementation
@@ -123,32 +112,32 @@ INCLUDEPATH += ../implementation
 QT += svg
 
 win32:CONFIG(debug, debug|release) {
-    LIBS += -L../3rdparty/jsoncpp/lib_debug/win32/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_debug/win32 -ljsoncpp
 }
 
 win32:CONFIG(release, debug|release) {
-    LIBS += -L../3rdparty/jsoncpp/lib_release/win32/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_release/win32 -ljsoncpp
 }
 
 simulator:CONFIG(debug, debug|release) {
-    LIBS += -L../3rdparty/jsoncpp/lib_debug/win32/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_debug/win32 -ljsoncpp
 }
 
 simulator:CONFIG(release, debug|release) {
-    LIBS += -L../3rdparty/jsoncpp/lib_release/win32/ -ljsoncpp
+    LIBS += -L../3rdparty/jsoncpp/lib_release/win32 -ljsoncpp
 }
 
-# must be found in 3rdparty\jsoncpp\lib_debug\armv5
+# must be found in QtSDK\Symbian\SDKs\Symbian1Qt472\epoc32\release\armv5\udeb
 # if it is not there use 3rdparty\jsoncpp\source\build\jsoncpp.pro to build
 symbian:debug {
-    LIBS += -L../3rdparty/jsoncpp/lib_debug/armv5/ -ljsoncpp
+    LIBS += -ljsoncpp
     DEPLOYMENTFOLDERS = dir1
 }
 
-# must be found in 3rdparty\jsoncpp\lib_release\armv5
+# must be found in QtSDK\Symbian\SDKs\Symbian1Qt472\epoc32\release\armv5\urel
 # if it is not there use 3rdparty\jsoncpp\source\build\jsoncpp.pro to build
 symbian:release {
-    LIBS += -L../3rdparty/jsoncpp/lib_release/armv5/ -ljsoncpp
+    LIBS += -ljsoncpp
     DEPLOYMENTFOLDERS = dir1
 }
 # Please do not modify the following two lines. Required for deployment.
