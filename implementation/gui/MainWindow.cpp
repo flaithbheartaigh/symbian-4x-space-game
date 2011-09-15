@@ -336,12 +336,13 @@ namespace
                 Game::Player * human = new Game::Player();
                 human->setName(item.toStdString());
                 human->setComponents(components);
+                human->setAI(new Game::AI(human));
                 Game::Universe::instance().game().addPlayer(human);
 
                 Game::Player * comp = new Game::Player();
                 comp->setName(Game::Universe::instance().names().nextAvailablePlayerName());
                 comp->setComponents(components);
-                comp->setAI(new Game::AI(comp));
+                comp->setAI(new Game::NPC(comp));
                 Game::Universe::instance().game().addPlayer(comp);
                 Game::Universe::instance().generate();
                 Game::Universe::instance().game().setCurrentPlayerIndex(0);

@@ -80,6 +80,7 @@ void NextTurnVisitor::visit(Ship * ship)
     {
         bool becameReady = false;
         bool justArrived = false;
+        bool localTravel = false;
         if (ship->delayTurns() >= 1)
         {
             ship->setDelayTurns(ship->delayTurns() - 1);
@@ -89,6 +90,10 @@ void NextTurnVisitor::visit(Ship * ship)
         {
             ship->setArrivalTurns(ship->arrivalTurns() - 1);
             justArrived = ship->arrivalTurns() < 1;
+        }
+        else
+        {
+            localTravel = true;
         }
         if (becameReady)
         {
@@ -104,9 +109,9 @@ void NextTurnVisitor::visit(Ship * ship)
             ship->setDestination(SectorReference());
             ship->setMovement(ship->maximumMovement());
         }
-        else if (!ship->isInTransit() && ship->destination().sector()->starSystem() == ship->sector()->starSystem())
+        else if (localTravel)
         {
-            ship->moveTo(ship->destination().sector());
+            ship->setMovement(ship->maximumMovement());
         }
         else
         {

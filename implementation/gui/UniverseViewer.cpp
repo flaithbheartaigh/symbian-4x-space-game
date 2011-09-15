@@ -399,7 +399,7 @@ namespace
         update();
         if (Settings_SkipEmptyTiles)
         {
-            if (!scene()->views()[0]->property("NoForce").toBool())
+            if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
             {
                 setFlag(QGraphicsItem::ItemHasNoContents, false);
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
@@ -408,7 +408,7 @@ namespace
         }
         else if (forcedRedraw)
         {
-            if (!scene()->views()[0]->property("NoForce").toBool())
+            if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
             {
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
             }
@@ -435,7 +435,7 @@ namespace
 
         if (Settings_SkipEmptyTiles)
         {
-            if (!scene()->views()[0]->property("NoForce").toBool())
+            if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
             {
                 setFlag(QGraphicsItem::ItemHasNoContents, false);
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);

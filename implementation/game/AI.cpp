@@ -85,19 +85,51 @@ void AI::setPlayer(Player * player)
 
 void AI::run()
 {
+    StatsVisitor visitor(player());
+    Game::Universe::instance().accept(&visitor);
+    for (std::vector<Ship *>::iterator it = visitor.mShips.begin(); it != visitor.mShips.end(); ++it)
+    {
+        if ((*it)->destination().isValid() && !(*it)->isInTransit() && (*it)->sector()->starSystem() == (*it)->destination().sector()->starSystem())
+        {
+            (*it)->moveTo((*it)->destination().sector());
+        }
+    }
+}
+
+NPC::~NPC()
+{
+
+}
+
+NPC::NPC()
+    : AI(NULL)
+{
+
+}
+
+NPC::NPC(Player * player)
+    : AI(player)
+{
+
+}
+
+void NPC::run()
+{
+    AI::run();
+
     ShipConfig cheapExplorer;
     ShipConfig bestExplorer;
     ShipConfig cheapColony;
     ShipConfig bestColony;
 
     ShipConfig config;
-    config.setComponents(mPlayer->components());
+    config.setComponents(player()->components());
 
-    Component lowEngine = component(mPlayer->components(), Component::Engine, config.lowestLevel(Component::Engine));
-    Component highEngine = component(mPlayer->components(), Component::Engine, config.highestLevel(Component::Engine));
-    Component highStarDrive = component(mPlayer->components(), Component::StarDrive, config.highestLevel(Component::StarDrive));
-    Component lowColony = component(mPlayer->components(), Component::Colony, config.lowestLevel(Component::Colony));
-    Component highColony = component(mPlayer->components(), Component::Colony, config.highestLevel(Component::Colony));
+    Component lowEngine = component(player()->components(), Component::Engine, config.lowestLevel(Component::Engine));
+    Component highEngine = component(player()->components(), Component::Engine, config.highestLevel(Component::Engine));
+    Component highStarDrive = component(player()->components(), Component::StarDrive, config.highestLevel(Component::StarDrive));
+    Component lowColony = component(player()->components(), Component::Colony, config.lowestLevel(Component::Colony));
+    Component highColony = component(player()->components(), Component::Colony, config.highestLevel(Component::Colony));
 
     if (cheapExplorer.components().empty())
     {
@@ -116,7 +148,7 @@ void AI::run()
         cheapColony.components().push_back(lowColony);
     }
 
-    StatsVisitor visitor(mPlayer);
+    StatsVisitor visitor(player());
     Game::Universe::instance().accept(&visitor);
     for (std::vector<Shipyard *>::iterator it = visitor.mShipyards.begin(); it != visitor.mShipyards.end(); ++it)
     {
@@ -124,19 +156,19 @@ void AI::run()
         {
             if (visitor.mShips.size() >= 2)
             {
-                if (cheapColony.cost() <= mPlayer->money())
+                if (cheapColony.cost() <= player()->money())
                 {
-                    mPlayer->setMoney(mPlayer->money() - cheapColony.cost());
+                    player()->setMoney(player()->money() - cheapColony.cost());
                     Game::Ship * ship = new Game::Ship((*it)->planet()->sector(), cheapColony);
-                    ship->setPlayer(mPlayer);
+                    ship->setPlayer(player());
                     (*it)->planet()->sector()->addShip(ship);
                 }
             }
-            else if (cheapExplorer.cost() <= mPlayer->money())
+            else if (cheapExplorer.cost() <= player()->money())
             {
-                mPlayer->setMoney(mPlayer->money() - cheapExplorer.cost());
+                player()->setMoney(player()->money() - cheapExplorer.cost());
                 Game::Ship * ship = new Game::Ship((*it)->planet()->sector(), cheapExplorer);
-                ship->setPlayer(mPlayer);
+                ship->setPlayer(player());
                 (*it)->planet()->sector()->addShip(ship);
             }
         }
@@ -166,7 +198,7 @@ void AI::run()
                     std::multimap<float, Game::StarSystem *> sorted = distances((*it)->sector()->starSystem());
                     for (std::multimap<float, Game::StarSystem *>::iterator it2 = sorted.begin(); it2 != sorted.end(); ++it2)
                     {
-                        if (mPlayer->knows((*it2).second)) //?
+                        if (player()->knows((*it2).second)) //?
                         {
                             for (std::vector<Sector *>::const_iterator sit = (*it2).second->sectors().begin(); sit != (*it2).second->sectors().end(); ++sit)
                             {
@@ -190,7 +222,7 @@ void AI::run()
                 std::multimap<float, Game::StarSystem *> sorted = distances((*it)->sector()->starSystem());
                 for (std::multimap<float, Game::StarSystem *>::iterator it2 = sorted.begin(); it2 != sorted.end(); ++it2)
                 {
-                    if (!mPlayer->knows((*it2).second))
+                    if (!player()->knows((*it2).second))
                     {
                         if ((*it)->canMoveTo(SectorReference((*it2).second, 1, 1).sector()))
                         {

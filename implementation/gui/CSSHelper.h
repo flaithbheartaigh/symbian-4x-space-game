@@ -25,10 +25,12 @@ namespace Gui
 
         void apply(QWidget & parent);
 
+        std::string style() const;
+
     private:
 
         std::vector<std::string> mCSSList;
-       
+      
         /// Copy constructor should not be used
         /// 
         CSSHelper(const CSSHelper & other);
