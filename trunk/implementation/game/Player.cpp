@@ -315,3 +315,8 @@ void Player::setAI(AI * ai)
 {
     mAI = ai;
 }
+
+bool Player::isHuman() const
+{
+    return dynamic_cast<NPC *>(mAI) == NULL;
+}

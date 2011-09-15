@@ -58,3 +58,21 @@ void CSSHelper::apply(QWidget & widget)
         widget.setStyleSheet(QString::fromStdString(ss.str()));
     }
 }
+
+std::string CSSHelper::style() const
+{
+    std::ostringstream ss;
+
+    for (std::vector<std::string>::const_iterator it = mCSSList.begin(); it != mCSSList.end(); ++it)
+    {
+        QFile styleSheetFile(QString::fromStdString(*it));
+
+        if (styleSheetFile.open(QIODevice::ReadOnly))
+        {
+            QTextStream styleSheetStream(&styleSheetFile);
+            ss << styleSheetStream.readAll().toStdString();
+        }
+    }
+
+    return ss.str();
+}

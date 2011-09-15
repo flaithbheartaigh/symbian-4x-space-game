@@ -135,6 +135,8 @@ namespace Game
 
         void setAI(AI * ai);
 
+        bool isHuman() const;
+
     private:
         
         std::string mName;

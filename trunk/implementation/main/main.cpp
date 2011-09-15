@@ -47,9 +47,9 @@ int main(int argc, char **)
 
     Gui::CSSHelper css;
     css.addStyle("mainwindow.css");
-    css.apply(Gui::MainWindow::instance());
+    //css.apply(Gui::MainWindow::instance());
 
-    QString styleSheet = Gui::MainWindow::instance().styleSheet();
+    QString styleSheet = QString::fromStdString(css.style());//Gui::MainWindow::instance().styleSheet();
     styleSheet.replace("%images%", QString::fromStdString(Game::Parameters::instance().getDataFilePath("images")));
     Gui::MainWindow::instance().setStyleSheet(styleSheet);
 

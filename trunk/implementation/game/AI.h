@@ -12,7 +12,7 @@ namespace Game
 
     public:
 
-        ~AI();
+        virtual ~AI();
 
         AI();
 
@@ -22,7 +22,7 @@ namespace Game
 
         void setPlayer(Player * player);
 		
-		void run();
+		virtual void run();
 
     private:
         
@@ -31,6 +31,28 @@ namespace Game
         AI(const AI & other);
         
         AI & operator =(const AI & other);
+        
+    };
+
+    class NPC
+        : public AI
+    {
+
+    public:
+
+        ~NPC();
+
+        NPC();
+
+        NPC(Player * player);
+
+		void run();
+
+    private:
+        
+        NPC(const NPC & other);
+        
+        NPC & operator =(const NPC & other);
         
     };
 }
