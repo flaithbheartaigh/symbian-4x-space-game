@@ -212,6 +212,10 @@ void NPC::run()
                                     }
                                 }
                             }
+                            if (somethingApplies)
+                            {
+                                break;
+                            }
                         }
                     }   
                 }
