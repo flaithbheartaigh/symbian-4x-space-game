@@ -224,6 +224,58 @@ void Ship::colonize()
     }
 }
 
+bool Ship::canUnload() const
+{
+    bool ret = true;
+    ret = ret && mConfig.has(Component::Colony);
+    ret = ret && !isInTransit() && mSector != NULL && !mSector->planets(player()).empty();
+    return ret;
+}
+
+void Ship::unload()
+{
+    if (mSector != NULL)
+    {
+        Planet * planet = mSector->planets(player()).front();
+        if (planet != NULL)
+        {
+            planet->setPopulation(planet->population() + mPopulation);
+            setPopulation(0.0f);
+            mSector->notifyChanged();
+        }
+    }
+}
+
+bool Ship::canLoad() const
+{
+    bool ret = true;
+    ret = ret && mConfig.has(Component::Colony);
+    ret = ret && !isInTransit() && mSector != NULL && !mSector->planets(player()).empty();
+    return ret;
+}
+
+void Ship::load()
+{
+    if (mSector != NULL)
+    {
+        Planet * planet = mSector->planets(player()).front();
+        if (planet != NULL)
+        {
+            float population = 0.0;
+            int highestColony = mConfig.highestLevel(Game::Component::Colony);
+            if (highestColony >= 0 && static_cast<int>(Parameters::instance().colonyModules().size()) > highestColony)
+            {
+                population = Parameters::instance().colonyModules()[highestColony].population();
+            }
+
+            population = max(0.0f, min(population - mPopulation, planet->population()));
+            planet->setPopulation(planet->population() - population);
+            setPopulation(population);
+            mSector->notifyChanged();
+        }
+    }
+}
+
 bool Ship::canMoveTo(Sector * sector) const
 {
     bool ret = true;

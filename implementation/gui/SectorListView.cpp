@@ -76,15 +76,7 @@ SectorListView::SectorListView(QWidget * parent)
                     {
                     }
 
-                    void shipAdded(Game::Ship * ship)
-                    {
-                        if (mItemModel != NULL)
-                        {
-                            mItemModel->setSector(sector());
-                        }
-                    }
-
-                    void shipRemoved(Game::Ship * ship)
+                    void contentsChanged(bool)
                     {
                         if (mItemModel != NULL)
                         {

@@ -69,6 +69,14 @@ namespace Game
 
         void colonize();
 
+        bool canUnload() const;
+
+        void unload();
+
+        bool canLoad() const;
+
+        void load();
+
         bool canMoveTo(Sector * sector) const;
 
         void moveTo(Sector * sector);
