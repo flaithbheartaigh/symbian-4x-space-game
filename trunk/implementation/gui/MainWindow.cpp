@@ -662,6 +662,96 @@ namespace
         QItemSelectionModel * mSelectionModel;
     };
 
+    class PrivateSubscriberLoad
+        : public QObject
+        , private Gui::SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberLoad()
+        {
+        }
+
+        PrivateSubscriberLoad(Gui::SubscribablePushButton * pushButton, QItemSelectionModel * selectionModel)
+            : QObject(pushButton)
+            , Gui::SubscribablePushButton::Subscriber(pushButton)
+            , mSelectionModel(selectionModel)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+            if (mSelectionModel != NULL)
+            {
+                const Gui::SectorItemModel * itemModel = static_cast<const Gui::SectorItemModel *>(mSelectionModel->model());
+                if (itemModel != NULL)
+                {
+                    std::vector<Game::Ship *> ships = itemModel->ships(mSelectionModel->selectedRows());
+                    for (unsigned int i = 0; i < ships.size(); ++i)
+                    {
+                        if (ships[i] != NULL && ships[i]->player() == Game::Universe::instance().game().currentPlayer())
+                        {
+                            if (ships[i]->canLoad())
+                            {
+                                ships[i]->load();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        QItemSelectionModel * mSelectionModel;
+    };
+
+    class PrivateSubscriberUnload
+        : public QObject
+        , private Gui::SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberUnload()
+        {
+        }
+
+        PrivateSubscriberUnload(Gui::SubscribablePushButton * pushButton, QItemSelectionModel * selectionModel)
+            : QObject(pushButton)
+            , Gui::SubscribablePushButton::Subscriber(pushButton)
+            , mSelectionModel(selectionModel)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+            if (mSelectionModel != NULL)
+            {
+                const Gui::SectorItemModel * itemModel = static_cast<const Gui::SectorItemModel *>(mSelectionModel->model());
+                if (itemModel != NULL)
+                {
+                    std::vector<Game::Ship *> ships = itemModel->ships(mSelectionModel->selectedRows());
+                    for (unsigned int i = 0; i < ships.size(); ++i)
+                    {
+                        if (ships[i] != NULL && ships[i]->player() == Game::Universe::instance().game().currentPlayer())
+                        {
+                            if (ships[i]->canUnload())
+                            {
+                                ships[i]->unload();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        QItemSelectionModel * mSelectionModel;
+    };
+
     class PrivateSubscriberShowPanel
         : public QObject
         , private Gui::SubscribablePushButton::Subscriber
@@ -751,6 +841,12 @@ MainWindow::MainWindow()
     SubscribablePushButton * colonizeButton = new SubscribablePushButton(NULL, tr("C"));
     colonizeButton->setObjectName("colonize");
 
+    SubscribablePushButton * loadButton = new SubscribablePushButton(NULL, tr("L"));
+    loadButton->setObjectName("load");
+
+    SubscribablePushButton * unloadButton = new SubscribablePushButton(NULL, tr("U"));
+    unloadButton->setObjectName("unload");
+
     SubscribablePushButton * buildShipButton = new SubscribablePushButton(NULL, tr("B.."));
     buildShipButton->setObjectName("build");
 
@@ -788,6 +884,8 @@ MainWindow::MainWindow()
     buttonsLayout->addWidget(setupButton);
     buttonsLayout->addWidget(new PrivateCurrentPlayer(NULL, universeViewer));
     buttonsLayout->addWidget(moveShipButton);
+    buttonsLayout->addWidget(loadButton);
+    buttonsLayout->addWidget(unloadButton);
     buttonsLayout->addWidget(colonizeButton);
     buttonsLayout->addWidget(buildShipButton);
     buttonsLayout->addWidget(shipDesignButton);
@@ -816,6 +914,8 @@ MainWindow::MainWindow()
 
     new PrivateSubscriberMoveShip(moveShipButton, universeViewer->sectorSelectionModel());
     new PrivateSubscriberColonize(colonizeButton, universeViewer->sectorSelectionModel());
+    new PrivateSubscriberLoad(loadButton, universeViewer->sectorSelectionModel());
+    new PrivateSubscriberUnload(unloadButton, universeViewer->sectorSelectionModel());
     new PrivateSubscriberShipBuild(buildShipButton, mStack);
     new PrivateSubscriberNextTurn(nextTurnButton, universeViewer);
     new PrivateSubscriberShipDesign(shipDesignButton, mStack);

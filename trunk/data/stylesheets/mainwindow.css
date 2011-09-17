@@ -73,6 +73,16 @@ Gui--SubscribablePushButton#turn QLabel
 	qproperty-pixmap: url("%images%/Turn.png");
 }
 
+Gui--SubscribablePushButton#load QLabel
+{
+	qproperty-pixmap: url("%images%/Load.png");
+}
+
+Gui--SubscribablePushButton#unload QLabel
+{
+	qproperty-pixmap: url("%images%/Unload.png");
+}
+
 Gui--SubscribablePushButton QLabel
 {
     font: bold 12px;
