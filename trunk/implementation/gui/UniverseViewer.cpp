@@ -435,7 +435,7 @@ namespace
 
         if (Settings_SkipEmptyTiles)
         {
-            if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
+            if (!scene()->views()[0]->property("NoForce").toBool()/* || Game::Universe::instance().game().currentPlayer()->isHuman()*/)
             {
                 setFlag(QGraphicsItem::ItemHasNoContents, false);
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);

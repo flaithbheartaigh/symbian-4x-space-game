@@ -301,9 +301,10 @@ namespace
         {
         }
 
-        PrivateSubscriberNewGame(Gui::SubscribablePushButton * pushButton)
+        PrivateSubscriberNewGame(Gui::SubscribablePushButton * pushButton, Gui::UniverseViewer * universeViewer)
             : QObject(pushButton)
             , Gui::SubscribablePushButton::Subscriber(pushButton)
+            , mUniverseViewer(universeViewer)
         {
         }
 
@@ -311,6 +312,8 @@ namespace
 
         void clicked(bool checked)
         {
+            mUniverseViewer->noForce(true);
+
             std::vector<std::string> starNames;
             Data::NamesData("stars.json", &starNames, Data::NamesData::Load);
             std::vector<std::string> playerNames;
@@ -347,7 +350,11 @@ namespace
                 Game::Universe::instance().generate();
                 Game::Universe::instance().game().setCurrentPlayerIndex(0);
             }
+
+            mUniverseViewer->noForce(false);
         }
+
+        Gui::UniverseViewer * mUniverseViewer;
     };
 
     class PrivateSubscriberOpenGame
@@ -361,9 +368,10 @@ namespace
         {
         }
 
-        PrivateSubscriberOpenGame(Gui::SubscribablePushButton * pushButton)
+        PrivateSubscriberOpenGame(Gui::SubscribablePushButton * pushButton, Gui::UniverseViewer * universeViewer)
             : QObject(pushButton)
             , Gui::SubscribablePushButton::Subscriber(pushButton)
+            , mUniverseViewer(universeViewer)
         {
         }
 
@@ -374,11 +382,18 @@ namespace
             QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open Game"), QString(), tr("Json (*.* *.json)"));
             if (!fileName.isEmpty())
             {
+                mUniverseViewer->noForce(true);
+
                 Game::Universe::instance().clear();
                 Data::AssetSerializer::load(fileName.toStdString(), Game::Universe::instance());
                 Game::Universe::instance().accept(&Game::DeserializeVisitor());
+                Game::Universe::instance().game().setCurrentPlayerIndex(Game::Universe::instance().game().currentPlayerIndex());
+
+                mUniverseViewer->noForce(false);
             }
         }
+
+        Gui::UniverseViewer * mUniverseViewer;
     };
 
     class PrivateSubscriberSaveGame
@@ -919,8 +934,8 @@ MainWindow::MainWindow()
     new PrivateSubscriberShipBuild(buildShipButton, mStack);
     new PrivateSubscriberNextTurn(nextTurnButton, universeViewer);
     new PrivateSubscriberShipDesign(shipDesignButton, mStack);
-    new PrivateSubscriberNewGame(newButton);
-    new PrivateSubscriberOpenGame(openButton);
+    new PrivateSubscriberNewGame(newButton, universeViewer);
+    new PrivateSubscriberOpenGame(openButton, universeViewer);
     new PrivateSubscriberSaveGame(saveButton);
     new PrivateSubscriberQuit(quitButton, this);
     new PrivateSubscriberShowPanel(setupButton, mStack, SetupIndex);
