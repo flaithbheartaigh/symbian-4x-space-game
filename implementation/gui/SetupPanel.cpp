@@ -112,18 +112,21 @@ SetupPanel::SetupPanel(QWidget * parent)
     cacheMode->setTickPosition(QSlider::TicksBothSides);
     cacheMode->setMinimum(0);
     cacheMode->setMaximum(3); //0- None; 1- Sectors; 2- Sectors+Labels; 3- Sectors+Labels+Systems
+    cacheMode->setPageStep(1);
     cacheMode->setValue(settings.value("graphics/cacheMode", 2).toInt());
 
     QSlider * tileResolution = new QSlider(Qt::Horizontal);
     tileResolution->setTickPosition(QSlider::TicksBothSides);
     tileResolution->setMinimum(0);
     tileResolution->setMaximum(6); //0- 8x8; 1- 16x16; 2- 24x24; 3- 32x32; 4- 48x48; 5- 64x64; 6- 128x128
+    tileResolution->setPageStep(1);
     tileResolution->setValue(settings.value("graphics/tileResolution", 3).toInt());
 
     QSlider * detailLevel = new QSlider(Qt::Horizontal);
     detailLevel->setTickPosition(QSlider::TicksBothSides);
     detailLevel->setMinimum(0);
     detailLevel->setMaximum(2); //0- None; 1- Gradients; 2- Extra
+    detailLevel->setPageStep(1);
     detailLevel->setValue(settings.value("graphics/detailLevel", 1).toInt());
 
     QCheckBox * skipEmptyTiles = new QCheckBox();
