@@ -205,6 +205,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\implementation\game\Messages.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Messages.h"
+			>
+		</File>
+		<File
 			RelativePath="..\implementation\game\Parameters.cpp"
 			>
 		</File>

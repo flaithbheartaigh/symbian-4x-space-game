@@ -38,6 +38,7 @@
 #include <QSlider>
 #include <QListView>
 #include <QSettings>
+#include <QLabel>
 #include <cmath>
 
 #include <map>
@@ -598,6 +599,7 @@ UniverseViewer::UniverseViewer(QWidget * parent)
     : QWidget(parent)
     , mGraphicsScene(NULL)
     , mZoomSlider(new QSlider(Qt::Horizontal, this))
+    , mMessageBox(new QLabel(tr("Log"), this))
     , mSectorView(NULL)
 {
     Settings_CacheMode = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/cacheMode", 2).toInt();
@@ -706,6 +708,8 @@ UniverseViewer::UniverseViewer(QWidget * parent)
     mZoomSlider->setPageStep(2*10);
     connect(mZoomSlider, SIGNAL(valueChanged(int)), SLOT(slot_valueChanged(int)));
 
+    mMessageBox->raise();
+
     QTransform scaleTransform = view->transform();
     int value = int(10.0*log(scaleTransform.m11())/log(2.0));
     bool blocked = mZoomSlider->blockSignals(true);
@@ -756,6 +760,10 @@ void UniverseViewer::resizeEvent(QResizeEvent * event)
     QSize sliderSize(event->size().width(), event->size().height() / 8.0);
     mZoomSlider->resize(sliderSize);
     mZoomSlider->move(0, event->size().height() - sliderSize.height());
+
+    //QSize messageBoxSize(event->size().width() / 2.0, event->size().height() / 8.0);
+    //mMessageBox->resize(messageBoxSize);
+    mMessageBox->move(event->size().width() / 4.0, 0);
 }
 
 void UniverseViewer::slot_valueChanged(int value)

@@ -16,6 +16,7 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "TableView.h"
+#include "QHeaderView.h"
 
 using namespace Gui;
 
@@ -28,7 +29,8 @@ TableView::TableView(QWidget * parent)
     : QTableView(parent)
     , mOtherTableView(NULL)
 {
-
+    verticalHeader()->hide();
+    setGridStyle(Qt::NoPen);
 }
 
 void TableView::setModel(QAbstractItemModel * newModel)

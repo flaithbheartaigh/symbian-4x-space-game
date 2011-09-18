@@ -49,13 +49,13 @@ SOURCES += ../implementation/main/main.cpp \
     ../implementation/gui/PlanetListModel.cpp \
     ../implementation/gui/SectorListView.cpp \
     ../implementation/gui/SetupPanel.cpp \
+    ../implementation/gui/HelpPanel.cpp \
     ../implementation/gui/MainWindow.cpp \
     ../implementation/gui/CSSHelper.cpp \
     ../implementation/gui/ComponentSelection.cpp \
     ../implementation/gui/ComponentModel.cpp \
     ../implementation/gui/QsKineticScroller.cpp \
-    ../implementation/gui/TableView.cpp \
-    ../implementation/gui/Soundtrack.cpp
+    ../implementation/gui/TableView.cpp
 
 HEADERS += \ 
     ../implementation/data/NamesData.h \
@@ -91,13 +91,13 @@ HEADERS += \
     ../implementation/gui/PlanetListModel.h \
     ../implementation/gui/SectorListView.h \
     ../implementation/gui/SetupPanel.h \
+    ../implementation/gui/HelpPanel.h \
     ../implementation/gui/MainWindow.h \
     ../implementation/gui/CSSHelper.h \
     ../implementation/gui/ComponentSelection.h \
     ../implementation/gui/ComponentModel.h \
     ../implementation/gui/QsKineticScroller.h \
-    ../implementation/gui/TableView.h \
-    ../implementation/gui/Soundtrack.h
+    ../implementation/gui/TableView.h
 
 OTHER_FILES += \
     ../data/configs/parameters.json \

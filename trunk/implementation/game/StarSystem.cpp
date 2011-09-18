@@ -161,7 +161,6 @@ void StarSystem::generate()
             }
         }
     }
-
     for (std::vector<Sector *>::const_iterator it = generatedSectors.begin(); it != generatedSectors.end(); ++it)
     {
         if ((*it)->x() != 0 || (*it)->y() != 0)
@@ -186,14 +185,12 @@ void StarSystem::generate()
             }
         }
     }
-
     if (centerSector->star() == NULL)
     {
         Game::Star * star = new Game::Star(centerSector);
         star->setName(mName);
         centerSector->setStar(star);
     }
-
     setSectors(generatedSectors);
 }
 
