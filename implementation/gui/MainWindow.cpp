@@ -26,6 +26,7 @@
 #include "QsKineticScroller.h"
 #include "PlanetListModel.h"
 #include "SetupPanel.h"
+#include "HelpPanel.h"
 
 #include <data/NamesData.h>
 #include <data/AssetSerializer.h>
@@ -810,6 +811,7 @@ const int MainWindow::ShipDesignIndex = 2;
 const int MainWindow::ShipBuildIndex = 3;
 const int MainWindow::ComponentsIndex = 4;
 const int MainWindow::SetupIndex = 5;
+const int MainWindow::HelpIndex = 6;
 
 MainWindow * MainWindow::_instance = NULL;
 
@@ -846,6 +848,7 @@ MainWindow::MainWindow()
     mStack->insertWidget(ShipBuildIndex, new ShipConfigBuild(NULL));
     mStack->insertWidget(ComponentsIndex, new ComponentSelection(NULL));
     mStack->insertWidget(SetupIndex, new SetupPanel(NULL));
+    mStack->insertWidget(HelpIndex, new HelpPanel(NULL));
 
     UniverseViewer * universeViewer = new UniverseViewer(mainFrame);
 
@@ -939,6 +942,7 @@ MainWindow::MainWindow()
     new PrivateSubscriberSaveGame(saveButton);
     new PrivateSubscriberQuit(quitButton, this);
     new PrivateSubscriberShowPanel(setupButton, mStack, SetupIndex);
+    new PrivateSubscriberShowPanel(helpButton, mStack, HelpIndex);
 }
 
 void MainWindow::showFrame(int index)

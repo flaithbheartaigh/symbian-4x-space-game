@@ -26,10 +26,13 @@
 #include "UniverseVisitor.h"
 
 #ifdef _WIN32
+    #define NOMINMAX
     #include <windows.h> //Sleep
 #else
     #include <unistd.h>  //sleep
 #endif
+
+#include <algorithm>
 
 using namespace Game;
 
@@ -268,7 +271,7 @@ void Ship::load()
                 population = Parameters::instance().colonyModules()[highestColony].population();
             }
 
-            population = max(0.0f, min(population - mPopulation, planet->population()));
+            population = std::max(0.0f, std::min(population - mPopulation, planet->population()));
             planet->setPopulation(planet->population() - population);
             setPopulation(population);
             mSector->notifyChanged();

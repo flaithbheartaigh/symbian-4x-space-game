@@ -30,6 +30,8 @@ namespace Gui
 
         static const int SetupIndex;
 
+        static const int HelpIndex;
+
         static MainWindow & instance();
 
         ~MainWindow();

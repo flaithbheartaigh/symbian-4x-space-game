@@ -11,6 +11,7 @@ class QResizeEvent;
 class QSlider;
 class QItemSelectionModel;
 class QListView;
+class QLabel;
 
 namespace Game
 {
@@ -51,6 +52,8 @@ namespace Gui
         QGraphicsScene * mGraphicsScene;
 
         QSlider * mZoomSlider;
+
+        QLabel * mMessageBox;
 
         QListView * mSectorView;
 
