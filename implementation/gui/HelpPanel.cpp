@@ -95,6 +95,8 @@ HelpPanel::HelpPanel(QWidget * parent)
     helpButton->setObjectName("help");
     SubscribablePushButton * setupButton = new SubscribablePushButton(NULL, tr("S.."));
     setupButton->setObjectName("setup");
+    SubscribablePushButton * flagButton = new SubscribablePushButton(NULL, tr("F"));
+    flagButton->setObjectName("flag");
 
     formLayout->addRow(newButton, new QLabel("Start a new game."));
     formLayout->addRow(openButton, new QLabel("Open a saved game."));
@@ -102,7 +104,7 @@ HelpPanel::HelpPanel(QWidget * parent)
     formLayout->addRow(quitButton, new QLabel("Quit the program."));
     formLayout->addRow(helpButton, new QLabel("This help panel."));
     formLayout->addRow(setupButton, new QLabel("Setup panel."));
-    //formLayout->addRow(new PrivateCurrentPlayer(NULL, universeViewer));
+    formLayout->addRow(flagButton, new QLabel("Center map on your home system."));
     formLayout->addRow(moveShipButton, new QLabel("Move selected ship."));
     formLayout->addRow(loadButton, new QLabel("Load population from planet to selected ship."));
     formLayout->addRow(unloadButton, new QLabel("Unload population from selected ship to planet."));

@@ -25,6 +25,7 @@
 #include <game/Sector.h>
 #include <game/Star.h>
 #include <game/Player.h>
+#include <game/Messages.h>
 
 #include <QGridLayout>
 #include <QWheelEvent>
@@ -599,7 +600,7 @@ UniverseViewer::UniverseViewer(QWidget * parent)
     : QWidget(parent)
     , mGraphicsScene(NULL)
     , mZoomSlider(new QSlider(Qt::Horizontal, this))
-    , mMessageBox(new QLabel(tr("Log"), this))
+    , mMessageBox(new QLabel(tr(""), this))
     , mSectorView(NULL)
 {
     Settings_CacheMode = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/cacheMode", 2).toInt();
@@ -690,6 +691,42 @@ UniverseViewer::UniverseViewer(QWidget * parent)
 
         int mH;
     };
+
+    class PrivateMessagesSubscriber
+        : public QObject
+        , private Game::Messages::Subscriber
+    {
+
+    public:
+
+        ~PrivateMessagesSubscriber()
+        {
+        }
+
+        PrivateMessagesSubscriber(QLabel * label)
+            : QObject(label)
+            , Game::Messages::Subscriber()
+            , mLabel(label)
+        {
+
+        }
+
+    private:
+
+        void messagePosted(const std::string & message)
+        {
+            QFontMetricsF metrics(mLabel->font());
+            int mWidth = metrics.width(QString::fromStdString(message));
+            int mHeight = metrics.height();
+
+            mLabel->setText(QString::fromStdString(message));
+            mLabel->resize(mWidth, mHeight);
+        }
+
+        QLabel * mLabel;
+    };
+
+    new PrivateMessagesSubscriber(mMessageBox);
 
     mGraphicsScene = new PrivateGraphicsScene(this);
     QGraphicsView * view = new ScalableGraphicsView(mGraphicsScene, this, mZoomSlider);
