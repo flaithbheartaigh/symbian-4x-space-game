@@ -39,6 +39,7 @@ SOURCES += ../implementation/main/main.cpp \
     ../implementation/game/DeserializeVisitor.cpp \
     ../implementation/game/Component.cpp \
     ../implementation/game/StatsVisitor.cpp \
+    ../implementation/game/Messages.cpp \
     ../implementation/gui/UniverseViewer.cpp \
     ../implementation/gui/UniversePainter.cpp \
     ../implementation/gui/SubscribablePushButton.cpp \
@@ -81,6 +82,7 @@ HEADERS += \
     ../implementation/game/DeserializeVisitor.h \
     ../implementation/game/Component.h \
     ../implementation/game/StatsVisitor.h \
+    ../implementation/game/Messages.h \
     ../implementation/gui/UniverseViewer.h \
     ../implementation/gui/UniversePainter.h \
     ../implementation/gui/SubscribablePushButton.h \

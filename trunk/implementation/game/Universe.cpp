@@ -24,6 +24,7 @@
 #include "NextTurnVisitor.h"
 #include "NextPlayerVisitor.h"
 #include "StarSystemReference.h"
+#include "Messages.h"
 #include <string>
 #include <sstream>
 #include <cmath>
@@ -416,6 +417,10 @@ void Universe::update()
         accept(&NextTurnVisitor());
     }
     accept(&NextPlayerVisitor());
+
+    std::ostringstream ss;
+    ss << game().currentPlayer()->name() << "s, Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$";
+    Messages::instance().post(ss.str());
 }
 
 void Universe::setCurrentTurn(unsigned int turn)
@@ -574,6 +579,8 @@ void Universe::generate()
         }
     }
     setCurrentTurn(0);
+
+    Messages::instance().post("New Universe spawned");
 }
 
 bool Universe::notificationsBlocked() const

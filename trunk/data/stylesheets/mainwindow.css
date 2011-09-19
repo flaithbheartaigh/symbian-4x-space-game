@@ -54,6 +54,16 @@ Gui--SubscribablePushButton#help QLabel
 	qproperty-pixmap: url("%images%/Help.png");
 }
 
+Gui--SubscribablePushButton#flag QLabel
+{
+	qproperty-pixmap: url("%images%/red.svg");
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+	padding: 4px;
+}
+
 Gui--SubscribablePushButton#setup QLabel
 {
 	qproperty-pixmap: url("%images%/Setup.png");
@@ -186,7 +196,7 @@ Gui--UniverseViewer QSlider::groove:horizontal
 Gui--UniverseViewer QLabel
 {
 	font: bold "Courier";
-	color: rgb(191,191,255);
+	color: rgba(191,191,255,159);
 }
 
 Gui--HelpPanel QLabel
