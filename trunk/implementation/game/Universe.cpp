@@ -419,7 +419,7 @@ void Universe::update()
     accept(&NextPlayerVisitor());
 
     std::ostringstream ss;
-    ss << game().currentPlayer()->name() << "s, Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$";
+    ss << game().currentPlayer()->name() << ", Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$";
     Messages::instance().post(ss.str());
 }
 

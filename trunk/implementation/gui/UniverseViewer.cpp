@@ -234,7 +234,8 @@ namespace
 
     QRectF TextGraphicsItem::boundingRect() const
     {
-        return QRectF(-0.5*mWidth,-0.5*mHeight,1*mWidth,1*mHeight);
+        static const double Overlap = 1.1;
+        return QRectF(-0.5*Overlap*mWidth,-0.5*Overlap*mHeight,1*Overlap*mWidth,1*Overlap*mHeight);
     }
 
     void TextGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -319,7 +320,10 @@ namespace
 
     void StarSystemGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
-        painter->setClipRect(option->exposedRect);
+        if (Settings_CacheMode >= 3)
+        {
+            painter->setClipRect(option->exposedRect);
+        }
         if (starSystem() != NULL)
         {
             if (Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
@@ -336,7 +340,7 @@ namespace
                         painter->fillRect(boundingRect(), QBrush(color));
                     }
                     color.setAlphaF(0.35f);
-                    painter->setPen(QPen(color, 12));
+                    painter->setPen(QPen(color, 9));
                     painter->drawRect(boundingRect());
                     painter->setPen(previousPen);
                 }
