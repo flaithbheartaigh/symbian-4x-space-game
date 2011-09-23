@@ -71,7 +71,6 @@ ComponentSelection::ComponentSelection(QWidget * parent)
             if (mComponentSelection->shipConfig() != NULL)
             {
                 mComponentSelection->shipConfig()->setComponents(mComponentSelection->selectedComponents());
-                //Game::Universe::instance().game().currentPlayer()->setShipConfigs(mShipConfigDesign->shipConfigs());
             }
             MainWindow::instance().showFrame(MainWindow::ShipDesignIndex);
         }
@@ -97,9 +96,6 @@ ComponentSelection::ComponentSelection(QWidget * parent)
     mEditView->resizeColumnsToContents();
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mEditView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-    QSizePolicy s = mEditView->sizePolicy();
-    s.setHorizontalStretch(2);
-    mEditView->setSizePolicy(s);
     tableLayout->addWidget(mEditView);
 
     //(new QsKineticScroller(mEditView))->enableKineticScrollFor(mEditView);
@@ -114,9 +110,6 @@ ComponentSelection::ComponentSelection(QWidget * parent)
     mListView->resizeColumnsToContents();
     mListView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mListView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-    s = mListView->sizePolicy();
-    s.setHorizontalStretch(3);
-    mListView->setSizePolicy(s);
     tableLayout->addWidget(mListView);
 
     //(new QsKineticScroller(mListView))->enableKineticScrollFor(mListView);

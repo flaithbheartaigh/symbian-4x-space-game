@@ -3,9 +3,15 @@ Gui--MainWindow
     background-image: url(%images%/nebulae.png);
 }
 
+QLabel
+{
+    font: bold 12px;
+    color: rgb(191,191,255);
+}
+
 QScrollArea#helpButtonsScrollArea
 {
-	background: transparent;
+    background: transparent;
     border: 0px;
 }
 
@@ -16,7 +22,7 @@ QFrame#helpButtonsWidget
 
 QScrollArea#buttonsScrollArea
 {
-	background: transparent;
+    background: transparent;
     min-width: 64px;
     max-width: 64px;
     border: 0px;
@@ -29,118 +35,117 @@ QFrame#buttonsWidget
     background-color: transparent;
 }
 
-Gui--SubscribablePushButton#new QLabel
-{
-	qproperty-pixmap: url("%images%/New.png");
-}
-
-Gui--SubscribablePushButton#open QLabel
-{
-	qproperty-pixmap: url("%images%/Open.png");
-}
-
-Gui--SubscribablePushButton#save QLabel
-{
-	qproperty-pixmap: url("%images%/Save.png");
-}
-
-Gui--SubscribablePushButton#quit QLabel
-{
-	qproperty-pixmap: url("%images%/Quit.png");
-}
-
-Gui--SubscribablePushButton#help QLabel
-{
-	qproperty-pixmap: url("%images%/Help.png");
-}
-
-Gui--SubscribablePushButton#flag QLabel
-{
-	qproperty-pixmap: url("%images%/red.svg");
-    min-width: 56px;
-    min-height: 56px;
-    max-width: 56px;
-    max-height: 56px;
-	padding: 4px;
-}
-
-Gui--SubscribablePushButton#setup QLabel
-{
-	qproperty-pixmap: url("%images%/Setup.png");
-}
-
-Gui--SubscribablePushButton#move QLabel
-{
-	qproperty-pixmap: url("%images%/Move.png");
-}
-
-Gui--SubscribablePushButton#colonize QLabel
-{
-	qproperty-pixmap: url("%images%/Colonize.png");
-}
-
-Gui--SubscribablePushButton#design QLabel
-{
-	qproperty-pixmap: url("%images%/Design.png");
-}
-
-Gui--SubscribablePushButton#build QLabel
-{
-	qproperty-pixmap: url("%images%/Build.png");
-}
-
-Gui--SubscribablePushButton#turn QLabel
-{
-	qproperty-pixmap: url("%images%/Turn.png");
-}
-
-Gui--SubscribablePushButton#load QLabel
-{
-	qproperty-pixmap: url("%images%/Load.png");
-}
-
-Gui--SubscribablePushButton#unload QLabel
-{
-	qproperty-pixmap: url("%images%/Unload.png");
-}
-
+Gui--SubscribablePushButton QLabel,
 Gui--SubscribablePushButton QLabel
 {
     font: bold 12px;
     color: rgb(191,191,255);
-	qproperty-alignment: AlignCenter;
+    qproperty-alignment: AlignCenter;
+    min-width: 64px;
+    min-height: 32px;
+}
+
+QScrollArea#buttonsScrollArea Gui--SubscribablePushButton QLabel,
+QScrollArea#helpButtonsScrollArea Gui--SubscribablePushButton QLabel
+{
+    font: bold 12px;
+    color: rgb(191,191,255);
+    qproperty-alignment: AlignCenter;
     min-width: 64px;
     min-height: 64px;
 }
 
-Gui--SubscribablePushButton[checked="false"] QLabel
+QScrollArea#buttonsScrollArea Gui--SubscribablePushButton[checked="false"] QLabel,
+QScrollArea#helpButtonsScrollArea Gui--SubscribablePushButton[checked="false"] QLabel
 {
-	background-color: transparent;
+    background-color: transparent;
 }
 
-Gui--SubscribablePushButton[checked="true"] QLabel
+QScrollArea#buttonsScrollArea Gui--SubscribablePushButton[checked="true"] QLabel,
+QScrollArea#helpButtonsScrollArea Gui--SubscribablePushButton[checked="true"] QLabel
 {
-	background-color: rgba(127,127,191,127);
+    background-color: rgba(127,127,191,127);
+}
+
+Gui--SubscribablePushButton#new QLabel
+{
+    qproperty-pixmap: url("%images%/New.png");
+}
+
+Gui--SubscribablePushButton#open QLabel
+{
+    qproperty-pixmap: url("%images%/Open.png");
+}
+
+Gui--SubscribablePushButton#save QLabel
+{
+    qproperty-pixmap: url("%images%/Save.png");
+}
+
+Gui--SubscribablePushButton#quit QLabel
+{
+    qproperty-pixmap: url("%images%/Quit.png");
+}
+
+Gui--SubscribablePushButton#help QLabel
+{
+    qproperty-pixmap: url("%images%/Help.png");
+}
+
+Gui--SubscribablePushButton#flag QLabel
+{
+    qproperty-pixmap: url("%images%/red.svg");
+    min-width: 56px;
+    min-height: 56px;
+    max-width: 56px;
+    max-height: 56px;
+    padding: 4px;
+}
+
+Gui--SubscribablePushButton#setup QLabel
+{
+    qproperty-pixmap: url("%images%/Setup.png");
+}
+
+Gui--SubscribablePushButton#move QLabel
+{
+    qproperty-pixmap: url("%images%/Move.png");
+}
+
+Gui--SubscribablePushButton#colonize QLabel
+{
+    qproperty-pixmap: url("%images%/Colonize.png");
+}
+
+Gui--SubscribablePushButton#design QLabel
+{
+    qproperty-pixmap: url("%images%/Design.png");
+}
+
+Gui--SubscribablePushButton#build QLabel
+{
+    qproperty-pixmap: url("%images%/Build.png");
+}
+
+Gui--SubscribablePushButton#turn QLabel
+{
+    qproperty-pixmap: url("%images%/Turn.png");
+}
+
+Gui--SubscribablePushButton#load QLabel
+{
+    qproperty-pixmap: url("%images%/Load.png");
+}
+
+Gui--SubscribablePushButton#unload QLabel
+{
+    qproperty-pixmap: url("%images%/Unload.png");
 }
 
 Gui--MainWindow QGraphicsView
 {
     background: transparent;
-	border: 0px;
-}
-
-Gui--MainWindow QFrame#StatsFrame,
-Gui--MainWindow Gui--SetupPanel
-{
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0 rgba(31,63,191,255), stop: 1 rgba(0,0,63,255));
-}
-
-Gui--MainWindow QFrame#StatsFrame QLabel,
-Gui--MainWindow Gui--SetupPanel QGroupBox,
-Gui--MainWindow Gui--SetupPanel QLabel
-{
-    font: bold 12px;
-    color: rgb(191,191,255);
+    border: 0px;
 }
 
 Gui--MainWindow QFrame#CurrentPlayer
@@ -149,17 +154,22 @@ Gui--MainWindow QFrame#CurrentPlayer
     min-height: 56px;
     max-width: 56px;
     max-height: 56px;
-	padding: 4px;
+    padding: 4px;
+}
+
+Gui--MainWindow QListView,
+Gui--MainWindow QTableView
+{
+    font: bold 9px;
+    border: 0px;
 }
 
 Gui--MainWindow QListView
 {
-    font: bold 9px;
     color: rgb(191,191,255);
-	background: transparent;
+    background: transparent;
     min-width: 128px;
     min-height: 64px;
-	border: 0px;
 }
 
 Gui--MainWindow QListView::item
@@ -181,26 +191,20 @@ QListView::item:!selected:hover
 
 Gui--UniverseViewer QSlider::groove:horizontal 
 {
-	border: transparent;
-	height: 12px;
-	background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0,0,0,0), stop: 1 rgba(95,127,191,255));
+    border: transparent;
+    height: 12px;
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgba(0,0,0,0), stop: 1 rgba(95,127,191,255));
 }
 
  Gui--UniverseViewer QSlider::handle:horizontal 
  {
-	background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(95,127,191,191), stop:1 rgba(0,0,0,95));
-	width: 48px;
-	margin: -12px 0;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 rgba(95,127,191,191), stop:1 rgba(0,0,0,95));
+    width: 48px;
+    margin: -12px 0;
 }
 
 Gui--UniverseViewer QLabel
 {
-	font: bold "Courier";
-	color: rgba(191,191,255,159);
-}
-
-Gui--HelpPanel QLabel
-{
-	font: bold "Courier";
-	color: rgb(191,191,255);
+    font: bold "Courier";
+    color: rgba(191,191,255,159);
 }
