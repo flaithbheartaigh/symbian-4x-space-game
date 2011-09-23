@@ -23,7 +23,6 @@
 #include <QSlider>
 #include <QBoxLayout>
 #include <QFormLayout>
-#include <QGroupBox>
 #include <QSettings>
 
 using namespace Gui;
@@ -132,14 +131,13 @@ SetupPanel::SetupPanel(QWidget * parent)
     QCheckBox * skipEmptyTiles = new QCheckBox();
     skipEmptyTiles->setChecked(settings.value("graphics/skipEmptyTiles", true).toBool());
 
-    QGroupBox * groupBox = new QGroupBox(tr("Graphics"));
     QFormLayout * formLayout = new QFormLayout();
     formLayout->addRow(tr("&Cache mode:"), cacheMode);
     formLayout->addRow(tr("&Cache resolution:"), tileResolution);
     formLayout->addRow(tr("&Detail level:"), detailLevel);
     formLayout->addRow(tr("&Skip empty tiles:"), skipEmptyTiles);
-    groupBox->setLayout(formLayout);
-    topLayout->addWidget(groupBox);
+    topLayout->addLayout(formLayout);
+    topLayout->addStretch();
 
     QBoxLayout * buttonLayout = new QHBoxLayout();
     topLayout->addItem(buttonLayout);
