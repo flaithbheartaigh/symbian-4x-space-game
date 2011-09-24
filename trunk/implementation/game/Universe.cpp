@@ -412,7 +412,7 @@ Universe::Universe()
 
 void Universe::update(bool stopOnNPC, bool stopOnHuman)
 {
-    while (true)
+    do
     {
         if (mGame.haveAllPlayersPlayed())
         {
@@ -423,16 +423,8 @@ void Universe::update(bool stopOnNPC, bool stopOnHuman)
         std::ostringstream ss;
         ss << game().currentPlayer()->name() << ", Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$ (" << game().currentPlayer()->revenue() << ")";
         Messages::instance().post(ss.str());
-
-        if (stopOnHuman && game().currentPlayer()->isHuman())
-        {
-            return;
-        }
-        if (stopOnNPC && !game().currentPlayer()->isHuman())
-        {
-            return;
-        }
     }
+    while (!(stopOnHuman && game().currentPlayer()->isHuman()) && !(stopOnNPC && !game().currentPlayer()->isHuman()));
 }
 
 void Universe::setCurrentTurn(unsigned int turn)
