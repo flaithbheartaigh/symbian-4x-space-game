@@ -66,8 +66,6 @@
 
 namespace
 {
-    bool Settings_ViewNPCTurns;
-
     class PrivateStatsFrame
         : public QFrame
     {
@@ -492,7 +490,7 @@ namespace
         void clicked(bool checked)
         {
             mUniverseViewer->noForce(true);
-            Game::Universe::instance().update(Settings_ViewNPCTurns);
+            Game::Universe::instance().update(Gui::MainWindow::Settings_ViewNPCTurns);
             mUniverseViewer->noForce(false);
         }
 
@@ -815,6 +813,13 @@ const int MainWindow::ComponentsIndex = 4;
 const int MainWindow::SetupIndex = 5;
 const int MainWindow::HelpIndex = 6;
 
+int MainWindow::Settings_CacheMode = 2;
+int MainWindow::Settings_TileResolution = 3;
+int MainWindow::Settings_DetailLevel = 1;
+bool MainWindow::Settings_SkipEmptyTiles = true;
+bool MainWindow::Settings_ViewUniverse = false;
+bool MainWindow::Settings_ViewNPCTurns = false;
+
 MainWindow * MainWindow::_instance = NULL;
 
 MainWindow & MainWindow::instance()
@@ -839,7 +844,12 @@ MainWindow::MainWindow()
 #endif
     , mStack(new QStackedWidget())
 {
-    Settings_ViewNPCTurns = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewNPCTurns", false).toBool();
+    Settings_CacheMode = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/cacheMode", Settings_CacheMode).toInt();
+    Settings_TileResolution = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/tileResolution", Settings_TileResolution).toInt();
+    Settings_DetailLevel = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/detailLevel", Settings_DetailLevel).toInt();
+    Settings_SkipEmptyTiles = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/skipEmptyTiles", Settings_SkipEmptyTiles).toBool();
+    Settings_ViewUniverse = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewUniverse", Settings_ViewUniverse).toBool();
+    Settings_ViewNPCTurns = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewNPCTurns", Settings_ViewNPCTurns).toBool();
 
     setLayout(new QHBoxLayout());
     layout()->setContentsMargins(0,0,0,0);

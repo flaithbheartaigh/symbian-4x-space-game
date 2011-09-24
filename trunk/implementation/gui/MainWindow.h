@@ -32,6 +32,18 @@ namespace Gui
 
         static const int HelpIndex;
 
+        static int Settings_CacheMode;
+
+        static int Settings_TileResolution;
+
+        static int Settings_DetailLevel;
+
+        static bool Settings_SkipEmptyTiles;
+
+        static bool Settings_ViewUniverse;
+
+        static bool Settings_ViewNPCTurns;
+
         static MainWindow & instance();
 
         ~MainWindow();

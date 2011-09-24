@@ -17,6 +17,7 @@
 
 #include "SectorItemModel.h"
 #include "UniversePainter.h"
+#include "MainWindow.h"
 
 #include <game/Sector.h>
 #include <game/Star.h>
@@ -174,7 +175,7 @@ void SectorItemModel::setSector(Game::Sector * sector)
         
         void visit(Game::Planet * planet)
         {
-            if (mItems != NULL && Game::Universe::instance().game().currentPlayer()->knows(planet->sector()->starSystem()))
+            if (mItems != NULL && (MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer()->knows(planet->sector()->starSystem())))
             {
                 mItems->push_back(Item(planet));
             }
@@ -182,7 +183,7 @@ void SectorItemModel::setSector(Game::Sector * sector)
 
         void visit(Game::Ship * ship)
         {
-            if (mItems != NULL && (ship->player() == Game::Universe::instance().game().currentPlayer() || Game::Universe::instance().game().currentPlayer()->knows(ship->sector()->starSystem())))
+            if (mItems != NULL && (MainWindow::Settings_ViewUniverse || ship->player() == Game::Universe::instance().game().currentPlayer() || Game::Universe::instance().game().currentPlayer()->knows(ship->sector()->starSystem())))
             {
                 mItems->push_back(Item(ship));
             }
