@@ -410,17 +410,29 @@ Universe::Universe()
     srand(static_cast<unsigned int>(time(NULL)));
 }
 
-void Universe::update()
+void Universe::update(bool stopOnNPC, bool stopOnHuman)
 {
-    if (mGame.haveAllPlayersPlayed())
+    while (true)
     {
-        accept(&NextTurnVisitor());
-    }
-    accept(&NextPlayerVisitor());
+        if (mGame.haveAllPlayersPlayed())
+        {
+            accept(&NextTurnVisitor());
+        }
+        accept(&NextPlayerVisitor());
 
-    std::ostringstream ss;
-    ss << game().currentPlayer()->name() << ", Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$";
-    Messages::instance().post(ss.str());
+        std::ostringstream ss;
+        ss << game().currentPlayer()->name() << ", Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$ (" << game().currentPlayer()->revenue() << ")";
+        Messages::instance().post(ss.str());
+
+        if (stopOnHuman && game().currentPlayer()->isHuman())
+        {
+            return;
+        }
+        if (stopOnNPC && !game().currentPlayer()->isHuman())
+        {
+            return;
+        }
+    }
 }
 
 void Universe::setCurrentTurn(unsigned int turn)

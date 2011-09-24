@@ -20,6 +20,10 @@
 #include "Sector.h"
 #include "StarSystem.h"
 #include "UniverseVisitor.h"
+#include "StatsVisitor.h"
+#include "Planet.h"
+#include "Ship.h"
+#include "ShipConfig.h"
 #include <algorithm>
 
 using namespace Game;
@@ -319,4 +323,27 @@ void Player::setAI(AI * ai)
 bool Player::isHuman() const
 {
     return dynamic_cast<NPC *>(mAI) == NULL;
+}
+
+int Player::revenue() const
+{
+    int rev = 0;
+    Game::StatsVisitor stats(this);
+    Game::Universe::instance().accept(&stats);        
+    for (unsigned int i = 0; i < stats.mPlanets.size(); ++i)
+    {
+        if (stats.mPlanets[i] != NULL)
+        {
+            rev += int(stats.mPlanets[i]->population() / 10);
+        }
+    }
+    for (unsigned int i = 0; i < stats.mShips.size(); ++i)
+    {
+        if (stats.mShips[i] != NULL)
+        {
+            rev -= int(stats.mShips[i]->config().cost() / 10);
+        }
+    }
+
+    return rev;
 }

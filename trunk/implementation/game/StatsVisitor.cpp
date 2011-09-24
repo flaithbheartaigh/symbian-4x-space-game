@@ -35,7 +35,7 @@ StatsVisitor::~StatsVisitor()
     
 }
 
-StatsVisitor::StatsVisitor(Player * player)
+StatsVisitor::StatsVisitor(const Player * player)
     : UniverseVisitor()
     , mPlayer(player)
     , mPlanets()

@@ -15,7 +15,7 @@ namespace Game
 
         ~StatsVisitor();
 
-        StatsVisitor(Player * player);
+        StatsVisitor(const Player * player);
 
         void visit(Universe * universe);
         
@@ -43,7 +43,7 @@ namespace Game
 
     private:
 
-        Player * mPlayer;
+        const Player * mPlayer;
 
         StatsVisitor();
 

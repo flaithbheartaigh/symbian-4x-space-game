@@ -63,7 +63,7 @@ void NextTurnVisitor::visit(Star * star)
 
 void NextTurnVisitor::visit(Planet * planet)
 {
-    planet->setPopulation(planet->population() * 1.1f);
+    planet->setPopulation(planet->population() * 1.03f);
     if (planet->shipyard() == NULL && planet->population() >= 50.0f)
     {
         planet->setShipyard(new Shipyard(planet));
@@ -142,14 +142,6 @@ void NextTurnVisitor::visit(Player * player)
 {
     if (player != NULL)
     {
-        Game::StatsVisitor stats(player);
-        Game::Universe::instance().accept(&stats);        
-        for (unsigned int i = 0; i < stats.mPlanets.size(); ++i)
-        {
-            if (stats.mPlanets[i] != NULL)
-            {
-                player->setMoney(player->money() + int(stats.mPlanets[i]->population() / 10));
-            }
-        }
+        player->setMoney(player->money() + player->revenue());
     }
 }

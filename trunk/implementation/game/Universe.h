@@ -177,7 +177,7 @@ namespace Game
 
         ~Universe();
 
-        void update();
+        void update(bool stopOnNPC = false, bool stopOnHuman = true);
 
         void setCurrentTurn(unsigned int turn);
 

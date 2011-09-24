@@ -137,6 +137,8 @@ namespace Game
 
         bool isHuman() const;
 
+        int revenue() const;
+
     private:
         
         std::string mName;
