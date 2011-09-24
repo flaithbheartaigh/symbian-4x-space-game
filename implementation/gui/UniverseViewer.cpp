@@ -237,7 +237,14 @@ namespace
 
     void TextGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
-        painter->setClipRect(option->exposedRect);
+        if (Gui::MainWindow::Settings_CacheMode < 2)
+        {
+            painter->setClipRect(option->exposedRect);
+        }
+        else
+        {
+            painter->setClipRect(boundingRect());
+        }
         painter->drawText(boundingRect(), QString::fromStdString(mText));
     }
 
@@ -317,12 +324,17 @@ namespace
 
     void StarSystemGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
-        if (Gui::MainWindow::Settings_CacheMode >= 3)
-        {
-            painter->setClipRect(option->exposedRect);
-        }
         if (starSystem() != NULL)
         {
+            if (Gui::MainWindow::Settings_CacheMode < 2)//3
+            {
+                painter->setClipRect(option->exposedRect);
+            }
+            else
+            {
+                //painter->setClipRect(boundingRect());
+            }
+
             if (Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
             {
                 std::set<Game::Player *> players = starSystem()->players();
@@ -438,7 +450,7 @@ namespace
 
         if (Gui::MainWindow::Settings_SkipEmptyTiles)
         {
-            if (!scene()->views()[0]->property("NoForce").toBool()/* || Game::Universe::instance().game().currentPlayer()->isHuman()*/)
+            if (!scene()->views()[0]->property("NoForce").toBool())
             {
                 setFlag(QGraphicsItem::ItemHasNoContents, false);
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
@@ -454,7 +466,14 @@ namespace
 
     void SectorGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
-        painter->setClipRect(option->exposedRect);
+        if (Gui::MainWindow::Settings_CacheMode < 1)
+        {
+            painter->setClipRect(option->exposedRect);
+        }
+        else
+        {
+            painter->setClipRect(boundingRect());
+        }
         Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Gui::MainWindow::Settings_DetailLevel, 
             Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
     }

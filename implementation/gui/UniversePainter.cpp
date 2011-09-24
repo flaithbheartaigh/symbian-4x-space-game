@@ -210,12 +210,12 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
             QPen previousPen = painter->pen();
             QPen pen;
             pen.setStyle(Qt::DashDotDotLine);
-            pen.setWidth(4);
+            pen.setWidth(2);
             pen.setColor(QColor(0,255,255,63));
             pen.setCapStyle(Qt::RoundCap);
             pen.setJoinStyle(Qt::RoundJoin);
             painter->setPen(pen);
-            painter->drawRect(QRectF(-QPointF(size.width()/2.0f, size.height() / 2.0f), size));
+            painter->drawRect(QRectF(-QPointF(size.width()/2.0f-1, size.height() / 2.0f-1), QSizeF(size.width()-2, size.height()-2)));
             painter->setPen(previousPen);
         }
     }
