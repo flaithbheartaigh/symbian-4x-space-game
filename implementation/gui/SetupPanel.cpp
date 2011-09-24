@@ -121,30 +121,30 @@ SetupPanel::SetupPanel(QWidget * parent)
     cacheMode->setMinimum(0);
     cacheMode->setMaximum(3); //0- None; 1- Sectors; 2- Sectors+Labels; 3- Sectors+Labels+Systems
     cacheMode->setPageStep(1);
-    cacheMode->setValue(settings.value("graphics/cacheMode", 2).toInt());
+    cacheMode->setValue(settings.value("graphics/cacheMode", MainWindow::Settings_CacheMode).toInt());
 
     QSlider * tileResolution = new QSlider(Qt::Horizontal);
     tileResolution->setTickPosition(QSlider::TicksBothSides);
     tileResolution->setMinimum(0);
     tileResolution->setMaximum(6); //0- 8x8; 1- 16x16; 2- 24x24; 3- 32x32; 4- 48x48; 5- 64x64; 6- 128x128
     tileResolution->setPageStep(1);
-    tileResolution->setValue(settings.value("graphics/tileResolution", 3).toInt());
+    tileResolution->setValue(settings.value("graphics/tileResolution", MainWindow::Settings_TileResolution).toInt());
 
     QSlider * detailLevel = new QSlider(Qt::Horizontal);
     detailLevel->setTickPosition(QSlider::TicksBothSides);
     detailLevel->setMinimum(0);
     detailLevel->setMaximum(2); //0- None; 1- Gradients; 2- Extra
     detailLevel->setPageStep(1);
-    detailLevel->setValue(settings.value("graphics/detailLevel", 1).toInt());
+    detailLevel->setValue(settings.value("graphics/detailLevel", MainWindow::Settings_DetailLevel).toInt());
 
     QCheckBox * skipEmptyTiles = new QCheckBox();
-    skipEmptyTiles->setChecked(settings.value("graphics/skipEmptyTiles", true).toBool());
+    skipEmptyTiles->setChecked(settings.value("graphics/skipEmptyTiles", MainWindow::Settings_SkipEmptyTiles).toBool());
 
     QCheckBox * viewNPCTurns = new QCheckBox();
-    viewNPCTurns->setChecked(settings.value("game/viewNPCTurns", false).toBool());
+    viewNPCTurns->setChecked(settings.value("game/viewNPCTurns", MainWindow::Settings_ViewUniverse).toBool());
 
     QCheckBox * viewUniverse = new QCheckBox();
-    viewUniverse->setChecked(settings.value("game/viewUniverse", false).toBool());
+    viewUniverse->setChecked(settings.value("game/viewUniverse", MainWindow::Settings_ViewNPCTurns).toBool());
 
     QFormLayout * formLayout = new QFormLayout();
     formLayout->addRow(tr("&Cache mode:"), cacheMode);

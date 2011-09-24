@@ -17,6 +17,7 @@
 
 #include "UniverseViewer.h"
 #include "UniversePainter.h"
+#include "MainWindow.h"
 #include "QsKineticScroller.h"
 #include "SectorListView.h"
 
@@ -69,11 +70,6 @@ namespace
         }
     }
 
-    int Settings_CacheMode;
-    int Settings_TileResolution;
-    int Settings_DetailLevel;
-    bool Settings_SkipEmptyTiles;
-    bool Settings_ViewUniverse;
     double ReferenceSize;
 
     class StarSystemGraphicsItem;
@@ -210,7 +206,7 @@ namespace
 
         setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
         
-        if (Settings_CacheMode >= 2)
+        if (Gui::MainWindow::Settings_CacheMode >= 2)
         {
             setCacheMode(QGraphicsItem::ItemCoordinateCache, QSize(boundingRect().size().width(),boundingRect().size().height()));
         }
@@ -226,7 +222,7 @@ namespace
             mWidth = metrics.width(QString::fromStdString(mText.length() > QCoreApplication::tr("unexplored").toStdString().length() ? mText : QCoreApplication::tr("unexplored").toStdString()));
             mHeight = metrics.height();
 
-            if (Settings_CacheMode >= 2)
+            if (Gui::MainWindow::Settings_CacheMode >= 2)
             {
                 setCacheMode(QGraphicsItem::ItemCoordinateCache, QSize(boundingRect().size().width(),boundingRect().size().height()));
             }
@@ -276,7 +272,7 @@ namespace
                 painter->setPen(Qt::white);
             }
 
-            if (Game::Universe::instance().game().currentPlayer() != NULL && !Game::Universe::instance().game().currentPlayer()->knows(starSystemGraphicsItem->starSystem()))
+            if (!Gui::MainWindow::Settings_ViewUniverse && (Game::Universe::instance().game().currentPlayer() != NULL && !Game::Universe::instance().game().currentPlayer()->knows(starSystemGraphicsItem->starSystem())))
             {
                 painter->setPen(Qt::lightGray);
                 setText(QCoreApplication::tr("unexplored").toStdString());
@@ -308,7 +304,7 @@ namespace
             starSystemTextGraphicsItem->setY(ReferenceSize/1.5);
         }        
 
-        if (Settings_CacheMode >= 3)
+        if (Gui::MainWindow::Settings_CacheMode >= 3)
         {
             setCacheMode(QGraphicsItem::ItemCoordinateCache, QSize(boundingRect().size().width(),boundingRect().size().height()));
         }
@@ -321,13 +317,13 @@ namespace
 
     void StarSystemGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
-        if (Settings_CacheMode >= 3)
+        if (Gui::MainWindow::Settings_CacheMode >= 3)
         {
             painter->setClipRect(option->exposedRect);
         }
         if (starSystem() != NULL)
         {
-            if (Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
+            if (Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
             {
                 std::set<Game::Player *> players = starSystem()->players();
                 for (std::set<Game::Player *>::iterator it = players.begin(); it != players.end(); ++it)
@@ -335,7 +331,7 @@ namespace
                     QPen previousPen = painter->pen();
                     std::vector<int> colorComponents = Game::Player::color(Game::Universe::instance().game().playerIndex(*it));
                     QColor color(colorComponents[0], colorComponents[1], colorComponents[2]);
-                    if (Settings_DetailLevel > 1)
+                    if (Gui::MainWindow::Settings_DetailLevel > 1)
                     {
                         color.setAlphaF(0.1f);
                         painter->fillRect(boundingRect(), QBrush(color));
@@ -371,7 +367,7 @@ namespace
 
     void StarSystemGraphicsItem::becameKnown()
     {
-        if (Settings_CacheMode >= 3)
+        if (Gui::MainWindow::Settings_CacheMode >= 3)
         {
             QList<QGraphicsItem *> children = childItems();
             for (int i = 0; i < children.size(); ++i)
@@ -391,11 +387,11 @@ namespace
         , Game::Sector::Subscriber(sector)
         , mIsSelected(false)
     {
-        if (Settings_SkipEmptyTiles)
+        if (Gui::MainWindow::Settings_SkipEmptyTiles)
         {
             setFlag(QGraphicsItem::ItemHasNoContents, sector->isEmpty() && !mIsSelected);
         }
-        if (Settings_CacheMode >= 1)
+        if (Gui::MainWindow::Settings_CacheMode >= 1)
         {
             setCacheMode(QGraphicsItem::ItemCoordinateCache, QSize(boundingRect().size().width(),boundingRect().size().height()));
         }
@@ -404,7 +400,7 @@ namespace
     void SectorGraphicsItem::contentsChanged(bool forcedRedraw)
     {
         update();
-        if (Settings_SkipEmptyTiles)
+        if (Gui::MainWindow::Settings_SkipEmptyTiles)
         {
             if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
             {
@@ -426,7 +422,7 @@ namespace
     {
         mIsSelected = true;
 
-        if (Settings_SkipEmptyTiles)
+        if (Gui::MainWindow::Settings_SkipEmptyTiles)
         {
             setFlag(QGraphicsItem::ItemHasNoContents, false);
         }
@@ -440,7 +436,7 @@ namespace
 
         update();
 
-        if (Settings_SkipEmptyTiles)
+        if (Gui::MainWindow::Settings_SkipEmptyTiles)
         {
             if (!scene()->views()[0]->property("NoForce").toBool()/* || Game::Universe::instance().game().currentPlayer()->isHuman()*/)
             {
@@ -459,8 +455,8 @@ namespace
     void SectorGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
         painter->setClipRect(option->exposedRect);
-        Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Settings_DetailLevel, 
-            Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
+        Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Gui::MainWindow::Settings_DetailLevel, 
+            Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
     }
 
     class ScalableGraphicsView
@@ -558,7 +554,7 @@ namespace
 
     void ScalableGraphicsView::playerActivated(Game::Player * player)
     {
-        if (Settings_CacheMode >= 1)
+        if (Gui::MainWindow::Settings_CacheMode >= 1)
         {
             QList<QGraphicsItem *> sceneItems = items();
             for (int i = 0; i < sceneItems.count(); ++i)
@@ -568,7 +564,7 @@ namespace
                 {
                     sectorItem->update();
                 }
-                else if (Settings_CacheMode >= 2)
+                else if (Gui::MainWindow::Settings_CacheMode >= 2)
                 {
                     TextGraphicsItem * textItem = dynamic_cast<TextGraphicsItem *>(sceneItems[i]);
                     if (textItem != NULL)
@@ -609,12 +605,7 @@ UniverseViewer::UniverseViewer(QWidget * parent)
     , mMessageBox(new QLabel(tr(""), this))
     , mSectorView(NULL)
 {
-    Settings_CacheMode = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/cacheMode", 2).toInt();
-    Settings_TileResolution = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/tileResolution", 3).toInt();
-    Settings_DetailLevel = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/detailLevel", 1).toInt();
-    Settings_SkipEmptyTiles = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/skipEmptyTiles", true).toBool();
-    Settings_ViewUniverse = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewUniverse", false).toBool();
-    ReferenceSize = _referenceSize(Settings_TileResolution);
+    ReferenceSize = _referenceSize(MainWindow::Settings_TileResolution);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
