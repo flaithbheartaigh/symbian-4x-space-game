@@ -59,13 +59,15 @@
 #include <QPainter>
 #include <QStackedWidget>
 #include <QMessageBox>
-
+#include <QSettings>
 #include <QScrollArea>
 
 #include <algorithm>
 
 namespace
 {
+    bool Settings_ViewNPCTurns;
+
     class PrivateStatsFrame
         : public QFrame
     {
@@ -490,7 +492,7 @@ namespace
         void clicked(bool checked)
         {
             mUniverseViewer->noForce(true);
-            Game::Universe::instance().update();
+            Game::Universe::instance().update(Settings_ViewNPCTurns);
             mUniverseViewer->noForce(false);
         }
 
@@ -837,6 +839,8 @@ MainWindow::MainWindow()
 #endif
     , mStack(new QStackedWidget())
 {
+    Settings_ViewNPCTurns = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewNPCTurns", false).toBool();
+
     setLayout(new QHBoxLayout());
     layout()->setContentsMargins(0,0,0,0);
     layout()->addWidget(mStack);

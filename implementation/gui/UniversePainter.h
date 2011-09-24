@@ -31,7 +31,7 @@ namespace Gui
 
         void paintPlanet(QPainter * painter, Game::Planet * planet, const QSizeF & size, int detailLevel = 2);
 
-        void paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel = 2);
+        void paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel = 2, bool known = true);
 
         void paintBadge(QPainter * painter, Game::Player * player, const QSizeF & size, bool translucent);
 

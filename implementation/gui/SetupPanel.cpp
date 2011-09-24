@@ -46,13 +46,16 @@ SetupPanel::SetupPanel(QWidget * parent)
         {
         }
 
-        PrivateSubscriberOK(SubscribablePushButton * pushButton, QSlider * cacheMode, QSlider * tileResolution, QSlider * detailLevel, QCheckBox * skipEmptyTiles)
+        PrivateSubscriberOK(SubscribablePushButton * pushButton, QSlider * cacheMode, QSlider * tileResolution, QSlider * detailLevel, QCheckBox * skipEmptyTiles, 
+            QCheckBox * viewNPCTurns, QCheckBox * viewUniverse)
             : QObject(pushButton)
             , SubscribablePushButton::Subscriber(pushButton)
             , mCacheMode(cacheMode)
             , mTileResolution(tileResolution)
             , mDetailLevel(detailLevel)
             , mSkipEmptyTiles(skipEmptyTiles)
+            , mViewNPCTurns(viewNPCTurns)
+            , mViewUniverse(viewUniverse)
         {
         }
 
@@ -65,6 +68,8 @@ SetupPanel::SetupPanel(QWidget * parent)
             settings.setValue("graphics/tileResolution", mTileResolution->value());
             settings.setValue("graphics/detailLevel", mDetailLevel->value());
             settings.setValue("graphics/skipEmptyTiles", mSkipEmptyTiles->isChecked());
+            settings.setValue("game/viewNPCTurns", mViewNPCTurns->isChecked());
+            settings.setValue("game/viewUniverse", mViewUniverse->isChecked());
             MainWindow::instance().showFrame(MainWindow::MainFrameIndex);
         }
 
@@ -75,6 +80,10 @@ SetupPanel::SetupPanel(QWidget * parent)
         QSlider * mDetailLevel;
 
         QCheckBox * mSkipEmptyTiles;
+
+        QCheckBox * mViewNPCTurns;
+
+        QCheckBox * mViewUniverse;
     };
 
     class PrivateSubscriberCancel
@@ -131,11 +140,19 @@ SetupPanel::SetupPanel(QWidget * parent)
     QCheckBox * skipEmptyTiles = new QCheckBox();
     skipEmptyTiles->setChecked(settings.value("graphics/skipEmptyTiles", true).toBool());
 
+    QCheckBox * viewNPCTurns = new QCheckBox();
+    viewNPCTurns->setChecked(settings.value("game/viewNPCTurns", false).toBool());
+
+    QCheckBox * viewUniverse = new QCheckBox();
+    viewUniverse->setChecked(settings.value("game/viewUniverse", false).toBool());
+
     QFormLayout * formLayout = new QFormLayout();
     formLayout->addRow(tr("&Cache mode:"), cacheMode);
     formLayout->addRow(tr("&Cache resolution:"), tileResolution);
     formLayout->addRow(tr("&Detail level:"), detailLevel);
     formLayout->addRow(tr("&Skip empty tiles:"), skipEmptyTiles);
+    formLayout->addRow(tr("&View NPC turns:"), viewNPCTurns);
+    formLayout->addRow(tr("&View entire universe:"), viewUniverse);
     topLayout->addLayout(formLayout);
     topLayout->addStretch();
 
@@ -143,7 +160,7 @@ SetupPanel::SetupPanel(QWidget * parent)
     topLayout->addItem(buttonLayout);
     SubscribablePushButton * okButton = new SubscribablePushButton(this, tr("OK"));
     okButton->setObjectName("okButton");
-    new PrivateSubscriberOK(okButton, cacheMode, tileResolution, detailLevel, skipEmptyTiles);
+    new PrivateSubscriberOK(okButton, cacheMode, tileResolution, detailLevel, skipEmptyTiles, viewNPCTurns, viewUniverse);
     SubscribablePushButton * cancelButton = new SubscribablePushButton(this, tr("Cancel"));
     cancelButton->setObjectName("cancelButton");
     new PrivateSubscriberCancel(cancelButton);

@@ -152,7 +152,7 @@ void UniversePainter::paintPlanet(QPainter * painter, Game::Planet * planet, con
     }
 }
 
-void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel)
+void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel, bool known)
 {
     if (painter != NULL && sector != NULL)
     {
@@ -160,7 +160,7 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
         {
             paintStar(painter, sector->star(), size, detailLevel);
         }
-        bool known = Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector->starSystem());
+        //bool known = Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector->starSystem());
         if (!sector->planets().empty() && known)
         {
             paintPlanet(painter, sector->planets()[0], size, detailLevel);

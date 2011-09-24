@@ -73,6 +73,7 @@ namespace
     int Settings_TileResolution;
     int Settings_DetailLevel;
     bool Settings_SkipEmptyTiles;
+    bool Settings_ViewUniverse;
     double ReferenceSize;
 
     class StarSystemGraphicsItem;
@@ -326,7 +327,7 @@ namespace
         }
         if (starSystem() != NULL)
         {
-            if (Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
+            if (Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
             {
                 std::set<Game::Player *> players = starSystem()->players();
                 for (std::set<Game::Player *>::iterator it = players.begin(); it != players.end(); ++it)
@@ -458,7 +459,8 @@ namespace
     void SectorGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
         painter->setClipRect(option->exposedRect);
-        Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Settings_DetailLevel);
+        Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Settings_DetailLevel, 
+            Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
     }
 
     class ScalableGraphicsView
@@ -611,6 +613,7 @@ UniverseViewer::UniverseViewer(QWidget * parent)
     Settings_TileResolution = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/tileResolution", 3).toInt();
     Settings_DetailLevel = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/detailLevel", 1).toInt();
     Settings_SkipEmptyTiles = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/skipEmptyTiles", true).toBool();
+    Settings_ViewUniverse = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewUniverse", false).toBool();
     ReferenceSize = _referenceSize(Settings_TileResolution);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
