@@ -11,6 +11,8 @@ class QStackedWidget;
 
 namespace Gui
 {
+    class UniverseViewer;
+
     class MainWindow
         : public QFrame
     {
@@ -32,6 +34,8 @@ namespace Gui
 
         static const int HelpIndex;
 
+        static const int NewGameIndex;
+
         static int Settings_CacheMode;
 
         static int Settings_TileResolution;
@@ -51,6 +55,8 @@ namespace Gui
         void showFrame(int index);
 
         QWidget * getFrame(int index) const;
+
+        UniverseViewer * getViewer() const;
 
     protected:
 
