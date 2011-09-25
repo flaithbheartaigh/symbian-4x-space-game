@@ -284,7 +284,7 @@ unsigned int Universe::Game::currentPlayerIndex() const
 
 bool Universe::Game::haveAllPlayersPlayed() const
 {
-    return mCurrentPlayerIndex >= mPlayers.size() - 1;
+    return mPlayers.size() <= 0 || mCurrentPlayerIndex >= mPlayers.size() - 1;
 }
 
 void Universe::Game::subscribe(Subscriber * subscriber)
@@ -421,10 +421,14 @@ void Universe::update(bool stopOnNPC, bool stopOnHuman)
         accept(&NextPlayerVisitor());
 
         std::ostringstream ss;
-        ss << game().currentPlayer()->name() << ", Year " << (2200 + mCurrentTurn / 10.0) << ", " << game().currentPlayer()->money() << "C$ (" << game().currentPlayer()->revenue() << ")";
+        ss << "Year " << (2200 + mCurrentTurn / 10.0);
+        if (game().currentPlayer() != NULL)
+        {
+            ss << ", " << game().currentPlayer()->name() << ", " << game().currentPlayer()->money() << "C$ (" << game().currentPlayer()->revenue() << ")";
+        }
         Messages::instance().post(ss.str());
     }
-    while (!(stopOnHuman && game().currentPlayer()->isHuman()) && !(stopOnNPC && !game().currentPlayer()->isHuman()));
+    while (game().currentPlayer() != NULL && !(stopOnHuman && game().currentPlayer()->isHuman()) && !(stopOnNPC && !game().currentPlayer()->isHuman()));
 }
 
 void Universe::setCurrentTurn(unsigned int turn)

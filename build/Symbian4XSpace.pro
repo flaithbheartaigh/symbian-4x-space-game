@@ -51,6 +51,7 @@ SOURCES += ../implementation/main/main.cpp \
     ../implementation/gui/SectorListView.cpp \
     ../implementation/gui/SetupPanel.cpp \
     ../implementation/gui/HelpPanel.cpp \
+	../implementation/gui/NewGamePanel.cpp \
     ../implementation/gui/MainWindow.cpp \
     ../implementation/gui/CSSHelper.cpp \
     ../implementation/gui/ComponentSelection.cpp \
@@ -94,6 +95,7 @@ HEADERS += \
     ../implementation/gui/SectorListView.h \
     ../implementation/gui/SetupPanel.h \
     ../implementation/gui/HelpPanel.h \
+	../implementation/gui/NewGamePanel.h \
     ../implementation/gui/MainWindow.h \
     ../implementation/gui/CSSHelper.h \
     ../implementation/gui/ComponentSelection.h \

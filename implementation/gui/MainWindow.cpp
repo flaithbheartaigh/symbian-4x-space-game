@@ -27,24 +27,20 @@
 #include "PlanetListModel.h"
 #include "SetupPanel.h"
 #include "HelpPanel.h"
+#include "NewGamePanel.h"
 
-#include <data/NamesData.h>
 #include <data/AssetSerializer.h>
 
-#include <game/Component.h>
-#include <game/Parameters.h>
 #include <game/Universe.h>
 #include <game/Sector.h>
 #include <game/Planet.h>
 #include <game/Ship.h>
 #include <game/Player.h>
-#include <game/AI.h>
 #include <game/SectorReference.h>
 #include <game/DeserializeVisitor.h>
 #include <game/StatsVisitor.h>
 
 #include <QDialogButtonBox>
-#include <QInputDialog>
 #include <QFileDialog>
 #include <QComboBox>
 #include <QFormLayout>
@@ -61,8 +57,6 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QScrollArea>
-
-#include <algorithm>
 
 namespace
 {
@@ -289,73 +283,6 @@ namespace
         }
 
         QWidget * mParent;
-    };
-
-    class PrivateSubscriberNewGame
-        : public QObject
-        , private Gui::SubscribablePushButton::Subscriber
-    {
-
-    public:
-
-        ~PrivateSubscriberNewGame()
-        {
-        }
-
-        PrivateSubscriberNewGame(Gui::SubscribablePushButton * pushButton, Gui::UniverseViewer * universeViewer)
-            : QObject(pushButton)
-            , Gui::SubscribablePushButton::Subscriber(pushButton)
-            , mUniverseViewer(universeViewer)
-        {
-        }
-
-    private:
-
-        void clicked(bool checked)
-        {
-            mUniverseViewer->noForce(true);
-
-            std::vector<std::string> starNames;
-            Data::NamesData("stars.json", &starNames, Data::NamesData::Load);
-            std::vector<std::string> playerNames;
-            Data::NamesData("empires.json", &playerNames, Data::NamesData::Load);
-            std::vector<Game::Component> components;
-            Data::AssetSerializer::load(Game::Parameters::instance().getDataFilePath("configs/components.json"), components);
-
-            QStringList items;
-            for (std::vector<std::string>::iterator it = playerNames.begin(); it != playerNames.end(); ++it)
-            {
-                items << QString::fromStdString(*it);
-            }
-            bool ok = false;
-            QString item = QInputDialog::getItem(NULL, tr("Select an Empire"), tr("Name:"), items, 0, false, &ok);
-            if (ok && !item.isEmpty())
-            {
-                playerNames.erase(std::remove(playerNames.begin(), playerNames.end(), item.toStdString()), playerNames.end());  
-
-                Game::Universe::instance().clear();
-                Game::Universe::instance().names().setAvailableStarNames(starNames);
-                Game::Universe::instance().names().setAvailablePlayerNames(playerNames);
-
-                Game::Player * human = new Game::Player();
-                human->setName(item.toStdString());
-                human->setComponents(components);
-                human->setAI(new Game::AI(human));
-                Game::Universe::instance().game().addPlayer(human);
-
-                Game::Player * comp = new Game::Player();
-                comp->setName(Game::Universe::instance().names().nextAvailablePlayerName());
-                comp->setComponents(components);
-                comp->setAI(new Game::NPC(comp));
-                Game::Universe::instance().game().addPlayer(comp);
-                Game::Universe::instance().generate();
-                Game::Universe::instance().game().setCurrentPlayerIndex(0);
-            }
-
-            mUniverseViewer->noForce(false);
-        }
-
-        Gui::UniverseViewer * mUniverseViewer;
     };
 
     class PrivateSubscriberOpenGame
@@ -812,6 +739,7 @@ const int MainWindow::ShipBuildIndex = 3;
 const int MainWindow::ComponentsIndex = 4;
 const int MainWindow::SetupIndex = 5;
 const int MainWindow::HelpIndex = 6;
+const int MainWindow::NewGameIndex = 7;
 
 int MainWindow::Settings_CacheMode = 2;
 int MainWindow::Settings_TileResolution = 3;
@@ -863,6 +791,7 @@ MainWindow::MainWindow()
     mStack->insertWidget(ComponentsIndex, new ComponentSelection(NULL));
     mStack->insertWidget(SetupIndex, new SetupPanel(NULL));
     mStack->insertWidget(HelpIndex, new HelpPanel(NULL));
+    mStack->insertWidget(NewGameIndex, new NewGamePanel(NULL));
 
     UniverseViewer * universeViewer = new UniverseViewer(mainFrame);
 
@@ -951,10 +880,10 @@ MainWindow::MainWindow()
     new PrivateSubscriberShipBuild(buildShipButton, mStack);
     new PrivateSubscriberNextTurn(nextTurnButton, universeViewer);
     new PrivateSubscriberShipDesign(shipDesignButton, mStack);
-    new PrivateSubscriberNewGame(newButton, universeViewer);
     new PrivateSubscriberOpenGame(openButton, universeViewer);
     new PrivateSubscriberSaveGame(saveButton);
     new PrivateSubscriberQuit(quitButton, this);
+    new PrivateSubscriberShowPanel(newButton, mStack, NewGameIndex);
     new PrivateSubscriberShowPanel(setupButton, mStack, SetupIndex);
     new PrivateSubscriberShowPanel(helpButton, mStack, HelpIndex);
 }
@@ -970,6 +899,11 @@ void MainWindow::showFrame(int index)
 QWidget * MainWindow::getFrame(int index) const
 {
     return mStack->widget(index);
+}
+
+UniverseViewer * MainWindow::getViewer() const
+{
+    return findChild<UniverseViewer *>();
 }
 
 void MainWindow::resizeEvent(QResizeEvent * event)

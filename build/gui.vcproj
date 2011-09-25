@@ -202,6 +202,18 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\implementation\gui\GeneratedFiles\Debug\moc_NewGamePanel.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\implementation\gui\GeneratedFiles\Debug\moc_PlanetListModel.cpp"
 					>
 					<FileConfiguration
@@ -389,6 +401,18 @@
 				</File>
 				<File
 					RelativePath="..\implementation\gui\GeneratedFiles\Release\moc_MainWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\implementation\gui\GeneratedFiles\Release\moc_NewGamePanel.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -668,6 +692,36 @@
 					Name="VCCustomBuildTool"
 					Description="Moc&apos;ing $(InputFileName)..."
 					CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;   -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SVG_LIB -D_MBCS  &quot;-I$(SolutionDir)..\implementation&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSvg&quot; &quot;-I.\..\implementation\gui&quot; &quot;..\implementation\gui\MainWindow.h&quot; -o &quot;.\..\implementation\gui\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;&#x0D;&#x0A;"
+					AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+					Outputs="&quot;.\..\implementation\gui\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="..\implementation\gui\NewGamePanel.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\gui\NewGamePanel.h"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Moc&apos;ing $(InputFileName)..."
+					CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\..\implementation\gui\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SVG_LIB -D_MBCS &quot;-I$(SolutionDir)..\implementation&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSvg&quot; &quot;-I.\..\implementation\gui&quot;&#x0D;&#x0A;"
+					AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
+					Outputs="&quot;.\..\implementation\gui\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Moc&apos;ing $(InputFileName)..."
+					CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;.\..\implementation\gui\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;  -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_SVG_LIB -D_MBCS &quot;-I$(SolutionDir)..\implementation&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\GeneratedFiles\$(ConfigurationName)\.&quot; &quot;-I$(QTDIR)\include\qtmain&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtSvg&quot; &quot;-I.\..\implementation\gui&quot;&#x0D;&#x0A;"
 					AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 					Outputs="&quot;.\..\implementation\gui\GeneratedFiles\$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 				/>

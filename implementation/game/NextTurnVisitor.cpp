@@ -140,8 +140,5 @@ void NextTurnVisitor::visit(Shipyard * shipyard)
 
 void NextTurnVisitor::visit(Player * player)
 {
-    if (player != NULL)
-    {
-        player->setMoney(player->money() + player->revenue());
-    }
+    player->setMoney(player->money() + player->revenue());
 }

@@ -49,10 +49,13 @@ void NextPlayerVisitor::visit(Universe * universe)
     {
         currentPlayerIndex = 0;
     }
-    universe->game().setCurrentPlayerIndex(currentPlayerIndex);
-    if (universe->game().players()[currentPlayerIndex]->ai() != NULL)
+    if (universe->game().players().size() > currentPlayerIndex)
     {
-        universe->game().players()[currentPlayerIndex]->ai()->run();
+        universe->game().setCurrentPlayerIndex(currentPlayerIndex);
+        if (universe->game().players()[currentPlayerIndex]->ai() != NULL)
+        {
+            universe->game().players()[currentPlayerIndex]->ai()->run();
+        }
     }
 }
 
