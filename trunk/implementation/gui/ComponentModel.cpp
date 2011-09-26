@@ -19,8 +19,12 @@
 
 #include <game/Component.h>
 
+#include <gui/UniversePainter.h>
+
 #include <QList>
 #include <QMimeData>
+#include <QPainter>
+#include <QPixmap>
 #include <QStringList>
 
 #include <algorithm>
@@ -141,6 +145,18 @@ QVariant ComponentModel::data(const QModelIndex & index, int role) const
     if (role == Qt::DisplayRole)
     {
         return ::data((*mComponents)[index.row()], index.column());
+    }
+
+    if (index.column() == 0 && role == Qt::DecorationRole)
+    {
+        UniversePainter painter;
+        QPixmap pic(24,24); 
+        QPainter p(&pic);   
+        p.fillRect(QRect(0,0,pic.width(),pic.height()), QBrush(Qt::black));
+        p.translate(12,12);
+        painter.paintComponent(&p, &(*mComponents)[index.row()], pic.size());
+        p.end(); 
+        return pic;
     }
 
     return QVariant();

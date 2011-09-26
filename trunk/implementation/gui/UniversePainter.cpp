@@ -24,6 +24,7 @@
 #include <game/Planet.h>
 #include <game/Ship.h>
 #include <game/Player.h>
+#include <game/Component.h>
 #include <Game/Parameters.h>
 
 #include <QPainter>
@@ -257,6 +258,33 @@ void UniversePainter::paintBadge(QPainter * painter, Game::Player * player, cons
         {
             painter->setPen(QColor(Qt::white));
             painter->drawText(QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize), "T");
+        }
+    }
+}
+
+void UniversePainter::paintComponent(QPainter * painter, Game::Component * component, const QSizeF & size)
+{
+    if (painter != NULL)
+    {
+        QSizeF componentSize(size.width(), size.height());
+
+        if (component->type() == Game::Component::Engine)
+        {
+            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/engine.svg"));
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
+        }
+        if (component->type() == Game::Component::Colony)
+        {
+            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/colony.svg"));
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
+        }
+        if (component->type() == Game::Component::StarDrive)
+        {
+            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/stardrive.svg"));
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }
     }
 }
