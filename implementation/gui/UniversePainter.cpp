@@ -232,32 +232,16 @@ void UniversePainter::paintBadge(QPainter * painter, Game::Player * player, cons
         if (player != NULL)
         {
             index = Game::Universe::instance().game().playerIndex(player);
-        }
 
-        QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/none.svg"));
+            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/player%1.svg")).arg(index);
 
-        switch (index)
-        {
-        case 0:
-            filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/red.svg"));
-            break;
-        case 1:
-            filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/green.svg"));
-            break;
-        case 2:
-            filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/blue.svg"));
-            break;
-        case 3:
-            filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/magenta.svg"));
-            break;
-        }
-
-        QSvgRenderer svgRenderer(filename);
-        svgRenderer.render(painter, QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize));
-        if (translucent)
-        {
-            painter->setPen(QColor(Qt::white));
-            painter->drawText(QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize), "T");
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize));
+            if (translucent)
+            {
+                painter->setPen(QColor(Qt::white));
+                painter->drawText(QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize), "T");
+            }
         }
     }
 }
