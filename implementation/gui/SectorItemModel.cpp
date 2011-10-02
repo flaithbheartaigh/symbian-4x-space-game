@@ -263,7 +263,7 @@ QVariant SectorItemModel::data(const QModelIndex & index, int role) const
                 }
                 else if (mItems[index.row()].ship() != NULL)
                 {
-                    name.append(QString("\n%1/%2d %3/%4m").arg(mItems[index.row()].ship()->damage()).arg(mItems[index.row()].ship()->hitPoints()).arg(mItems[index.row()].ship()->movement()).arg(mItems[index.row()].ship()->maximumMovement()));
+                    name.append(QString("\n%1/%2d %3/%4m").arg(mItems[index.row()].ship()->damage()).arg(mItems[index.row()].ship()->hitPoints()).arg(mItems[index.row()].ship()->movement()).arg(mItems[index.row()].ship()->config().maximumMovement()));
                 }
                 variant = name;
                 break;

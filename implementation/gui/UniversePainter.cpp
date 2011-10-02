@@ -270,5 +270,11 @@ void UniversePainter::paintComponent(QPainter * painter, Game::Component * compo
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }
+        if (component->type() == Game::Component::Weapon)
+        {
+            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/laserbeam.svg"));
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
+        }
     }
 }

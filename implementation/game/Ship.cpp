@@ -163,17 +163,6 @@ void Ship::setMovement(unsigned int movement)
     mMovement = movement;
 }
 
-unsigned int Ship::maximumMovement() const
-{
-    unsigned int maximum = 0;
-    int highestEngine = config().highestLevel(Game::Component::Engine);
-    if (highestEngine >= 0 && static_cast<int>(Parameters::instance().engineModules().size()) > highestEngine)
-    {
-        maximum = Parameters::instance().engineModules()[highestEngine].speed();
-    }
-    return maximum;
-}
-
 const SectorReference & Ship::destination() const
 {
     return mDestination;
@@ -264,13 +253,7 @@ void Ship::load()
         Planet * planet = mSector->planets(player()).front();
         if (planet != NULL)
         {
-            float population = 0.0;
-            int highestColony = mConfig.highestLevel(Game::Component::Colony);
-            if (highestColony >= 0 && static_cast<int>(Parameters::instance().colonyModules().size()) > highestColony)
-            {
-                population = Parameters::instance().colonyModules()[highestColony].population();
-            }
-
+            float population = mConfig.maximumPopulation();
             population = std::max(0.0f, std::min(population - mPopulation, planet->population()));
             planet->setPopulation(planet->population() - population);
             setPopulation(population);
@@ -343,6 +326,14 @@ void Ship::moveTo(Sector * sector)
     }
 }
 
+bool Ship::canFight() const
+{
+    bool ret = true;
+    ret = ret && mConfig.has(Component::Weapon);
+    ret = ret && !isInTransit() && mSector != NULL;
+    return ret;
+}
+
 bool Ship::isInTransit() const
 {
     return mInTransit;
@@ -392,11 +383,7 @@ void Ship::repair(unsigned int hitPoints)
         }
     }
     // repair colony
-    int highestColony = mConfig.highestLevel(Game::Component::Colony);
-    if (highestColony >= 0 && static_cast<int>(Parameters::instance().colonyModules().size()) > highestColony)
-    {
-        mPopulation = Parameters::instance().colonyModules()[highestColony].population();
-    }
+    mPopulation = mConfig.maximumPopulation();
 }
 
 void Ship::damage(unsigned int hitPoints)
@@ -416,11 +403,15 @@ void Ship::damage(unsigned int hitPoints)
                 hitPoints = 0;
             }
         }
-        
-        if ((*it).type() == Game::Component::Colony && (*it).destroyed())
-        {
-            mPopulation = 0;
-        }
+    }
+
+    if (mPopulation > mConfig.maximumPopulation())
+    {
+        mPopulation = mConfig.maximumPopulation();
+    }
+    if (mMovement > mConfig.maximumMovement())
+    {
+        mMovement = mConfig.maximumMovement();
     }
 }
 
@@ -436,12 +427,5 @@ void Ship::initFromConfig(const ShipConfig & config)
 {
     mName = config.name();
     damage(hitPoints());
-    mMovement = maximumMovement();
-    /*
-    unsigned int highestColony = config.highestLevel(Game::Component::Colony);
-    if (Parameters::instance().colonyModules().size() > highestColony)
-    {
-        mPopulation = Parameters::instance().colonyModules()[highestColony].population();
-    }
-    */
+    mMovement = config.maximumMovement();
 }

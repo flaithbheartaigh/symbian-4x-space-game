@@ -33,6 +33,9 @@ std::string Component::typeToString(Type type)
     case Game::Component::Engine:
         name = "Engine";
         break;
+    case Game::Component::Weapon:
+        name = "Weapon";
+        break;
     default:
         name = "";
     }
@@ -53,6 +56,10 @@ Component::Type Component::stringToType(const std::string & string)
     else if (string == "Engine")
     {
         type = Game::Component::Engine;
+    }
+    else if (string == "Weapon")
+    {
+        type = Game::Component::Weapon;
     }
     else
     {

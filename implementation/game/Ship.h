@@ -51,8 +51,6 @@ namespace Game
 
         void setMovement(unsigned int movement);
 
-        unsigned int maximumMovement() const;
-
         const SectorReference & destination() const;
 
         void setDestination(const SectorReference & destination);
@@ -80,6 +78,8 @@ namespace Game
         bool canMoveTo(Sector * sector) const;
 
         void moveTo(Sector * sector);
+
+        bool canFight() const;
 
         bool isInTransit() const;
 

@@ -94,6 +94,31 @@ namespace Game
 
         };
 
+        class WeaponModule
+        {
+
+        public:
+
+            ~WeaponModule();
+
+            WeaponModule();
+
+            WeaponModule(unsigned int damage);
+
+            WeaponModule(const WeaponModule & other);
+            
+            WeaponModule & operator =(const WeaponModule & other);
+
+            unsigned int damage() const;
+
+            void setDamage(unsigned int damage);
+
+        private:
+
+            unsigned int mDamage;
+
+        };
+
         static Parameters & instance();
 
         ~Parameters();
@@ -110,6 +135,10 @@ namespace Game
 
         void setEngineModules(const std::vector<EngineModule> & engineModules);
 
+        const std::vector<WeaponModule> & weaponModules() const;
+
+        void setWeaponModules(const std::vector<WeaponModule> & weaponModules);
+
         void setDataFilesPath(const std::string & dataFilesPath);
 
         const std::string & getDataFilesPath() const;
@@ -123,6 +152,8 @@ namespace Game
         std::vector<StarDriveModule> mStarDriveModules;
 
         std::vector<EngineModule> mEngineModules;
+
+        std::vector<WeaponModule> mWeaponModules;
 
         std::string mDataFilesPath;
 

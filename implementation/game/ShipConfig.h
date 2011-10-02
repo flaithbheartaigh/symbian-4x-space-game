@@ -41,6 +41,10 @@ namespace Game
 
         int cost() const;
 
+        unsigned int maximumMovement() const;
+
+        float maximumPopulation() const;
+
     private:
 
         std::string mName;

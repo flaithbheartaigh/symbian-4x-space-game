@@ -277,6 +277,9 @@ std::set<Player *> StarSystem::players() const
     for (std::vector<Sector *>::const_iterator it = mSectors.begin(); it != mSectors.end(); ++it)
     {
         Sector * sector = *it;
+        std::set<Player *> sectorPlayers = sector->players();
+        players.insert(sectorPlayers.begin(), sectorPlayers.end());
+        /*
         for (std::vector<Planet *>::const_iterator pIt = sector->planets().begin(); pIt != sector->planets().end(); ++pIt)
         {   
             if ((*pIt)->player() != NULL)
@@ -291,6 +294,7 @@ std::set<Player *> StarSystem::players() const
                 players.insert((*sIt)->player());
             }
         }
+        */
     }
     return players;
 }

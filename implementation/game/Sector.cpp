@@ -24,6 +24,7 @@
 #include "UniverseVisitor.h"
 #include "SectorReference.h"
 #include "Player.h"
+#include "SectorCombat.h"
 #include <string>
 #include <algorithm>
 
@@ -377,6 +378,11 @@ void Sector::addShip(Ship * ship, bool forceRedraw)
         }
         if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
         {
+            SectorCombat combat(this);
+            if (combat.canRun())
+            {
+                combat.run();
+            }
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
@@ -453,6 +459,26 @@ void Sector::removeShipFromTransit(Ship * ship)
             }
         }
     }
+}
+
+std::set<Player *> Sector::players() const
+{
+    std::set<Player *> players;
+    for (std::vector<Planet *>::const_iterator pIt = mPlanets.begin(); pIt != mPlanets.end(); ++pIt)
+    {   
+        if ((*pIt)->player() != NULL)
+        {
+            players.insert((*pIt)->player());
+        }
+    }
+    for (std::vector<Ship *>::const_iterator sIt = mShips.begin(); sIt != mShips.end(); ++sIt)
+    {   
+        if ((*sIt)->player() != NULL)
+        {
+            players.insert((*sIt)->player());
+        }
+    }
+    return players;
 }
 
 void Sector::notifyChanged()

@@ -18,7 +18,9 @@ namespace Game
 
             Colony = 2,
 
-            Engine = 3
+            Engine = 3,
+
+            Weapon = 4
 
         };
 
