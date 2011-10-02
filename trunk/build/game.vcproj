@@ -245,6 +245,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\implementation\game\SectorCombat.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\SectorCombat.h"
+			>
+		</File>
+		<File
 			RelativePath="..\implementation\game\SectorReference.cpp"
 			>
 		</File>

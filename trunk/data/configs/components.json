@@ -69,35 +69,63 @@
          "Level" : 0,
          "Name" : "Ion Engine I",
          "Type" : 3,
-		 "Cost" : 10
+		 "Cost" : 80
       },
       {
          "HitPoints" : 4,
          "Level" : 1,
          "Name" : "Ion Engine II",
          "Type" : 3,
-		 "Cost" : 20
+		 "Cost" : 40
       },
       {
          "HitPoints" : 4,
          "Level" : 2,
          "Name" : "Ion Engine III",
          "Type" : 3,
-		 "Cost" : 40
+		 "Cost" : 20
       },
       {
          "HitPoints" : 4,
          "Level" : 3,
          "Name" : "Ion Engine IV",
          "Type" : 3,
-		 "Cost" : 80
+		 "Cost" : 10
       },
       {
          "HitPoints" : 4,
          "Level" : 4,
          "Name" : "Ion Engine V",
          "Type" : 3,
-		 "Cost" : 160
+		 "Cost" : 80
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 0,
+         "Name" : "Laser Beam I",
+         "Type" : 4,
+		 "Cost" : 10
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 1,
+         "Name" : "Laser Beam II",
+         "Type" : 4,
+		 "Cost" : 20
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 2,
+         "Name" : "Laser Beam III",
+         "Type" : 4,
+		 "Cost" : 40
+      },
+      {
+         "HitPoints" : 4,
+         "Level" : 3,
+         "Name" : "Laser Beam IV",
+         "Type" : 4,
+		 "Cost" : 80
       }
    ],
    "Version" : 1.0

@@ -42,18 +42,32 @@
             "Speed" : 1
          },
          {
+            "Speed" : 1
+         },
+         {
+            "Speed" : 1
+         },
+         {
+            "Speed" : 1
+         },
+         {
             "Speed" : 2
-         },
-         {
-            "Speed" : 3
-         },
-         {
-            "Speed" : 4
-         },
-         {
-            "Speed" : 5
          }
-      ]      
+      ],
+      "WeaponModules" : [
+         {
+            "Damage" : 1
+         },
+         {
+            "Damage" : 2
+         },
+         {
+            "Damage" : 3
+         },
+         {
+            "Damage" : 4
+         }
+      ]   	  
    },
    "Version" : 1.0
 }

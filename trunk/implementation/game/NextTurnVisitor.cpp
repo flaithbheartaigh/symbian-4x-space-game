@@ -107,11 +107,11 @@ void NextTurnVisitor::visit(Ship * ship)
             ship->setDelayTurns(0);
             ship->setArrivalTurns(0);
             ship->setDestination(SectorReference());
-            ship->setMovement(ship->maximumMovement());
+            ship->setMovement(ship->config().maximumMovement());
         }
         else if (localTravel)
         {
-            ship->setMovement(ship->maximumMovement());
+            ship->setMovement(ship->config().maximumMovement());
         }
         else
         {
@@ -120,7 +120,7 @@ void NextTurnVisitor::visit(Ship * ship)
     }
     else
     {
-        ship->setMovement(ship->maximumMovement());
+        ship->setMovement(ship->config().maximumMovement());
     }
 }
 

@@ -116,6 +116,8 @@ namespace Game
 
         void removeShipFromTransit(Ship * ship);
 
+        std::set<Player *> players() const;
+
         void notifyChanged();
 
         void notifySelected();

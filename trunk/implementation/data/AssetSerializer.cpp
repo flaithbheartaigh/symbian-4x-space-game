@@ -175,10 +175,12 @@ namespace
         static const char * PROPERTY_COLONYMODULES = "ColonyModules";
         static const char * PROPERTY_STARDRIVEMODULES = "StarDriveModules";
         static const char * PROPERTY_ENGINEMODULES = "EngineModules";
+        static const char * PROPERTY_WEAPONMODULES = "WeaponModules";
 
         serialize(parameters.colonyModules(), value[PROPERTY_COLONYMODULES]);
         serialize(parameters.starDriveModules(), value[PROPERTY_STARDRIVEMODULES]);
         serialize(parameters.engineModules(), value[PROPERTY_ENGINEMODULES]);
+        serialize(parameters.weaponModules(), value[PROPERTY_WEAPONMODULES]);
     }
 
     void deserialize(const Json::Value & value, Game::Parameters & parameters)
@@ -186,10 +188,12 @@ namespace
         static const char * PROPERTY_COLONYMODULES = "ColonyModules";
         static const char * PROPERTY_STARDRIVEMODULES = "StarDriveModules";
         static const char * PROPERTY_ENGINEMODULES = "EngineModules";
+        static const char * PROPERTY_WEAPONMODULES = "WeaponModules";
         
         deserializeObject(value[PROPERTY_COLONYMODULES], parameters, &Game::Parameters::setColonyModules);
         deserializeObject(value[PROPERTY_STARDRIVEMODULES], parameters, &Game::Parameters::setStarDriveModules);
         deserializeObject(value[PROPERTY_ENGINEMODULES], parameters, &Game::Parameters::setEngineModules);
+        deserializeObject(value[PROPERTY_WEAPONMODULES], parameters, &Game::Parameters::setWeaponModules);
     }
 
     void serialize(const Game::Parameters::ColonyModule & colonyModule, Json::Value & value)
@@ -236,6 +240,20 @@ namespace
         static const char * PROPERTY_ENGINEMODULE_SPEED = "Speed";
 
         deserializeValue(value[PROPERTY_ENGINEMODULE_SPEED], engineModule, &Game::Parameters::EngineModule::setSpeed);
+    }
+
+    void serialize(const Game::Parameters::WeaponModule & weaponModule, Json::Value & value)
+    {
+        static const char * PROPERTY_WEAPONMODULE_DAMAGE = "Damage";
+
+        serialize(weaponModule.damage(), value[PROPERTY_WEAPONMODULE_DAMAGE]);
+    }
+
+    void deserialize(const Json::Value & value, Game::Parameters::WeaponModule & weaponModule)
+    {
+        static const char * PROPERTY_WEAPONMODULE_DAMAGE = "Damage";
+
+        deserializeValue(value[PROPERTY_WEAPONMODULE_DAMAGE], weaponModule, &Game::Parameters::WeaponModule::setDamage);
     }
 
     // Universe

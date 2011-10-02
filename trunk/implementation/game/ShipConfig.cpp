@@ -16,6 +16,7 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "ShipConfig.h"
+#include "Parameters.h"
 
 #include <string>
 
@@ -135,4 +136,26 @@ int ShipConfig::cost() const
         cost += (*it).cost();
     }
     return cost;
+}
+
+unsigned int ShipConfig::maximumMovement() const
+{
+    unsigned int maximum = 0;
+    std::vector<Component> comps = components(Component::Engine);
+    for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
+    {
+        maximum += Parameters::instance().engineModules()[(*it).level()].speed();
+    }
+    return maximum;
+}
+
+float ShipConfig::maximumPopulation() const
+{
+    float maximum = 0.0f;
+    std::vector<Component> comps = components(Component::Colony);
+    for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
+    {
+        maximum += Parameters::instance().colonyModules()[(*it).level()].population();
+    }
+    return maximum;
 }

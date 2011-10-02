@@ -187,6 +187,48 @@ void Parameters::EngineModule::setSpeed(unsigned int speed)
     mSpeed = speed;
 }
 
+Parameters::WeaponModule::~WeaponModule()
+{
+
+}
+
+Parameters::WeaponModule::WeaponModule()
+    : mDamage(0)
+{
+
+}
+
+Parameters::WeaponModule::WeaponModule(unsigned int weapon)
+    : mDamage(weapon)
+{
+
+}
+
+Parameters::WeaponModule::WeaponModule(const WeaponModule & other)
+    : mDamage(other.mDamage)
+{
+
+}
+
+Parameters::WeaponModule & Parameters::WeaponModule::operator =(const WeaponModule & other)
+{
+    if (&other != this)
+    {
+        mDamage = other.mDamage;
+    }
+    return *this;
+}
+
+unsigned int Parameters::WeaponModule::damage() const
+{
+    return mDamage;
+}
+
+void Parameters::WeaponModule::setDamage(unsigned int weapon)
+{
+    mDamage = weapon;
+}
+
 Parameters * Parameters::_instance = NULL;
 
 Parameters & Parameters::instance()
@@ -233,6 +275,16 @@ void Parameters::setEngineModules(const std::vector<EngineModule> & engineModule
     mEngineModules = engineModules;
 }
 
+const std::vector<Parameters::WeaponModule> & Parameters::weaponModules() const
+{
+    return mWeaponModules;
+}
+
+void Parameters::setWeaponModules(const std::vector<WeaponModule> & weaponModules)
+{
+    mWeaponModules = weaponModules;
+}
+
 void Parameters::setDataFilesPath(const std::string & dataFilesPath)
 {
     mDataFilesPath = dataFilesPath;
@@ -254,6 +306,7 @@ Parameters::Parameters()
     : mColonyModules()
     , mStarDriveModules()
     , mEngineModules()
+    , mWeaponModules()
     , mDataFilesPath("../data")
 {
 
