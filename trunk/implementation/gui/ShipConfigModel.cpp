@@ -86,7 +86,7 @@ Qt::ItemFlags ShipConfigModel::flags(const QModelIndex & index) const
     Qt::ItemFlags defaultFlags = QAbstractTableModel::flags(index);
     if (index.isValid())
     {
-        if ((!mBuy && index.column() != 2) || (mBuy && index.column() == 2))
+        if (index.column() != 1 && ((!mBuy && index.column() != 2) || (mBuy && index.column() == 2)))
         {
             return defaultFlags | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
         }
