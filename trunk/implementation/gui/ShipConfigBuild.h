@@ -38,6 +38,8 @@ namespace Gui
 
         void loadDesigns();
 
+        QItemSelectionModel * selectionModel() const;
+
     private:
 
         QTableView * mEditView;

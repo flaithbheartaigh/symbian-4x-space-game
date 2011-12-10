@@ -116,6 +116,81 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
         }
     };
 
+    class PrivateSubscriberPlus
+        : public QObject
+        , private SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberPlus()
+        {
+        }
+
+        PrivateSubscriberPlus(SubscribablePushButton * pushButton, ShipConfigBuild * shipConfigBuild)
+            : QObject(pushButton)
+            , SubscribablePushButton::Subscriber(pushButton)
+            , mShipConfigBuild(shipConfigBuild)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+            if (Game::Universe::instance().game().currentPlayer() != NULL && mShipConfigBuild->sector() != NULL)
+            {
+                const QModelIndexList & indexList = mShipConfigBuild->selectionModel()->selectedRows();
+                for (QModelIndexList::const_iterator it = indexList.begin(); it!= indexList.end(); ++it)
+                {
+                    ShipConfigModel::Row * shipConfig = static_cast<ShipConfigModel::Row *>((*it).internalPointer());
+                    const_cast<QAbstractItemModel *>(mShipConfigBuild->selectionModel()->model())->setData((*it).sibling((*it).row(), 2), shipConfig->count + 1, Qt::EditRole);
+                }
+            }
+        }
+
+        ShipConfigBuild * mShipConfigBuild;
+    };
+
+    class PrivateSubscriberMinus
+        : public QObject
+        , private SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberMinus()
+        {
+        }
+
+        PrivateSubscriberMinus(SubscribablePushButton * pushButton, ShipConfigBuild * shipConfigBuild)
+            : QObject(pushButton)
+            , SubscribablePushButton::Subscriber(pushButton)
+            , mShipConfigBuild(shipConfigBuild)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+            if (Game::Universe::instance().game().currentPlayer() != NULL && mShipConfigBuild->sector() != NULL)
+            {
+                const QModelIndexList & indexList = mShipConfigBuild->selectionModel()->selectedRows();
+                for (QModelIndexList::const_iterator it = indexList.begin(); it!= indexList.end(); ++it)
+                {
+                    ShipConfigModel::Row * shipConfig = static_cast<ShipConfigModel::Row *>((*it).internalPointer());
+                    if (shipConfig->count > 0)
+                    {
+                        const_cast<QAbstractItemModel *>(mShipConfigBuild->selectionModel()->model())->setData((*it).sibling((*it).row(), 2), shipConfig->count - 1, Qt::EditRole);
+                    }
+                }
+            }
+        }
+
+        ShipConfigBuild * mShipConfigBuild;
+    };
+
     QBoxLayout * topLayout = new QVBoxLayout();
     setLayout(topLayout);
     topLayout->setContentsMargins(0,0,0,0);
@@ -124,7 +199,7 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
     //ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, NULL);
     //mEditView->setModel(shipConfigModel);
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
+    mEditView->setSelectionMode(QAbstractItemView::MultiSelection);
     mEditView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mEditView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -141,56 +216,62 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
     SubscribablePushButton * cancelButton = new SubscribablePushButton(this, tr("Cancel"));
     cancelButton->setObjectName("cancelButton");
     new PrivateSubscriberCancel(cancelButton);
+
+    SubscribablePushButton * plusButton = new SubscribablePushButton(this, tr("+"));
+    plusButton->setObjectName("plusButton");
+    new PrivateSubscriberPlus(plusButton, this);
+    SubscribablePushButton * minusButton = new SubscribablePushButton(this, tr("-"));
+    minusButton->setObjectName("minusButton");
+    new PrivateSubscriberMinus(minusButton, this);
+
     buttonLayout->addStretch();   
+    buttonLayout->addWidget(plusButton);
+    buttonLayout->addWidget(minusButton);
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
 
-    class SpinBoxDelegate : public QItemDelegate
+    class SpinBoxDelegate 
+        : public QItemDelegate
     {
+
     public:
-        SpinBoxDelegate(QObject *parent)
-     : QItemDelegate(parent)
- {
- }
+            
+        SpinBoxDelegate(QObject * parent)
+            : QItemDelegate(parent)
+        {
+        }
 
-        QWidget *createEditor(QWidget *parent,
-     const QStyleOptionViewItem &/* option */,
-     const QModelIndex &/* index */) const
- {
-     QSpinBox *editor = new QSpinBox(parent);
-     editor->setMinimum(0);
-     editor->setMaximum(100);
+        QWidget *createEditor(QWidget * parent, const QStyleOptionViewItem &, const QModelIndex &) const
+        {
+            QSpinBox * editor = new QSpinBox(parent);
+            editor->setMinimum(0);
+            editor->setMaximum(100);
+            return editor;
+        }
 
-     return editor;
- }
+        void setEditorData(QWidget * editor, const QModelIndex & index) const
+        {
+            int value = index.model()->data(index, Qt::DisplayRole).toInt();
+            QSpinBox * spinBox = static_cast<QSpinBox *>(editor);
+            spinBox->setValue(value);
+        }
 
-        void setEditorData(QWidget *editor,
-                                     const QModelIndex &index) const
- {
-     int value = index.model()->data(index, Qt::DisplayRole).toInt();
+        void setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const
+        {
+            QSpinBox * spinBox = static_cast<QSpinBox *>(editor);
+            spinBox->interpretText();
+            int value = spinBox->value();
+            model->setData(index, value, Qt::EditRole);
+        }
 
-     QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
-     spinBox->setValue(value);
- }
-        void setModelData(QWidget *editor, QAbstractItemModel *model,
-                                    const QModelIndex &index) const
- {
-     QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
-     spinBox->interpretText();
-     int value = spinBox->value();
-
-     model->setData(index, value, Qt::EditRole);
- }
-
-        void updateEditorGeometry(QWidget *editor,
-     const QStyleOptionViewItem &option, const QModelIndex &/* index */) const
- {
-     editor->setGeometry(option.rect);
- }
+        void updateEditorGeometry(QWidget * editor, const QStyleOptionViewItem & option, const QModelIndex &) const
+        {
+            editor->setGeometry(option.rect);
+        }
     };
 
-SpinBoxDelegate * delegate = new SpinBoxDelegate(mEditView);
-     mEditView->setItemDelegateForColumn(2, delegate);
+    SpinBoxDelegate * delegate = new SpinBoxDelegate(mEditView);
+    mEditView->setItemDelegateForColumn(2, delegate);
 }
 
 Game::Sector * ShipConfigBuild::sector() const
@@ -230,4 +311,9 @@ void ShipConfigBuild::loadDesigns()
         ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, &mShipConfigs, true);
         mEditView->setModel(shipConfigModel);
     }
+}
+
+QItemSelectionModel * ShipConfigBuild::selectionModel() const
+{
+    return mEditView->selectionModel();
 }
