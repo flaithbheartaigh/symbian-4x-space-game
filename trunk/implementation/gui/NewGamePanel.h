@@ -2,6 +2,8 @@
 #define NEWGAMEPANEL_H
 
 #include <QFrame>
+#include <vector>
+#include <string>
 
 class QBoxLayout;
 
@@ -20,11 +22,13 @@ namespace Gui
 
     private slots:
 
-        void slot_editingFinished();
+        void slot_valueChanged(int);
 
     private:
 
         QBoxLayout * mPlayerNames;
+
+        std::vector<std::string> mPlayerNamesStr;
 
         NewGamePanel();
 

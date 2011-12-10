@@ -27,7 +27,7 @@
 #include <json/reader.h>
 #include <json/value.h>
 
-#include <game/Parameters.h>
+#include <game/Resources.h>
 
 namespace
 {
@@ -45,7 +45,7 @@ NamesData::~NamesData()
 NamesData::NamesData(const std::string & filename, std::vector<std::string> * names, Action action)
 {
     std::ostringstream ss;
-    ss << Game::Parameters::instance().getDataFilePath(std::string(NAMESPATH)) << filename;
+    ss << Game::Resources::instance().getDataFilePath(std::string(NAMESPATH)) << filename;
 
     if (names != NULL)
     {

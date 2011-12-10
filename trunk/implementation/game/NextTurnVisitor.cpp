@@ -18,7 +18,7 @@
 #include "NextTurnVisitor.h"
 #include "StatsVisitor.h"
 
-#include "Parameters.h"
+#include "Technology.h"
 #include "Universe.h"
 #include "Player.h"
 #include "StarSystem.h"
@@ -53,7 +53,10 @@ void NextTurnVisitor::visit(StarSystem * starSystem)
 
 void NextTurnVisitor::visit(Sector * sector)
 {
+    for (std::vector<Ship *>::const_iterator it = sector->ships().begin(); it != sector->ships().end(); ++it)
+    {
 
+    }
 }
 
 void NextTurnVisitor::visit(Star * star)
@@ -76,6 +79,7 @@ void NextTurnVisitor::visit(Planet * planet)
 
 void NextTurnVisitor::visit(Ship * ship)
 {
+    /*
     if (ship->destination().isValid())
     {
         bool becameReady = false;
@@ -86,10 +90,10 @@ void NextTurnVisitor::visit(Ship * ship)
             ship->setDelayTurns(ship->delayTurns() - 1);
             becameReady = ship->delayTurns() < 1;
         }
-        else if (ship->arrivalTurns() >= 1)
+        else if (ship->arrival() >= 1)
         {
-            ship->setArrivalTurns(ship->arrivalTurns() - 1);
-            justArrived = ship->arrivalTurns() < 1;
+            ship->setArrival(ship->arrival() - 1);
+            justArrived = ship->arrival() < 1;
         }
         else
         {
@@ -105,7 +109,7 @@ void NextTurnVisitor::visit(Ship * ship)
             ship->destination().sector()->removeShipFromTransit(ship); 
             ship->destination().sector()->addShip(ship);
             ship->setDelayTurns(0);
-            ship->setArrivalTurns(0);
+            ship->setArrival(0);
             ship->setDestination(SectorReference());
             ship->setMovement(ship->config().maximumMovement());
         }
@@ -119,9 +123,10 @@ void NextTurnVisitor::visit(Ship * ship)
         }
     }
     else
-    {
+    {*/
         ship->setMovement(ship->config().maximumMovement());
-    }
+    /*}
+    */
 }
 
 void NextTurnVisitor::visit(Shipyard * shipyard)

@@ -22,8 +22,9 @@
 #include "Sector.h"
 #include "Planet.h"
 #include "Component.h"
-#include "Parameters.h"
+#include "Technology.h"
 #include "UniverseVisitor.h"
+//#include "ShipMovement.h"
 
 #ifdef _WIN32
     #define NOMINMAX
@@ -49,8 +50,7 @@ Ship::Ship()
     , mPlayer(NULL)
     , mInTransit(false)
     , mDestination(NULL)
-    , mDelayTurns(0)
-    , mArrivalTurns(0)
+    , mArrival(0)
     , mPopulation(0.0f)
     , mMovement(0)
 {
@@ -65,8 +65,7 @@ Ship::Ship(Sector * sector, const ShipConfig & config)
     , mPlayer(NULL)
     , mInTransit(false)
     , mDestination()
-    , mDelayTurns(0)
-    , mArrivalTurns(0)
+    , mArrival(0)
     , mPopulation(0.0f)
     , mMovement(0)
 {
@@ -173,24 +172,14 @@ void Ship::setDestination(const SectorReference & destination)
     mDestination = destination;
 }
 
-unsigned int Ship::delayTurns() const
+unsigned int Ship::arrival() const
 {
-    return mDelayTurns;
+    return mArrival;
 }
 
-void Ship::setDelayTurns(unsigned int delayTurns)
+void Ship::setArrival(unsigned int arrival)
 {
-    mDelayTurns = delayTurns;
-}
-
-unsigned int Ship::arrivalTurns() const
-{
-    return mArrivalTurns;
-}
-
-void Ship::setArrivalTurns(unsigned int arrivalTurns)
-{
-    mArrivalTurns = arrivalTurns;
+    mArrival = arrival;
 }
 
 bool Ship::canColonize() const
@@ -265,30 +254,37 @@ void Ship::load()
 bool Ship::canMoveTo(Sector * sector) const
 {
     bool ret = true;
-    ret = ret && !isInTransit();
-    ret = ret && sector != NULL && sector != mSector;
+    ret = ret && !isInTransit() && mArrival == 0;
     ret = ret && mMovement > 0;
-    ret = ret && (sector->starSystem() == mSector->starSystem()) || (sector->starSystem() != mSector->starSystem() && mConfig.has(Component::StarDrive));
+    ret = ret && sector != NULL && sector != mSector;
+    if (ret)
+    {
+        ret = ret && (sector->starSystem() == mSector->starSystem()) || (sector->starSystem() != mSector->starSystem() && mConfig.has(Component::StarDrive));
+    }
     return ret;
 }
-
+/*
 void Ship::moveTo(Sector * sector)
 {
+    ShipMovement shipMovement(sector);
+    shipMovement.addShip(this);
+    shipMovement.move();*/
+    /*
     setDelayTurns(0);
-    setArrivalTurns(0);
+    setArrival(0);
 //    setDestination(SectorReference());
     setDestination(SectorReference(sector));
     if (sector != NULL && mSector != NULL && sector != mSector)
     {
         if (sector->starSystem() != mSector->starSystem())
         {
-            int highestLevel = mConfig.highestLevel(Game::Component::StarDrive);
-            if (highestLevel >= 0 && highestLevel < static_cast<int>(Game::Parameters::instance().starDriveModules().size()))
+            int highestID = mConfig.highestID(Game::Component::StarDrive);
+            if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
             {
                 float distance = mSector->starSystem()->distance(sector->starSystem());
 //                setDestination(SectorReference(sector));
-                setArrivalTurns(Game::Parameters::instance().starDriveModules()[highestLevel].arrivalTurns(distance));
-                setDelayTurns(Game::Parameters::instance().starDriveModules()[highestLevel].delayTurns());
+                setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
+                setDelayTurns(Game::Technology::instance().starDriveModules()[highestID].delayTurns());
             }
             setMovement(0);
         }
@@ -324,7 +320,8 @@ void Ship::moveTo(Sector * sector)
             }
         }
     }
-}
+    */
+/*}*/
 
 bool Ship::canFight() const
 {

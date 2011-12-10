@@ -308,7 +308,7 @@ const std::vector<Planet *> & Sector::planets() const
     return mPlanets;
 }
 
-void Sector::setPlanets(const std::vector<Planet *> & planets)
+void Sector::addPlanets(const std::vector<Planet *> & planets)
 {
     for (std::vector<Planet *>::const_iterator it = planets.begin(); it != planets.end(); ++it)
     {
@@ -357,25 +357,19 @@ const std::vector<Ship *> & Sector::ships() const
     return mShips;
 }
 
-void Sector::setShips(const std::vector<Ship *> & ships)
+void Sector::addShips(const std::vector<Ship *> & ships)
+{
+    addShips(ships, false);
+}
+
+void Sector::addShips(const std::vector<Ship *> & ships, bool forceRedraw)
 {
     for (std::vector<Ship *>::const_iterator it = ships.begin(); it != ships.end(); ++it)
     {
-        addShip(*it);
+        _addShip(*it);
     }
-}
-
-void Sector::addShip(Ship * ship, bool forceRedraw)
-{
-    if (ship != NULL)
+    if (!ships.empty())
     {
-        ship->setInTransit(false);
-        ship->setSector(this);
-        mShips.push_back(ship);
-        if (ship->player() != NULL)
-        {
-            ship->player()->addKnownSystem(StarSystemReference(starSystem()));
-        }
         if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
         {
             SectorCombat combat(this);
@@ -386,7 +380,27 @@ void Sector::addShip(Ship * ship, bool forceRedraw)
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->shipAdded(ship);
+                (*it)->contentsChanged(forceRedraw);
+            }
+        }
+    }
+}
+
+void Sector::addShip(Ship * ship, bool forceRedraw)
+{
+    _addShip(ship);
+    if (ship != NULL)
+    {
+        if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+        {
+            SectorCombat combat(this);
+            if (combat.canRun())
+            {
+                combat.run();
+            }
+            std::set<Subscriber *> subscribers = mSubscribers;
+            for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+            {
                 (*it)->contentsChanged(forceRedraw);
             }
         }
@@ -416,7 +430,7 @@ const std::vector<Ship *> & Sector::shipsInTransit() const
     return mShipsInTransit;
 }
 
-void Sector::setShipsInTransit(const std::vector<Ship *> & shipsInTransit)
+void Sector::addShipsInTransit(const std::vector<Ship *> & shipsInTransit)
 {
     for (std::vector<Ship *>::const_iterator it = shipsInTransit.begin(); it != shipsInTransit.end(); ++it)
     {
@@ -563,7 +577,7 @@ void Sector::accept(UniverseVisitor * visitor)
                 (*it)->accept(visitor);
             }
         }
-     }
+    }
 }
 
 bool Sector::isEmpty() const
@@ -595,4 +609,26 @@ std::vector<Planet *> Sector::planets(Player * player) const
         }
     }
     return planets;
+}
+
+void Sector::_addShip(Ship * ship)
+{
+    if (ship != NULL)
+    {
+        ship->setInTransit(false);
+        ship->setSector(this);
+        mShips.push_back(ship);
+        if (ship->player() != NULL)
+        {
+            ship->player()->addKnownSystem(StarSystemReference(starSystem()));
+        }
+        if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+        {
+            std::set<Subscriber *> subscribers = mSubscribers;
+            for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+            {
+                (*it)->shipAdded(ship);
+            }
+        }
+    }
 }

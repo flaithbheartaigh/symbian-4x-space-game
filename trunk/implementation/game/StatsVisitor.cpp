@@ -17,7 +17,7 @@
 
 #include "StatsVisitor.h"
 
-#include "Parameters.h"
+#include "Technology.h"
 #include "Universe.h"
 #include "Player.h"
 #include "StarSystem.h"

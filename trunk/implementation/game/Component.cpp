@@ -76,7 +76,7 @@ Component::~Component()
 Component::Component()
     : mName()
     , mType(Component::None)
-    , mLevel(0)
+    , mID(0)
     , mHitPoints(0)
     , mDamage(0)
     , mCost(0)
@@ -84,10 +84,10 @@ Component::Component()
 
 }
 
-Component::Component(const std::string & name, Component::Type type, unsigned int level, unsigned int hitPoints, int cost)
+Component::Component(const std::string & name, Component::Type type, unsigned int ID, unsigned int hitPoints, int cost)
     : mName(name)
     , mType(type)
-    , mLevel(level)
+    , mID(ID)
     , mHitPoints(hitPoints)
     , mDamage(0)
     , mCost(cost)
@@ -98,7 +98,7 @@ Component::Component(const std::string & name, Component::Type type, unsigned in
 Component::Component(const Component & other)
     : mName(other.mName)
     , mType(other.mType)
-    , mLevel(other.mLevel)
+    , mID(other.mID)
     , mHitPoints(other.mHitPoints)
     , mDamage(other.mDamage)
     , mCost(other.mCost)
@@ -112,7 +112,7 @@ Component & Component::operator =(const Component & other)
     {
         mName = other.mName;
         mType = other.mType;
-        mLevel = other.mLevel;
+        mID = other.mID;
         mHitPoints = other.mHitPoints;
         mDamage = other.mDamage;
         mCost = other.mCost;
@@ -150,14 +150,14 @@ void Component::setTypeIndex(int type)
     mType = Component::Type(type);
 }
 
-unsigned int Component::level() const
+unsigned int Component::ID() const
 {
-    return mLevel;
+    return mID;
 }
 
-void Component::setLevel(unsigned int level)
+void Component::setID(unsigned int ID)
 {
-    mLevel = level;
+    mID = ID;
 }
 
 unsigned int Component::hitPoints() const

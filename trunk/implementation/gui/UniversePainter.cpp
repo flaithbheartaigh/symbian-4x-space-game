@@ -25,7 +25,8 @@
 #include <game/Ship.h>
 #include <game/Player.h>
 #include <game/Component.h>
-#include <Game/Parameters.h>
+#include <Game/Technology.h>
+#include <game/Resources.h>
 
 #include <QPainter>
 #include <QPainterPath>
@@ -233,7 +234,7 @@ void UniversePainter::paintBadge(QPainter * painter, Game::Player * player, cons
         {
             index = Game::Universe::instance().game().playerIndex(player);
 
-            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/player%1.svg")).arg(index);
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/player%1.svg")).arg(index);
 
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize));
@@ -254,25 +255,25 @@ void UniversePainter::paintComponent(QPainter * painter, Game::Component * compo
 
         if (component->type() == Game::Component::Engine)
         {
-            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/engine.svg"));
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/engine.svg"));
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }
         if (component->type() == Game::Component::Colony)
         {
-            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/colony.svg"));
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/colony.svg"));
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }
         if (component->type() == Game::Component::StarDrive)
         {
-            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/stardrive.svg"));
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/stardrive.svg"));
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }
         if (component->type() == Game::Component::Weapon)
         {
-            QString filename = QString::fromStdString(Game::Parameters::instance().getDataFilePath("images/laserbeam.svg"));
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/laserbeam.svg"));
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }

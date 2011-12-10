@@ -18,7 +18,7 @@
 #include "AssetSerializer.h"
 
 #include <game/Component.h>
-#include <game/Parameters.h>
+#include <game/Technology.h>
 #include <game/Universe.h>
 
 #include <game/Player.h>
@@ -139,14 +139,14 @@ namespace
     {
         static const char * PROPERTY_NAME = "Name";
         static const char * PROPERTY_TYPE = "Type";
-        static const char * PROPERTY_LEVEL = "Level";
+        static const char * PROPERTY_ID = "ID";
         static const char * PROPERTY_HITPOINTS = "HitPoints";
         static const char * PROPERTY_DAMAGE = "Damage";
         static const char * PROPERTY_COST = "Cost";
 
         serialize(component.name(), value[PROPERTY_NAME]);
         serialize(component.typeIndex(), value[PROPERTY_TYPE]);
-        serialize(component.level(), value[PROPERTY_LEVEL]);
+        serialize(component.ID(), value[PROPERTY_ID]);
         serialize(component.hitPoints(), value[PROPERTY_HITPOINTS]);
         serialize(component.damage(), value[PROPERTY_DAMAGE]);
         serialize(component.cost(), value[PROPERTY_COST]);
@@ -156,104 +156,108 @@ namespace
     {
         static const char * PROPERTY_NAME = "Name";
         static const char * PROPERTY_TYPE = "Type";
-        static const char * PROPERTY_LEVEL = "Level";
+        static const char * PROPERTY_ID = "ID";
         static const char * PROPERTY_HITPOINTS = "HitPoints";
         static const char * PROPERTY_DAMAGE = "Damage";
         static const char * PROPERTY_COST = "Cost";
 
         deserializeObject(value[PROPERTY_NAME], component, &Game::Component::setName);
         deserializeValue(value[PROPERTY_TYPE], component, &Game::Component::setTypeIndex);
-        deserializeValue(value[PROPERTY_LEVEL], component, &Game::Component::setLevel);
+        deserializeValue(value[PROPERTY_ID], component, &Game::Component::setID);
         deserializeValue(value[PROPERTY_HITPOINTS], component, &Game::Component::setHitPoints);
         deserializeValue(value[PROPERTY_DAMAGE], component, &Game::Component::setDamage);
         deserializeValue(value[PROPERTY_COST], component, &Game::Component::setCost);
     }
 
-    // Parameters
-    void serialize(const Game::Parameters & parameters, Json::Value & value)
+    // Technology
+    void serialize(const Game::Technology & technology, Json::Value & value)
     {
         static const char * PROPERTY_COLONYMODULES = "ColonyModules";
         static const char * PROPERTY_STARDRIVEMODULES = "StarDriveModules";
         static const char * PROPERTY_ENGINEMODULES = "EngineModules";
         static const char * PROPERTY_WEAPONMODULES = "WeaponModules";
 
-        serialize(parameters.colonyModules(), value[PROPERTY_COLONYMODULES]);
-        serialize(parameters.starDriveModules(), value[PROPERTY_STARDRIVEMODULES]);
-        serialize(parameters.engineModules(), value[PROPERTY_ENGINEMODULES]);
-        serialize(parameters.weaponModules(), value[PROPERTY_WEAPONMODULES]);
+        serialize(technology.colonyModules(), value[PROPERTY_COLONYMODULES]);
+        serialize(technology.starDriveModules(), value[PROPERTY_STARDRIVEMODULES]);
+        serialize(technology.engineModules(), value[PROPERTY_ENGINEMODULES]);
+        serialize(technology.weaponModules(), value[PROPERTY_WEAPONMODULES]);
     }
 
-    void deserialize(const Json::Value & value, Game::Parameters & parameters)
+    void deserialize(const Json::Value & value, Game::Technology & technology)
     {
         static const char * PROPERTY_COLONYMODULES = "ColonyModules";
         static const char * PROPERTY_STARDRIVEMODULES = "StarDriveModules";
         static const char * PROPERTY_ENGINEMODULES = "EngineModules";
         static const char * PROPERTY_WEAPONMODULES = "WeaponModules";
         
-        deserializeObject(value[PROPERTY_COLONYMODULES], parameters, &Game::Parameters::setColonyModules);
-        deserializeObject(value[PROPERTY_STARDRIVEMODULES], parameters, &Game::Parameters::setStarDriveModules);
-        deserializeObject(value[PROPERTY_ENGINEMODULES], parameters, &Game::Parameters::setEngineModules);
-        deserializeObject(value[PROPERTY_WEAPONMODULES], parameters, &Game::Parameters::setWeaponModules);
+        deserializeObject(value[PROPERTY_COLONYMODULES], technology, &Game::Technology::setColonyModules);
+        deserializeObject(value[PROPERTY_STARDRIVEMODULES], technology, &Game::Technology::setStarDriveModules);
+        deserializeObject(value[PROPERTY_ENGINEMODULES], technology, &Game::Technology::setEngineModules);
+        deserializeObject(value[PROPERTY_WEAPONMODULES], technology, &Game::Technology::setWeaponModules);
     }
 
-    void serialize(const Game::Parameters::ColonyModule & colonyModule, Json::Value & value)
+    void serialize(const Game::Technology::ColonyModule & colonyModule, Json::Value & value)
     {
         static const char * PROPERTY_COLONYMODULE_POPULATION = "Population";
         
+        serialize(colonyModule.component(), value);
         serialize(colonyModule.population(), value[PROPERTY_COLONYMODULE_POPULATION]);
     }
 
-    void deserialize(const Json::Value & value, Game::Parameters::ColonyModule & colonyModule)
+    void deserialize(const Json::Value & value, Game::Technology::ColonyModule & colonyModule)
     {
         static const char * PROPERTY_COLONYMODULE_POPULATION = "Population";
 
-        deserializeValue(value[PROPERTY_COLONYMODULE_POPULATION], colonyModule, &Game::Parameters::ColonyModule::setPopulation);
+        deserialize(value, colonyModule.component());
+        deserializeValue(value[PROPERTY_COLONYMODULE_POPULATION], colonyModule, &Game::Technology::ColonyModule::setPopulation);
     }
 
-    void serialize(const Game::Parameters::StarDriveModule & starDriveModule, Json::Value & value)
+    void serialize(const Game::Technology::StarDriveModule & starDriveModule, Json::Value & value)
     {
-        static const char * PROPERTY_STARDRIVEMODULE_DELAYTURNS = "DelayTurns";
         static const char * PROPERTY_STARDRIVEMODULE_TRAVELSPEED = "TravelSpeed";
 
-        serialize(starDriveModule.delayTurns(), value[PROPERTY_STARDRIVEMODULE_DELAYTURNS]);
+        serialize(starDriveModule.component(), value);
         serialize(starDriveModule.travelSpeed(), value[PROPERTY_STARDRIVEMODULE_TRAVELSPEED]);
     }
 
-    void deserialize(const Json::Value & value, Game::Parameters::StarDriveModule & starDriveModule)
+    void deserialize(const Json::Value & value, Game::Technology::StarDriveModule & starDriveModule)
     {
-        static const char * PROPERTY_STARDRIVEMODULE_DELAYTURNS = "DelayTurns";
         static const char * PROPERTY_STARDRIVEMODULE_TRAVELSPEED = "TravelSpeed";
 
-        deserializeValue(value[PROPERTY_STARDRIVEMODULE_DELAYTURNS], starDriveModule, &Game::Parameters::StarDriveModule::setDelayTurns);
-        deserializeValue(value[PROPERTY_STARDRIVEMODULE_TRAVELSPEED], starDriveModule, &Game::Parameters::StarDriveModule::setTravelSpeed);
+        deserialize(value, starDriveModule.component());
+        deserializeValue(value[PROPERTY_STARDRIVEMODULE_TRAVELSPEED], starDriveModule, &Game::Technology::StarDriveModule::setTravelSpeed);
     }
 
-    void serialize(const Game::Parameters::EngineModule & engineModule, Json::Value & value)
+    void serialize(const Game::Technology::EngineModule & engineModule, Json::Value & value)
     {
         static const char * PROPERTY_ENGINEMODULE_SPEED = "Speed";
 
+        serialize(engineModule.component(), value);
         serialize(engineModule.speed(), value[PROPERTY_ENGINEMODULE_SPEED]);
     }
 
-    void deserialize(const Json::Value & value, Game::Parameters::EngineModule & engineModule)
+    void deserialize(const Json::Value & value, Game::Technology::EngineModule & engineModule)
     {
         static const char * PROPERTY_ENGINEMODULE_SPEED = "Speed";
 
-        deserializeValue(value[PROPERTY_ENGINEMODULE_SPEED], engineModule, &Game::Parameters::EngineModule::setSpeed);
+        deserialize(value, engineModule.component());
+        deserializeValue(value[PROPERTY_ENGINEMODULE_SPEED], engineModule, &Game::Technology::EngineModule::setSpeed);
     }
 
-    void serialize(const Game::Parameters::WeaponModule & weaponModule, Json::Value & value)
+    void serialize(const Game::Technology::WeaponModule & weaponModule, Json::Value & value)
     {
         static const char * PROPERTY_WEAPONMODULE_DAMAGE = "Damage";
 
+        serialize(weaponModule.component(), value);
         serialize(weaponModule.damage(), value[PROPERTY_WEAPONMODULE_DAMAGE]);
     }
 
-    void deserialize(const Json::Value & value, Game::Parameters::WeaponModule & weaponModule)
+    void deserialize(const Json::Value & value, Game::Technology::WeaponModule & weaponModule)
     {
         static const char * PROPERTY_WEAPONMODULE_DAMAGE = "Damage";
 
-        deserializeValue(value[PROPERTY_WEAPONMODULE_DAMAGE], weaponModule, &Game::Parameters::WeaponModule::setDamage);
+        deserialize(value, weaponModule.component());
+        deserializeValue(value[PROPERTY_WEAPONMODULE_DAMAGE], weaponModule, &Game::Technology::WeaponModule::setDamage);
     }
 
     // Universe
@@ -319,8 +323,7 @@ namespace
         static const char * PROPERTY_POPULATION = "Population";
         static const char * PROPERTY_MOVEMENT = "Movement";
         static const char * PROPERTY_DESTINATION = "Destination";
-        static const char * PROPERTY_DELAYTURNS = "DelayTurns";
-        static const char * PROPERTY_ARRIVALTURNS = "ArrivalTurns";
+        static const char * PROPERTY_ARRIVALS = "Arrival";
         static const char * PROPERTY_SHIPCONFIG = "ShipConfig";
 
         serialize(ship.name(), value[PROPERTY_NAME]);
@@ -329,8 +332,7 @@ namespace
         serialize(ship.population(), value[PROPERTY_POPULATION]);
         serialize(ship.movement(), value[PROPERTY_MOVEMENT]);
         serialize(ship.destination(), value[PROPERTY_DESTINATION]);
-        serialize(ship.delayTurns(), value[PROPERTY_DELAYTURNS]);
-        serialize(ship.arrivalTurns(), value[PROPERTY_ARRIVALTURNS]);
+        serialize(ship.arrival(), value[PROPERTY_ARRIVALS]);
         serialize(ship.config(), value[PROPERTY_SHIPCONFIG]);
     }
 
@@ -342,8 +344,7 @@ namespace
         static const char * PROPERTY_POPULATION = "Population";
         static const char * PROPERTY_MOVEMENT = "Movement";
         static const char * PROPERTY_DESTINATION = "Destination";
-        static const char * PROPERTY_DELAYTURNS = "DelayTurns";
-        static const char * PROPERTY_ARRIVALTURNS = "ArrivalTurns";
+        static const char * PROPERTY_ARRIVALS = "Arrival";
         static const char * PROPERTY_SHIPCONFIG = "ShipConfig";
 
         deserializeObject(value[PROPERTY_NAME], ship, &Game::Ship::setName);
@@ -352,8 +353,7 @@ namespace
         deserializeValue(value[PROPERTY_POPULATION], ship, &Game::Ship::setPopulation);
         deserializeValue(value[PROPERTY_MOVEMENT], ship, &Game::Ship::setMovement);
         deserializeObject(value[PROPERTY_DESTINATION], ship, &Game::Ship::setDestination);
-        deserializeValue(value[PROPERTY_DELAYTURNS], ship, &Game::Ship::setDelayTurns);
-        deserializeValue(value[PROPERTY_ARRIVALTURNS], ship, &Game::Ship::setArrivalTurns);
+        deserializeValue(value[PROPERTY_ARRIVALS], ship, &Game::Ship::setArrival);
         deserializeObject(value[PROPERTY_SHIPCONFIG], ship, &Game::Ship::setConfig);
     }
 
@@ -443,9 +443,9 @@ namespace
         deserializeValue(value[PROPERTY_X], sector, &Game::Sector::setX);
         deserializeValue(value[PROPERTY_Y], sector, &Game::Sector::setY);
         deserializeObject(value[PROPERTY_STAR], sector, &Game::Sector::setStar);
-        deserializeObject(value[PROPERTY_PLANETS], sector, &Game::Sector::setPlanets);
-        deserializeObject(value[PROPERTY_SHIPS], sector, &Game::Sector::setShips);
-        deserializeObject(value[PROPERTY_TRANSITSHIPS], sector, &Game::Sector::setShipsInTransit);
+        deserializeObject(value[PROPERTY_PLANETS], sector, &Game::Sector::addPlanets);
+        deserializeObject(value[PROPERTY_SHIPS], sector, &Game::Sector::addShips);
+        deserializeObject(value[PROPERTY_TRANSITSHIPS], sector, &Game::Sector::addShipsInTransit);
     }
 
     void serialize(const Game::StarSystem & starSystem, Json::Value & value)
@@ -735,12 +735,12 @@ void Data::AssetSerializer::load(const std::string & filename, std::vector<Game:
     ::load(filename, data);
 }
 
-void Data::AssetSerializer::save(const std::string & filename, const Game::Parameters & data)
+void Data::AssetSerializer::save(const std::string & filename, const Game::Technology & data)
 {
     ::save(filename, data);
 }
 
-void Data::AssetSerializer::load(const std::string & filename, Game::Parameters & data)
+void Data::AssetSerializer::load(const std::string & filename, Game::Technology & data)
 {
     ::load(filename, data);
 }
