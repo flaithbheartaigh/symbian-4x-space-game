@@ -199,6 +199,8 @@ NewGamePanel::NewGamePanel(QWidget * parent)
     buttonLayout->addWidget(cancelButton);   
 
     Data::NamesData("empires.json", &mPlayerNamesStr, Data::NamesData::Load);
+
+    humanCount->setValue(1);
 }
 
 void NewGamePanel::slot_valueChanged(int)
