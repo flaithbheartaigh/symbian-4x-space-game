@@ -16,7 +16,6 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "ShipConfigBuild.h"
-#include "ShipConfigModel.h"
 #include "ComponentSelection.h"
 #include "SubscribablePushButton.h"
 #include "MainWindow.h"
@@ -72,14 +71,13 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
         {
             if (Game::Universe::instance().game().currentPlayer() != NULL && mShipConfigBuild->sector() != NULL)
             {
-                const QModelIndexList & indexList = mShipConfigBuild->selectionModel()->selectedRows();
-                for (QModelIndexList::const_iterator it = indexList.begin(); it!= indexList.end(); ++it)
+                for (std::vector<ShipConfigModel::Row>::iterator it = mShipConfigBuild->shipConfigs().begin(); it!= mShipConfigBuild->shipConfigs().end(); ++it)
                 {
-                    Game::ShipConfig * shipConfig = static_cast<Game::ShipConfig *>((*it).internalPointer());
-                    if (shipConfig != NULL && shipConfig->cost() <= Game::Universe::instance().game().currentPlayer()->money())
+                    while ((*it).count > 0 && (*it).config.cost() <= Game::Universe::instance().game().currentPlayer()->money())
                     {
-                        Game::Universe::instance().game().currentPlayer()->setMoney(Game::Universe::instance().game().currentPlayer()->money() - shipConfig->cost());
-                        Game::Ship * ship = new Game::Ship(mShipConfigBuild->sector(), *shipConfig);
+                        --(*it).count;
+                        Game::Universe::instance().game().currentPlayer()->setMoney(Game::Universe::instance().game().currentPlayer()->money() - (*it).config.cost());
+                        Game::Ship * ship = new Game::Ship(mShipConfigBuild->sector(), (*it).config);
                         ship->setPlayer(Game::Universe::instance().game().currentPlayer());
                         mShipConfigBuild->sector()->addShip(ship);
                     }
@@ -121,11 +119,11 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
     topLayout->setContentsMargins(0,0,0,0);
 
     mEditView = new TableView(this);
-    ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, NULL);
-    mEditView->setModel(shipConfigModel);
+    //ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, NULL);
+    //mEditView->setModel(shipConfigModel);
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
-    mEditView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    //mEditView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mEditView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     topLayout->addWidget(mEditView);
@@ -156,23 +154,31 @@ void ShipConfigBuild::setSector(Game::Sector * sector)
     mSector = sector;
 }
 
-const std::vector<Game::ShipConfig> & ShipConfigBuild::shipConfigs() const
+const std::vector<ShipConfigModel::Row> & ShipConfigBuild::shipConfigs() const
+{
+    return mShipConfigs;
+}
+
+std::vector<ShipConfigModel::Row> & ShipConfigBuild::shipConfigs()
 {
     return mShipConfigs;
 }
 
 void ShipConfigBuild::loadDesigns()
 {
+    mShipConfigs.clear();
     if (Game::Universe::instance().game().currentPlayer() != NULL)
     {
-        mShipConfigs = Game::Universe::instance().game().currentPlayer()->shipConfigs();
+        const std::vector<Game::ShipConfig> & shipConfigs = Game::Universe::instance().game().currentPlayer()->shipConfigs();
+        for (std::vector<Game::ShipConfig>::const_iterator it = shipConfigs.begin(); it != shipConfigs.end(); ++it)
+        {
+            ShipConfigModel::Row row;
+            row.config = *it;
+            row.count = 0;
+            mShipConfigs.push_back(row);
+        }
         delete mEditView->model();
-        ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, &mShipConfigs);
+        ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, &mShipConfigs, true);
         mEditView->setModel(shipConfigModel);
     }
-}
-
-QItemSelectionModel * ShipConfigBuild::selectionModel() const
-{
-    return mEditView->selectionModel();
 }
