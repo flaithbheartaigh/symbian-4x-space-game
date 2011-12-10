@@ -19,7 +19,7 @@
 #include "Sector.h"
 #include "Ship.h"
 #include "ShipConfig.h"
-#include "Parameters.h"
+#include "Technology.h"
 
 #include <vector>
 #include <cmath>
@@ -27,7 +27,7 @@
 
 namespace
 {
-    std::vector<Game::Ship *> allExcept(Game::Player * player, const std::vector<Game::Ship *> & ships)
+    std::vector<Game::Ship *> allExcept(const std::vector<Game::Ship *> & ships, Game::Player * player)
     {
         std::vector<Game::Ship *> except;
         for (std::vector<Game::Ship *>::const_iterator it = ships.begin(); it != ships.end(); ++it)
@@ -82,12 +82,13 @@ void SectorCombat::run()
 {
     for (int i = 0; i < 20; ++i)
     {
+        std::vector<Ship *> destroyed;
         for (std::vector<Ship *>::const_reverse_iterator it = mSector->ships().rbegin(); it != mSector->ships().rend(); ++it)
         {
             Ship * ship = *it;
             if (ship->canFight())
             {
-                Ship * enemy = randomPick(allExcept(ship->player(), mSector->ships()));
+                Ship * enemy = randomPick(allExcept(mSector->ships(), ship->player()));
                 if (enemy != NULL)
                 {
                     std::vector<Component> weapons = ship->config().components(Component::Weapon);
@@ -96,12 +97,21 @@ void SectorCombat::run()
                         bool hit = rand() % (enemy->config().maximumMovement() + 1) == 0;
                         if (hit)
                         {
-                            int damage = rand() % Parameters::instance().weaponModules()[(*itc).level()].damage() + 1;
+                            int damage = (rand() % Technology::instance().weaponModules()[(*itc).ID()].damage()) + 1;
                             enemy->damage(damage);
+                            if (enemy->hitPoints() <= 0)
+                            {
+                                destroyed.push_back(enemy);
+                            }
                         }
                     }
                 }
             }
+        }
+        for (std::vector<Ship *>::const_iterator it = destroyed.begin(); it != destroyed.end(); ++it)
+        {
+            (*it)->sector()->removeShip((*it), true);
+            delete (*it);
         }
     }
 }

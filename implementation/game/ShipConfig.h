@@ -35,9 +35,9 @@ namespace Game
 
         std::vector<Component> components(Component::Type type) const;
 
-        int highestLevel(Component::Type type) const;
+        int highestID(Component::Type type) const;
 
-        int lowestLevel(Component::Type type) const;
+        int lowestID(Component::Type type) const;
 
         int cost() const;
 

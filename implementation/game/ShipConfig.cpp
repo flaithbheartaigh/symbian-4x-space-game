@@ -16,7 +16,7 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "ShipConfig.h"
-#include "Parameters.h"
+#include "Technology.h"
 
 #include <string>
 
@@ -102,30 +102,30 @@ std::vector<Component> ShipConfig::components(Component::Type type) const
     return ret;
 }
 
-int ShipConfig::highestLevel(Component::Type type) const
+int ShipConfig::highestID(Component::Type type) const
 {
-    int level = -1;
+    int ID = -1;
     for (std::vector<Component>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
     {
-        if ((*it).type() == type && static_cast<int>((*it).level()) > level && !(*it).destroyed())
+        if ((*it).type() == type && static_cast<int>((*it).ID()) > ID && !(*it).destroyed())
         {
-            level = (*it).level();
+            ID = (*it).ID();
         }
     }
-    return level;
+    return ID;
 }
 
-int ShipConfig::lowestLevel(Component::Type type) const
+int ShipConfig::lowestID(Component::Type type) const
 {
-    int level = -1;
+    int ID = -1;
     for (std::vector<Component>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
     {
-        if ((*it).type() == type && (level < 0 || static_cast<int>((*it).level()) < level) && !(*it).destroyed())
+        if ((*it).type() == type && (ID < 0 || static_cast<int>((*it).ID()) < ID) && !(*it).destroyed())
         {
-            level = (*it).level();
+            ID = (*it).ID();
         }
     }
-    return level;
+    return ID;
 }
 
 int ShipConfig::cost() const
@@ -144,7 +144,7 @@ unsigned int ShipConfig::maximumMovement() const
     std::vector<Component> comps = components(Component::Engine);
     for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
     {
-        maximum += Parameters::instance().engineModules()[(*it).level()].speed();
+        maximum += Technology::instance().engineModules()[(*it).ID()].speed();
     }
     return maximum;
 }
@@ -155,7 +155,7 @@ float ShipConfig::maximumPopulation() const
     std::vector<Component> comps = components(Component::Colony);
     for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
     {
-        maximum += Parameters::instance().colonyModules()[(*it).level()].population();
+        maximum += Technology::instance().colonyModules()[(*it).ID()].population();
     }
     return maximum;
 }

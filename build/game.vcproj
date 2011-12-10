@@ -213,14 +213,6 @@
 			>
 		</File>
 		<File
-			RelativePath="..\implementation\game\Parameters.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\implementation\game\Parameters.h"
-			>
-		</File>
-		<File
 			RelativePath="..\implementation\game\Planet.cpp"
 			>
 		</File>
@@ -234,6 +226,14 @@
 		</File>
 		<File
 			RelativePath="..\implementation\game\Player.h"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Resources.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Resources.h"
 			>
 		</File>
 		<File
@@ -277,6 +277,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\implementation\game\ShipMovement.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\ShipMovement.h"
+			>
+		</File>
+		<File
 			RelativePath="..\implementation\game\Shipyard.cpp"
 			>
 		</File>
@@ -306,6 +314,14 @@
 		</File>
 		<File
 			RelativePath="..\implementation\game\StarSystemReference.h"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Technology.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Technology.h"
 			>
 		</File>
 		<File

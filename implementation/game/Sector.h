@@ -94,7 +94,7 @@ namespace Game
 
         const std::vector<Planet *> & planets() const;
 
-        void setPlanets(const std::vector<Planet *> & planets);
+        void addPlanets(const std::vector<Planet *> & planets);
 
         void addPlanet(Planet * planet);
 
@@ -102,7 +102,9 @@ namespace Game
 
         const std::vector<Ship *> & ships() const;
 
-        void setShips(const std::vector<Ship *> & ships);
+        void addShips(const std::vector<Ship *> & ships);
+
+        void addShips(const std::vector<Ship *> & ships, bool forceRedraw);
 
         void addShip(Ship * ship, bool forceRedraw = false);
 
@@ -110,7 +112,7 @@ namespace Game
 
         const std::vector<Ship *> & shipsInTransit() const;
 
-        void setShipsInTransit(const std::vector<Ship *> & shipsInTransit);
+        void addShipsInTransit(const std::vector<Ship *> & shipsInTransit);
 
         void addShipInTransit(Ship * ship);
 
@@ -137,6 +139,8 @@ namespace Game
         std::vector<Planet *> planets(Player * player) const;
 
     private:
+
+        void _addShip(Ship * ship);
 
         Game::StarSystem * mStarSystem;
 

@@ -1,12 +1,14 @@
-#ifndef PARAMETERS_H
-#define PARAMETERS_H
+#ifndef TECHNOLOGY_H
+#define TECHNOLOGY_H
+
+#include "Component.h"
 
 #include <vector>
 #include <string>
 
 namespace Game
 {
-    class Parameters
+    class Technology
     {
 
     public:
@@ -20,8 +22,6 @@ namespace Game
 
             ColonyModule();
 
-            ColonyModule(float population);
-
             ColonyModule(const ColonyModule & other);
             
             ColonyModule & operator =(const ColonyModule & other);
@@ -30,7 +30,13 @@ namespace Game
 
             void setPopulation(float population);
 
+            const Component & component() const;
+
+            Component & component();
+
         private:
+
+            Component mComponent;
 
             float mPopulation;
 
@@ -45,25 +51,23 @@ namespace Game
 
             StarDriveModule();
 
-            StarDriveModule(unsigned int delayTurns, float travelSpeed);
-
             StarDriveModule(const StarDriveModule & other);
             
             StarDriveModule & operator =(const StarDriveModule & other);
-
-            unsigned int delayTurns() const;
-
-            void setDelayTurns(unsigned int delayTurns);
 
             float travelSpeed() const;
 
             void setTravelSpeed(float travelSpeed);
 
-            unsigned int arrivalTurns(float distance) const;
+            unsigned int arrival(float distance) const;
+
+            const Component & component() const;
+
+            Component & component();
 
         private:
 
-            unsigned int mDelayTurns;
+            Component mComponent;
 
             float mTravelSpeed;
 
@@ -78,8 +82,6 @@ namespace Game
 
             EngineModule();
 
-            EngineModule(unsigned int speed);
-
             EngineModule(const EngineModule & other);
             
             EngineModule & operator =(const EngineModule & other);
@@ -88,7 +90,13 @@ namespace Game
 
             void setSpeed(unsigned int speed);
 
+            const Component & component() const;
+
+            Component & component();
+
         private:
+
+            Component mComponent;
 
             unsigned int mSpeed;
 
@@ -103,8 +111,6 @@ namespace Game
 
             WeaponModule();
 
-            WeaponModule(unsigned int damage);
-
             WeaponModule(const WeaponModule & other);
             
             WeaponModule & operator =(const WeaponModule & other);
@@ -113,15 +119,21 @@ namespace Game
 
             void setDamage(unsigned int damage);
 
+            const Component & component() const;
+
+            Component & component();
+
         private:
+
+            Component mComponent;
 
             unsigned int mDamage;
 
         };
 
-        static Parameters & instance();
+        static Technology & instance();
 
-        ~Parameters();
+        ~Technology();
 
         const std::vector<ColonyModule> & colonyModules() const;
 
@@ -139,12 +151,6 @@ namespace Game
 
         void setWeaponModules(const std::vector<WeaponModule> & weaponModules);
 
-        void setDataFilesPath(const std::string & dataFilesPath);
-
-        const std::string & getDataFilesPath() const;
-
-        std::string getDataFilePath(const std::string & path) const;
-
     private:
 
         std::vector<ColonyModule> mColonyModules;
@@ -155,15 +161,13 @@ namespace Game
 
         std::vector<WeaponModule> mWeaponModules;
 
-        std::string mDataFilesPath;
+        static Technology * _instance;
 
-        static Parameters * _instance;
+        Technology();
 
-        Parameters();
-
-        Parameters(const Parameters & other);
+        Technology(const Technology & other);
         
-        Parameters & operator =(const Parameters & other);
+        Technology & operator =(const Technology & other);
         
     };
 }

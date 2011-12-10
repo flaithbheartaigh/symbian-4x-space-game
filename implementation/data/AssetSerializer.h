@@ -6,7 +6,7 @@
 
 namespace Game
 {
-    class Parameters;
+    class Technology;
     class Component;
     class Universe;
 }
@@ -19,9 +19,9 @@ namespace Data
 
         void load(const std::string & filename, std::vector<Game::Component> & data);
         
-        void save(const std::string & filename, const Game::Parameters & data);
+        void save(const std::string & filename, const Game::Technology & data);
 
-        void load(const std::string & filename, Game::Parameters & data);
+        void load(const std::string & filename, Game::Technology & data);
 
         void save(const std::string & filename, const Game::Universe & data);
 

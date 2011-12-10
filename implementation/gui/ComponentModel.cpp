@@ -47,7 +47,7 @@ namespace
                 variant = QString::fromStdString(Game::Component::typeToString(component.type()));
                 break;
             case 2:
-                variant = component.level();
+                variant = component.ID();
                 break;
             case 3:
                 variant = component.hitPoints();
@@ -71,7 +71,7 @@ namespace
                 component.setType(Game::Component::stringToType(value.toString().toStdString()));
                 break;
             case 2:
-                component.setLevel(value.toUInt());
+                component.setID(value.toUInt());
                 break;
             case 3:
                 component.setHitPoints(value.toUInt());

@@ -32,7 +32,7 @@ namespace Game
 
         Component();
 
-        Component(const std::string & name, Component::Type type, unsigned int level, unsigned int hitPoints, int cost);
+        Component(const std::string & name, Component::Type type, unsigned int ID, unsigned int hitPoints, int cost);
 
         Component(const Component & other);
         
@@ -50,9 +50,9 @@ namespace Game
 
         void setTypeIndex(int type);
 
-        unsigned int level() const;
+        unsigned int ID() const;
 
-        void setLevel(unsigned int level);
+        void setID(unsigned int ID);
 
         unsigned int hitPoints() const;
 
@@ -78,7 +78,7 @@ namespace Game
 
         Component::Type mType;
 
-        unsigned int mLevel;
+        unsigned int mID;
 
         unsigned int mHitPoints;
 

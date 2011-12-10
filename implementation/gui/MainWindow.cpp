@@ -39,6 +39,7 @@
 #include <game/SectorReference.h>
 #include <game/DeserializeVisitor.h>
 #include <game/StatsVisitor.h>
+#include <game/ShipMovement.h>
 
 #include <QDialogButtonBox>
 #include <QFileDialog>
@@ -532,16 +533,23 @@ namespace
                     {
                         Gui::SectorItemModel itemModel(NULL, mSectorFrom.sector());
                         std::vector<Game::Ship *> ships = itemModel.ships(mSelectedRows);
+                        Game::ShipMovement shipMovement;
                         for (unsigned int i = 0; i < ships.size(); ++i)
                         {
                             if (ships[i] != NULL && ships[i]->player() == Game::Universe::instance().game().currentPlayer())
                             {
                                 if (ships[i]->canMoveTo(mSector.sector()))
                                 {
-                                    ships[i]->moveTo(mSector.sector());
+                                    //ships[i]->setDestination(mSector);
+                                    //ShipMovement shipMovement(SectorReference((*it2).second, 1, 1).sector());
+                                    shipMovement.addShip(ships[i]);
+                                    //shipMovement.move();
+                                    //ships[i]->moveTo(mSector.sector());
                                 }
                             }
                         }
+                        shipMovement.setDestination(mSector.sector());
+                        shipMovement.run();
                     }
                 }
 

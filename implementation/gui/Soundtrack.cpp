@@ -20,7 +20,7 @@
 #include <QFileInfo>
 #include <QUrl>
 
-#include <game/Parameters.h>
+#include <game/Resources.h>
 
 #ifdef Q_OS_SYMBIAN
 #include <QMediaPlayer>
@@ -88,8 +88,8 @@ Soundtrack::Soundtrack()
 #ifdef Q_OS_SYMBIAN
     mPlayer = new QMediaPlayer(this);
     QMediaPlaylist * playlist = new QMediaPlaylist(mPlayer);
-    playlist->addMedia(relativePathToUrl(Game::Parameters::instance().getDataFilePath("sounds/Track1.mp3")));
-    playlist->addMedia(relativePathToUrl(Game::Parameters::instance().getDataFilePath("sounds/Track2.mp3")));
+    playlist->addMedia(relativePathToUrl(Game::Resources::instance().getDataFilePath("sounds/Track1.mp3")));
+    playlist->addMedia(relativePathToUrl(Game::Resources::instance().getDataFilePath("sounds/Track2.mp3")));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     mPlayer->setPlaylist(playlist);
     mPlayer->setVolume(10);

@@ -95,7 +95,7 @@ SectorListView::SectorListView(QWidget * parent)
                 if (mItemModel != NULL)
                 {
                     mItemModel->setSector(sector);
-                    if (mListView != NULL)
+                    if (mListView != NULL && !mListView->currentIndex().isValid())
                     {
                         mListView->setCurrentIndex(mItemModel->index(0,0));
                     }
@@ -115,7 +115,7 @@ SectorListView::SectorListView(QWidget * parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    //setSelectionMode(QAbstractItemView::NoSelection);
+    setSelectionMode(QAbstractItemView::MultiSelection);
     QsKineticScroller * kineticScroller2 = new QsKineticScroller(this);
     kineticScroller2->enableKineticScrollFor(this);
     SectorItemModel * sectorItemModel = new SectorItemModel(this);

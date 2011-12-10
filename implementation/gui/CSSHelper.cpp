@@ -10,7 +10,7 @@
 #include <QTextStream>
 #include <QFile>
 
-#include <game/Parameters.h>
+#include <game/Resources.h>
 
 using namespace Gui;
 
@@ -33,7 +33,7 @@ void CSSHelper::addStyle(const std::string & filename)
 {
     std::ostringstream ss;
 
-    ss << Game::Parameters::instance().getDataFilePath(std::string(CSSPATH)) << filename;
+    ss << Game::Resources::instance().getDataFilePath(std::string(CSSPATH)) << filename;
     
     mCSSList.push_back(ss.str());
 }

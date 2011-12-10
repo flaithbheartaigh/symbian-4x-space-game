@@ -18,7 +18,8 @@
 #include <game/Universe.h>
 #include <game/Events.h>
 #include <game/Player.h>
-#include <game/Parameters.h>
+#include <game/Technology.h>
+#include <game/Resources.h>
 
 #include <gui/CSSHelper.h>
 #include <gui/MainWindow.h>
@@ -32,12 +33,12 @@ int main(int argc, char **)
     bool ret = 0;
 
 #ifdef Q_OS_SYMBIAN
-    Game::Parameters::instance().setDataFilesPath("./data");
+    Game::Resources::instance().setDataFilesPath("./data");
 #else
-    Game::Parameters::instance().setDataFilesPath("../data");
+    Game::Resources::instance().setDataFilesPath("../data");
 #endif
 
-    Data::AssetSerializer::load(Game::Parameters::instance().getDataFilePath("configs/parameters.json"), Game::Parameters::instance());
+    Data::AssetSerializer::load(Game::Resources::instance().getDataFilePath("configs/technology.json"), Game::Technology::instance());
 
     QApplication a(argc, NULL);
 
@@ -50,7 +51,7 @@ int main(int argc, char **)
     //css.apply(Gui::MainWindow::instance());
 
     QString styleSheet = QString::fromStdString(css.style());//Gui::MainWindow::instance().styleSheet();
-    styleSheet.replace("%images%", QString::fromStdString(Game::Parameters::instance().getDataFilePath("images")));
+    styleSheet.replace("%images%", QString::fromStdString(Game::Resources::instance().getDataFilePath("images")));
     Gui::MainWindow::instance().setStyleSheet(styleSheet);
 
 #ifdef Q_OS_SYMBIAN
@@ -66,7 +67,7 @@ int main(int argc, char **)
     delete &Game::Player::Current::instance();
     delete &Game::Universe::instance();
     delete &Game::Events::instance();
-    delete &Game::Parameters::instance();
+    delete &Game::Technology::instance();
 
     return ret;
 }

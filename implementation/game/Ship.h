@@ -55,13 +55,9 @@ namespace Game
 
         void setDestination(const SectorReference & destination);
 
-        unsigned int delayTurns() const;
+        unsigned int arrival() const;
 
-        void setDelayTurns(unsigned int delayTurns);
-
-        unsigned int arrivalTurns() const;
-
-        void setArrivalTurns(unsigned int arrivalTurns);
+        void setArrival(unsigned int arrival);
 
         bool canColonize() const;
 
@@ -76,9 +72,9 @@ namespace Game
         void load();
 
         bool canMoveTo(Sector * sector) const;
-
+/*
         void moveTo(Sector * sector);
-
+*/
         bool canFight() const;
 
         bool isInTransit() const;
@@ -113,9 +109,7 @@ namespace Game
 
         SectorReference mDestination;
 
-        unsigned int mDelayTurns;
-
-        unsigned int mArrivalTurns;
+        unsigned int mArrival;
 
         float mPopulation;
 

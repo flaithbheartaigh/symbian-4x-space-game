@@ -24,7 +24,7 @@
 #include <Game/Component.h>
 #include <Game/Player.h>
 #include <Game/AI.h>
-#include <Game/Parameters.h>
+#include <Game/Technology.h>
 
 #include <data/NamesData.h>
 #include <data/AssetSerializer.h>
@@ -47,6 +47,7 @@ NewGamePanel::~NewGamePanel()
 NewGamePanel::NewGamePanel(QWidget * parent)
     : QFrame(parent)
     , mPlayerNames(new QVBoxLayout())
+    , mPlayerNamesStr()
 {
     class PrivateSubscriberOK
         : public QObject
@@ -81,7 +82,8 @@ NewGamePanel::NewGamePanel(QWidget * parent)
             std::vector<std::string> playerNames;
             Data::NamesData("empires.json", &playerNames, Data::NamesData::Load);
             std::vector<Game::Component> components;
-            Data::AssetSerializer::load(Game::Parameters::instance().getDataFilePath("configs/components.json"), components);
+            components.push_back(Game::Technology::instance().engineModules()[0].component());
+            //Data::AssetSerializer::load(Game::Technology::instance().getDataFilePath("configs/components.json"), components);
 
             //if (mPlayerNames->count() > 0 || mNPCCount->value() > 0)
             {
@@ -158,7 +160,7 @@ NewGamePanel::NewGamePanel(QWidget * parent)
     QSpinBox * humanCount = new QSpinBox();
     humanCount->setMinimum(0);
     humanCount->setMaximum(10);
-    connect(humanCount, SIGNAL(editingFinished()), SLOT(slot_editingFinished()));
+    connect(humanCount, SIGNAL(valueChanged(int)), SLOT(slot_valueChanged(int)));
     QSpinBox * npcCount = new QSpinBox();
     npcCount->setMinimum(0);
     npcCount->setMaximum(10);
@@ -195,14 +197,14 @@ NewGamePanel::NewGamePanel(QWidget * parent)
     buttonLayout->addStretch();   
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);   
+
+    Data::NamesData("empires.json", &mPlayerNamesStr, Data::NamesData::Load);
 }
 
-void NewGamePanel::slot_editingFinished()
+void NewGamePanel::slot_valueChanged(int)
 {
-    std::vector<std::string> playerNames;
-    Data::NamesData("empires.json", &playerNames, Data::NamesData::Load);
     QStringList items;
-    for (std::vector<std::string>::iterator it = playerNames.begin(); it != playerNames.end(); ++it)
+    for (std::vector<std::string>::iterator it = mPlayerNamesStr.begin(); it != mPlayerNamesStr.end(); ++it)
     {
         items << QString::fromStdString(*it);
     }

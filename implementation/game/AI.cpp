@@ -23,19 +23,20 @@
 #include "Planet.h"
 #include "Sector.h"
 #include "StarSystem.h"
-#include "Parameters.h"
+#include "Technology.h"
 #include "StatsVisitor.h"
+#include "ShipMovement.h"
 
 #include <vector>
 #include <map>
 
 namespace
 {
-    Game::Component component(const std::vector<Game::Component> & components, Game::Component::Type type, unsigned int level) 
+    Game::Component component(const std::vector<Game::Component> & components, Game::Component::Type type, unsigned int ID) 
     {
         for (std::vector<Game::Component>::const_iterator it = components.begin(); it != components.end(); ++it)
         {
-            if ((*it).type() == type && (*it).level() == level)
+            if ((*it).type() == type && (*it).ID() == ID)
             {
                 return (*it);
             }
@@ -87,12 +88,25 @@ void AI::run()
 {
     StatsVisitor visitor(player());
     Game::Universe::instance().accept(&visitor);
+    std::map<Sector *, std::vector<Ship *> > ships;
     for (std::vector<Ship *>::iterator it = visitor.mShips.begin(); it != visitor.mShips.end(); ++it)
     {
-        if ((*it)->destination().isValid() && !(*it)->isInTransit() && (*it)->sector()->starSystem() == (*it)->destination().sector()->starSystem())
-        {
-            (*it)->moveTo((*it)->destination().sector());
-        }
+        ships[(*it)->sector()].push_back(*it);
+        //if ((*it)->destination().isValid() && !(*it)->isInTransit() && (*it)->sector()->starSystem() == (*it)->destination().sector()->starSystem())
+        //{
+            /*
+            ShipMovement shipMovement((*it)->destination().sector());
+            shipMovement.addShip(*it);
+            shipMovement.move();
+            */
+            //(*it)->moveTo((*it)->destination().sector());
+        //}
+    }
+    for (std::map<Sector *, std::vector<Ship *> >::const_iterator it = ships.begin(); it != ships.end(); ++it)
+    {
+        ShipMovement shipMovement;
+        shipMovement.addShips((*it).second);
+        shipMovement.run();
     }
 }
 
@@ -125,11 +139,11 @@ void NPC::run()
     ShipConfig config;
     config.setComponents(player()->components());
 
-    Component lowEngine = component(player()->components(), Component::Engine, config.lowestLevel(Component::Engine));
-    Component highEngine = component(player()->components(), Component::Engine, config.highestLevel(Component::Engine));
-    Component highStarDrive = component(player()->components(), Component::StarDrive, config.highestLevel(Component::StarDrive));
-    Component lowColony = component(player()->components(), Component::Colony, config.lowestLevel(Component::Colony));
-    Component highColony = component(player()->components(), Component::Colony, config.highestLevel(Component::Colony));
+    Component lowEngine = component(player()->components(), Component::Engine, config.lowestID(Component::Engine));
+    Component highEngine = component(player()->components(), Component::Engine, config.highestID(Component::Engine));
+    Component highStarDrive = component(player()->components(), Component::StarDrive, config.highestID(Component::StarDrive));
+    Component lowColony = component(player()->components(), Component::Colony, config.lowestID(Component::Colony));
+    Component highColony = component(player()->components(), Component::Colony, config.highestID(Component::Colony));
 
     if (cheapExplorer.components().empty())
     {
@@ -205,8 +219,12 @@ void NPC::run()
                                 if ((*sit)->planets().size() > 0 && (*sit)->planets()[0]->player() == NULL)
                                 {
                                     if ((*it)->canMoveTo(*sit))
-                                    {
-                                        (*it)->moveTo(*sit);
+                                    {/*
+                                        ShipMovement shipMovement(*sit);
+                                        shipMovement.addShip(*it);
+                                        shipMovement.move();
+                                        //(*it)->moveTo(*sit);
+                                        */
                                         somethingApplies = true;
                                         break;
                                     }
@@ -230,7 +248,11 @@ void NPC::run()
                     {
                         if ((*it)->canMoveTo(SectorReference((*it2).second, 1, 1).sector()))
                         {
-                            (*it)->moveTo(SectorReference((*it2).second, 1, 1).sector());
+                            /*
+                            ShipMovement shipMovement(SectorReference((*it2).second, 1, 1).sector());
+                            shipMovement.addShip(*it);
+                            shipMovement.move();*/
+                            //(*it)->moveTo(SectorReference((*it2).second, 1, 1).sector());
                             break;
                         }
                     }
