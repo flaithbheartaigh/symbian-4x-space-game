@@ -1,16 +1,13 @@
 #ifndef SHIPCONFIGDESIGN_H
 #define SHIPCONFIGDESIGN_H
 
+#include "ShipConfigModel.h"
+
 #include <QFrame>
 
 #include <vector>
 
 class QTableView;
-
-namespace Game
-{
-    class ShipConfig;
-}
 
 namespace Gui
 {
@@ -25,7 +22,7 @@ namespace Gui
 
         ShipConfigDesign(QWidget * parent);
 
-        const std::vector<Game::ShipConfig> & shipConfigs() const;
+        const std::vector<ShipConfigModel::Row> & shipConfigs() const;
 
         void loadDesigns();
 
@@ -33,7 +30,7 @@ namespace Gui
 
         QTableView * mEditView;
 
-        std::vector<Game::ShipConfig> mShipConfigs;
+        std::vector<ShipConfigModel::Row> mShipConfigs;
 
         ShipConfigDesign();
 

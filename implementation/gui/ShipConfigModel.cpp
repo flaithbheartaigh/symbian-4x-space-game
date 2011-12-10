@@ -17,8 +17,6 @@
 
 #include "ShipConfigModel.h"
 
-#include <game/ShipConfig.h>
-
 #include <QList>
 #include <QTableView>
 
@@ -28,32 +26,38 @@ using namespace Gui;
 
 namespace
 {
-    const QList<QString> Headers = QList<QString>() << "Name" << "Cost";
+    const QList<QString> Headers = QList<QString>() << "Name" << "Cost" << "Buy";
 
-    QVariant data(const Game::ShipConfig & shipConfig, int column)
+    QVariant data(const ShipConfigModel::Row & shipConfig, int column)
     {
         QVariant variant;
         switch (column)
         {
             case 0:
-                variant = QString::fromStdString(shipConfig.name());
+                variant = QString::fromStdString(shipConfig.config.name());
                 break;
             case 1:
-                variant = shipConfig.cost();
+                variant = shipConfig.config.cost();
+                break;
+            case 2:
+                variant = shipConfig.count;
                 break;
         }
         return variant;
     }
 
-    void setData(Game::ShipConfig & shipConfig, int column, const QVariant & value)
+    void setData(ShipConfigModel::Row & shipConfig, int column, const QVariant & value)
     {
         QVariant variant;
         switch (column)
         {
             case 0:
-                shipConfig.setName(value.toString().toStdString());
+                shipConfig.config.setName(value.toString().toStdString());
                 break;
             case 1:
+                break;
+            case 2:
+                shipConfig.count = value.toUInt();
                 break;
         }
     }
@@ -64,9 +68,10 @@ ShipConfigModel::~ShipConfigModel()
 
 }
 
-ShipConfigModel::ShipConfigModel(QObject * parent, std::vector<Game::ShipConfig> * shipConfigs)
+ShipConfigModel::ShipConfigModel(QObject * parent, std::vector<Row> * shipConfigs, bool buy)
     : QAbstractTableModel(parent)
     , mShipConfigs(shipConfigs)
+    , mBuy(buy)
 {
     setSupportedDragActions(Qt::CopyAction);
 }
@@ -81,9 +86,16 @@ Qt::ItemFlags ShipConfigModel::flags(const QModelIndex & index) const
     Qt::ItemFlags defaultFlags = QAbstractTableModel::flags(index);
     if (index.isValid())
     {
-        return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable | defaultFlags;
+        if ((!mBuy && index.column() != 2) || (mBuy && index.column() == 2))
+        {
+            return defaultFlags | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
+        }
+        else
+        {
+            return defaultFlags | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+        }
     }
-    return Qt::ItemIsDropEnabled | defaultFlags;
+    return defaultFlags | Qt::ItemIsDropEnabled;
 }
 
 
@@ -147,7 +159,7 @@ bool ShipConfigModel::insertRows(int position, int rows, const QModelIndex & ind
         beginInsertRows(QModelIndex(), position, position+rows-1);
         for (int row = 0; row < rows; ++row) 
         {
-            mShipConfigs->insert(mShipConfigs->begin() + position, Game::ShipConfig());
+            mShipConfigs->insert(mShipConfigs->begin() + position, Row()/*Game::ShipConfig()*/);
         }
         endInsertRows();
         return true;
@@ -179,23 +191,10 @@ bool ShipConfigModel::removeRows(int position, int rows, const QModelIndex & ind
 
 QModelIndex ShipConfigModel::index(int row, int column, const QModelIndex & parent) const
 {
-    const Game::ShipConfig * shipConfig = NULL;
+    const Row * shipConfig = NULL;
     if (mShipConfigs != NULL && static_cast<int>(mShipConfigs->size()) > row)
     {
         shipConfig = &mShipConfigs->at(row);
     }
-    return createIndex(row, column, const_cast<Game::ShipConfig *>(shipConfig));
+    return createIndex(row, column, const_cast<Row *>(shipConfig));
 }
-/*
-std::vector<Game::ShipConfig> ShipConfigModel::shipConfigs(const QModelIndexList & indexList) const
-{
-    std::vector<Game::ShipConfig> result;
-    for (QModelIndexList::const_iterator it = indexList.begin(); it!= indexList.end(); ++it)
-    {
-        if (int(mItems.size()) > (*it).row() && mItems[(*it).row()].planet() != NULL)
-        {
-            result.push_back(mItems[(*it).row()].planet());
-        }
-    }
-    return result;
-}*/

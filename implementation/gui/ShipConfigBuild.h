@@ -1,6 +1,8 @@
 #ifndef SHIPCONFIGBUILD_H
 #define SHIPCONFIGBUILD_H
 
+#include "ShipConfigModel.h"
+
 #include <QFrame>
 
 #include <vector>
@@ -11,7 +13,6 @@ class QItemSelectionModel;
 namespace Game
 {
     class Sector;
-    class ShipConfig;
 }
 
 namespace Gui
@@ -31,17 +32,17 @@ namespace Gui
 
         void setSector(Game::Sector * sector);
 
-        const std::vector<Game::ShipConfig> & shipConfigs() const;
+        const std::vector<ShipConfigModel::Row> & shipConfigs() const;
+
+        std::vector<ShipConfigModel::Row> & shipConfigs();
 
         void loadDesigns();
-
-        QItemSelectionModel * selectionModel() const;
 
     private:
 
         QTableView * mEditView;
 
-        std::vector<Game::ShipConfig> mShipConfigs;
+        std::vector<ShipConfigModel::Row> mShipConfigs;
 
         QItemSelectionModel * mSelectionModel;
 

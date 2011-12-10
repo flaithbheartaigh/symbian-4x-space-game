@@ -16,7 +16,6 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "ShipConfigDesign.h"
-#include "ShipConfigModel.h"
 #include "ComponentSelection.h"
 #include "SubscribablePushButton.h"
 #include "MainWindow.h"
@@ -146,7 +145,13 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
         {
             if (Game::Universe::instance().game().currentPlayer() != NULL)
             {
-                Game::Universe::instance().game().currentPlayer()->setShipConfigs(mShipConfigDesign->shipConfigs());
+                const std::vector<ShipConfigModel::Row> & shipConfigs = mShipConfigDesign->shipConfigs();
+                std::vector<Game::ShipConfig> configs;
+                for (std::vector<ShipConfigModel::Row>::const_iterator it = shipConfigs.begin(); it != shipConfigs.end(); ++it)
+                {
+                    configs.push_back((*it).config);
+                }
+                Game::Universe::instance().game().currentPlayer()->setShipConfigs(configs);
             }
             MainWindow::instance().showFrame(MainWindow::MainFrameIndex);
         }
@@ -159,8 +164,10 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
     topLayout->setContentsMargins(0,0,0,0);
 
     mEditView = new TableView(this);
+    /*
     ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, NULL);
     mEditView->setModel(shipConfigModel);
+    */
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
@@ -189,20 +196,29 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
     buttonLayout->addWidget(closeButton);
 }
 
-const std::vector<Game::ShipConfig> & ShipConfigDesign::shipConfigs() const
+const std::vector<ShipConfigModel::Row> & ShipConfigDesign::shipConfigs() const
 {
     return mShipConfigs;
 }
 
 void ShipConfigDesign::loadDesigns()
 {
+    mShipConfigs.clear();
     if (Game::Universe::instance().game().currentPlayer() != NULL)
     {
-        mShipConfigs = Game::Universe::instance().game().currentPlayer()->shipConfigs();
+        const std::vector<Game::ShipConfig> & shipConfigs = Game::Universe::instance().game().currentPlayer()->shipConfigs();
+        for (std::vector<Game::ShipConfig>::const_iterator it = shipConfigs.begin(); it != shipConfigs.end(); ++it)
+        {
+            ShipConfigModel::Row row;
+            row.config = *it;
+            row.count = 0;
+            mShipConfigs.push_back(row);
+        }
         delete mEditView->model();
         ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, &mShipConfigs);
         mEditView->setModel(shipConfigModel);
         mEditView->resizeColumnsToContents();
         mEditView->resizeRowsToContents();
+        mEditView->hideColumn(2);
     }
 }

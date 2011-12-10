@@ -1,6 +1,8 @@
 #ifndef SHIPCONFIGMODEL_H
 #define SHIPCONFIGMODEL_H
 
+#include <game/ShipConfig.h>
+
 #include <QAbstractTableModel>
 
 #include <vector>
@@ -19,9 +21,20 @@ namespace Gui
 
     public:
 
+        struct Row
+        {
+            Row()
+                : config()
+                , count(0)
+            {
+            }
+            Game::ShipConfig config;
+            unsigned int count;
+        };
+
         ~ShipConfigModel();
 
-        ShipConfigModel(QObject * parent, std::vector<Game::ShipConfig> * shipConfigs);
+        ShipConfigModel(QObject * parent, std::vector<Row> * shipConfigs, bool buy = false);
 
         Qt::DropActions supportedDropActions() const;
 
@@ -43,11 +56,11 @@ namespace Gui
 
         QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
 
-        std::vector<Game::ShipConfig> shipConfigs(const QModelIndexList & indexList) const;
-
     private:
 
-        std::vector<Game::ShipConfig> * mShipConfigs;
+        std::vector<Row> * mShipConfigs;
+
+        bool mBuy;
 
         ShipConfigModel(const ShipConfigModel & other);
         
