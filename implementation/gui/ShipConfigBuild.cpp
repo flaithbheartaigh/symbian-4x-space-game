@@ -32,6 +32,8 @@
 #include <QTableView>
 #include <QDialog>
 #include <QDialogButtonBox>
+#include <QSpinBox>
+#include <QItemDelegate>
 
 using namespace Gui;
 
@@ -123,7 +125,7 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
     //mEditView->setModel(shipConfigModel);
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
-    //mEditView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    mEditView->setEditTriggers(QAbstractItemView::AllEditTriggers);
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mEditView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     topLayout->addWidget(mEditView);
@@ -142,6 +144,53 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
     buttonLayout->addStretch();   
     buttonLayout->addWidget(okButton);
     buttonLayout->addWidget(cancelButton);
+
+    class SpinBoxDelegate : public QItemDelegate
+    {
+    public:
+        SpinBoxDelegate(QObject *parent)
+     : QItemDelegate(parent)
+ {
+ }
+
+        QWidget *createEditor(QWidget *parent,
+     const QStyleOptionViewItem &/* option */,
+     const QModelIndex &/* index */) const
+ {
+     QSpinBox *editor = new QSpinBox(parent);
+     editor->setMinimum(0);
+     editor->setMaximum(100);
+
+     return editor;
+ }
+
+        void setEditorData(QWidget *editor,
+                                     const QModelIndex &index) const
+ {
+     int value = index.model()->data(index, Qt::DisplayRole).toInt();
+
+     QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
+     spinBox->setValue(value);
+ }
+        void setModelData(QWidget *editor, QAbstractItemModel *model,
+                                    const QModelIndex &index) const
+ {
+     QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
+     spinBox->interpretText();
+     int value = spinBox->value();
+
+     model->setData(index, value, Qt::EditRole);
+ }
+
+        void updateEditorGeometry(QWidget *editor,
+     const QStyleOptionViewItem &option, const QModelIndex &/* index */) const
+ {
+     editor->setGeometry(option.rect);
+ }
+    };
+
+SpinBoxDelegate * delegate = new SpinBoxDelegate(mEditView);
+     mEditView->setItemDelegateForColumn(2, delegate);
 }
 
 Game::Sector * ShipConfigBuild::sector() const
