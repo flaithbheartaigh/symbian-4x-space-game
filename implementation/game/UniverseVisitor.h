@@ -10,6 +10,7 @@ namespace Game
     class Sector;
     class Star;
     class Planet;
+    class Warp;
     class Ship;
     class Shipyard;
     class Player;
@@ -36,6 +37,8 @@ namespace Game
         
         virtual void visit(Planet * planet);
         
+        virtual void visit(Warp * warp);
+
         virtual void visit(Ship * ship);
        
         virtual void visit(Shipyard * shipyard);

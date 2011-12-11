@@ -340,6 +340,14 @@
 			RelativePath="..\implementation\game\UniverseVisitor.h"
 			>
 		</File>
+		<File
+			RelativePath="..\implementation\game\Warp.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Warp.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

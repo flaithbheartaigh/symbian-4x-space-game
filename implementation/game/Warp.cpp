@@ -15,76 +15,43 @@
 // You should have received a copy  of the GNU General Public License along
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
+#include "Warp.h"
 #include "UniverseVisitor.h"
 
 using namespace Game;
 
-UniverseVisitor::~UniverseVisitor()
+Warp::~Warp()
 {
     
 }
 
-UniverseVisitor::UniverseVisitor()
+Warp::Warp()
+    : mSector(NULL)
 {
 
 }
 
-void UniverseVisitor::visit(Universe * universe)
+Warp::Warp(Sector * sector)
+    : mSector(sector)
 {
 
 }
 
-void UniverseVisitor::visit(StarSystem * starSystem)
+Sector * Warp::sector() const
 {
-
+    return mSector;
 }
 
-void UniverseVisitor::visit(Sector * sector)
+void Warp::setSector(Sector * sector)
 {
-
+    mSector = sector;
 }
 
-void UniverseVisitor::visit(Star * star)
+
+void Warp::accept(UniverseVisitor * visitor)
 {
-
-}
-
-void UniverseVisitor::visit(Planet * planet)
-{
-
-}
-
-void UniverseVisitor::visit(Warp * warp)
-{
-
-}
-
-void UniverseVisitor::visit(Ship * ship)
-{
-
-}
-
-void UniverseVisitor::visit(Shipyard * shipyard)
-{
-
-}
-
-void UniverseVisitor::visit(Player * player)
-{
-
-}
-
-void UniverseVisitor::visit(StarDriveModule * starDriveModule)
-{
-
-}
-
-void UniverseVisitor::visit(EngineModule * engineModule)
-{
-
-}
-
-void UniverseVisitor::visit(ColonyModule * colonyModule)
-{
-
+    if (visitor != NULL)
+    {
+        visitor->visit(this);
+    }
 }

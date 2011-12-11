@@ -20,6 +20,7 @@
 #include "Sector.h"
 #include "Star.h"
 #include "Planet.h"
+#include "Warp.h"
 #include "Ship.h"
 #include "UniverseVisitor.h"
 #include <string>
@@ -141,6 +142,7 @@ void StarSystem::generate()
 {
     static const int PROBABILITYPLANET = int(1000.0f * 8.0f / (Size * Size));
     static const int PROBABILITYSTAR = int(1000.0f * 0.3f / (Size * Size));
+    static const int PROBABILITYWARP = int(1000.0f * 0.2f / (Size * Size));
 
     int planetId = 1;
     int starId = 2;
@@ -182,6 +184,11 @@ void StarSystem::generate()
                 ss << starId++;
                 star->setName(ss.str());
                 (*it)->setStar(star);
+            }
+            else if (rand() % 1000 < PROBABILITYWARP)
+            {
+                Game::Warp * warp = new Game::Warp(*it);
+                (*it)->addWarp(warp);
             }
         }
     }
