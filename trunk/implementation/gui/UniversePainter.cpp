@@ -22,6 +22,7 @@
 #include <game/Sector.h>
 #include <game/Star.h>
 #include <game/Planet.h>
+#include <game/Warp.h>
 #include <game/Ship.h>
 #include <game/Player.h>
 #include <game/Component.h>
@@ -154,6 +155,21 @@ void UniversePainter::paintPlanet(QPainter * painter, Game::Planet * planet, con
     }
 }
 
+void UniversePainter::paintWarp(QPainter * painter, Game::Warp * warp, const QSizeF & size)
+{
+    if (painter != NULL)
+    {
+        QSize warpSize(size.width(), size.height());
+        if (warp != NULL)
+        {
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/Warp.png"));
+
+            QPixmap pixmap(filename);
+            painter->drawPixmap(QRect(-QPoint(warpSize.width()/2, warpSize.height() / 2), warpSize), pixmap);
+        }
+    }
+}
+
 void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel, bool known)
 {
     if (painter != NULL && sector != NULL)
@@ -166,6 +182,10 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
         if (!sector->planets().empty() && known)
         {
             paintPlanet(painter, sector->planets()[0], size, detailLevel);
+        }
+        if (!sector->warps().empty() && known)
+        {
+            paintWarp(painter, sector->warps()[0], size);
         }
         if (!sector->ships().empty() || !sector->shipsInTransit().empty())
         {

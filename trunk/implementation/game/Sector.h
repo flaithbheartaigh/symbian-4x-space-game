@@ -10,6 +10,7 @@ namespace Game
 {
     class Star;
     class Planet;
+    class Warp;
     class Ship;
     class StarSystem;
     class Player;
@@ -36,6 +37,10 @@ namespace Game
             virtual void planetAdded(Planet *);
 
             virtual void planetRemoved(Planet *);
+
+            virtual void warpAdded(Warp *);
+
+            virtual void warpRemoved(Warp *);
 
             virtual void starSet(Star *);
 
@@ -100,6 +105,14 @@ namespace Game
 
         void removePlanet(Planet * planet);
 
+        const std::vector<Warp *> & warps() const;
+
+        void addWarps(const std::vector<Warp *> & warps);
+
+        void addWarp(Warp * warp);
+
+        void removeWarp(Warp * warp);
+
         const std::vector<Ship *> & ships() const;
 
         void addShips(const std::vector<Ship *> & ships);
@@ -151,6 +164,8 @@ namespace Game
         Star * mStar;
 
         std::vector<Planet *> mPlanets;
+
+        std::vector<Warp *> mWarps;
 
         std::vector<Ship *> mShips;
 

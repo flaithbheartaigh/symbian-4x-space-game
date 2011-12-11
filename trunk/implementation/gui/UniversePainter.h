@@ -9,6 +9,7 @@ namespace Game
 {
     class Sector;
     class Planet;
+    class Warp;
     class Star;
     class Ship;
     class Player;
@@ -31,6 +32,8 @@ namespace Gui
         void paintStar(QPainter * painter, Game::Star * star, const QSizeF & size, int detailLevel = 2);
 
         void paintPlanet(QPainter * painter, Game::Planet * planet, const QSizeF & size, int detailLevel = 2);
+
+        void paintWarp(QPainter * painter, Game::Warp * warp, const QSizeF & size);
 
         void paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel = 2, bool known = true);
 

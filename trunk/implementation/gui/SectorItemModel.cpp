@@ -22,6 +22,7 @@
 #include <game/Sector.h>
 #include <game/Star.h>
 #include <game/Planet.h>
+#include <game/Warp.h>
 #include <game/Player.h>
 #include <game/Ship.h>
 #include <game/UniverseVisitor.h>
@@ -54,6 +55,8 @@ public:
         : mName()
         , mStar(NULL)
         , mPlanet(NULL)
+        , mWarp(NULL)
+        , mShip(NULL)
     {
 
     }
@@ -62,6 +65,7 @@ public:
         : mName()
         , mStar(star)
         , mPlanet(NULL)
+        , mWarp(NULL)
         , mShip(NULL)
     {
         if (mStar != NULL)
@@ -74,6 +78,7 @@ public:
         : mName()
         , mStar(NULL)
         , mPlanet(planet)
+        , mWarp(NULL)
         , mShip(NULL)
     {
         if (mPlanet != NULL)
@@ -86,12 +91,23 @@ public:
         : mName()
         , mStar(NULL)
         , mPlanet(NULL)
+        , mWarp(NULL)
         , mShip(ship)
     {
         if (mShip != NULL)
         {
             mName = mShip->name();
         }
+    }
+
+    Item(Game::Warp * warp)
+        : mName()
+        , mStar(NULL)
+        , mPlanet(NULL)
+        , mWarp(warp)
+        , mShip(NULL)
+    {
+
     }
 
     const std::string & name() const
@@ -114,6 +130,11 @@ public:
         return mShip;
     }
 
+    Game::Warp * warp() const
+    {
+        return mWarp;
+    }
+
 private:
 
     std::string mName;
@@ -121,6 +142,8 @@ private:
     Game::Star * mStar;
 
     Game::Planet * mPlanet;
+
+    Game::Warp * mWarp;
 
     Game::Ship * mShip;
 };
@@ -178,6 +201,14 @@ void SectorItemModel::setSector(Game::Sector * sector)
             if (mItems != NULL && (MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer()->knows(planet->sector()->starSystem())))
             {
                 mItems->push_back(Item(planet));
+            }
+        }
+
+        void visit(Game::Warp * warp)
+        {
+            if (mItems != NULL && (MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer()->knows(warp->sector()->starSystem())))
+            {
+                mItems->push_back(Item(warp));
             }
         }
 
@@ -295,6 +326,17 @@ QVariant SectorItemModel::data(const QModelIndex & index, int role) const
                     p.fillRect(QRect(0,0,pic.width(),pic.height()), QBrush(Qt::black));
                     p.translate(12,12);
                     painter.paintPlanet(&p, mItems[index.row()].planet(), pic.size());
+                    p.end(); 
+                    variant = pic;
+                }
+                else if (mItems[index.row()].warp() != NULL)
+                {
+                    UniversePainter painter;
+                    QPixmap pic(24,24); 
+                    QPainter p(&pic);   
+                    p.fillRect(QRect(0,0,pic.width(),pic.height()), QBrush(Qt::black));
+                    p.translate(12,12);
+                    painter.paintWarp(&p, mItems[index.row()].warp(), pic.size());
                     p.end(); 
                     variant = pic;
                 }
