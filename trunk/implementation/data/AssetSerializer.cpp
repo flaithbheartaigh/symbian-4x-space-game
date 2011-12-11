@@ -26,6 +26,7 @@
 #include <game/Sector.h>
 #include <game/Star.h>
 #include <game/Planet.h>
+#include <game/Warp.h>
 #include <game/Ship.h>
 
 #include <vector>
@@ -387,6 +388,20 @@ namespace
         deserializeValue(value[PROPERTY_SIZE], planet, &Game::Planet::setSizeIndex);
     }
 
+    void serialize(const Game::Warp & warp, Json::Value & value)
+    {
+        //static const char * PROPERTY_NAME = "Name";
+
+        //serialize(warp.name(), value[PROPERTY_NAME]);
+    }
+
+    void deserialize(const Json::Value & value, Game::Warp & warp)
+    {
+        //static const char * PROPERTY_NAME = "Name";
+
+        //deserializeObject(value[PROPERTY_NAME], warp, &Game::Warp::setName);
+    }
+
     void serialize(const Game::Star & star, Json::Value & value)
     {
         static const char * PROPERTY_NAME = "Name";
@@ -407,6 +422,7 @@ namespace
         static const char * PROPERTY_Y = "Y";
         static const char * PROPERTY_STAR = "Star";
         static const char * PROPERTY_PLANETS = "Planets";
+        static const char * PROPERTY_WARPS = "Warps";
         static const char * PROPERTY_SHIPS = "Ships";
         static const char * PROPERTY_TRANSITSHIPS = "TransitShips";
 
@@ -414,6 +430,7 @@ namespace
         serialize(sector.y(), value[PROPERTY_Y]);
         serialize(sector.star(), value[PROPERTY_STAR]);
         serialize(sector.planets(), value[PROPERTY_PLANETS]);
+        serialize(sector.warps(), value[PROPERTY_WARPS]);
         serialize(sector.ships(), value[PROPERTY_SHIPS]);
         serialize(sector.shipsInTransit(), value[PROPERTY_TRANSITSHIPS]);
     }
@@ -437,6 +454,7 @@ namespace
         static const char * PROPERTY_Y = "Y";
         static const char * PROPERTY_STAR = "Star";
         static const char * PROPERTY_PLANETS = "Planets";
+        static const char * PROPERTY_WARPS = "Warps";
         static const char * PROPERTY_SHIPS = "Ships";
         static const char * PROPERTY_TRANSITSHIPS = "TransitShips";
 
@@ -444,6 +462,7 @@ namespace
         deserializeValue(value[PROPERTY_Y], sector, &Game::Sector::setY);
         deserializeObject(value[PROPERTY_STAR], sector, &Game::Sector::setStar);
         deserializeObject(value[PROPERTY_PLANETS], sector, &Game::Sector::addPlanets);
+        deserializeObject(value[PROPERTY_WARPS], sector, &Game::Sector::addWarps);
         deserializeObject(value[PROPERTY_SHIPS], sector, &Game::Sector::addShips);
         deserializeObject(value[PROPERTY_TRANSITSHIPS], sector, &Game::Sector::addShipsInTransit);
     }
