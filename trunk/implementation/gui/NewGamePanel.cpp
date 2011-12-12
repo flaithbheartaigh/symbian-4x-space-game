@@ -82,10 +82,25 @@ NewGamePanel::NewGamePanel(QWidget * parent)
             std::vector<std::string> playerNames;
             Data::NamesData("empires.json", &playerNames, Data::NamesData::Load);
             std::vector<Game::Component> components;
-            components.push_back(Game::Technology::instance().engineModules()[0].component());
-            //Data::AssetSerializer::load(Game::Technology::instance().getDataFilePath("configs/components.json"), components);
+            for (unsigned int i = 0; i < Game::Technology::instance().engineModules().size(); ++i)
+            {
+                components.push_back(Game::Technology::instance().engineModules()[i].component());
+            }
+            for (unsigned int i = 0; i < Game::Technology::instance().weaponModules().size(); ++i)
+            {
+                components.push_back(Game::Technology::instance().weaponModules()[i].component());
+            }
+            for (unsigned int i = 0; i < Game::Technology::instance().starDriveModules().size(); ++i)
+            {
+                components.push_back(Game::Technology::instance().starDriveModules()[i].component());
+            }
+            for (unsigned int i = 0; i < Game::Technology::instance().colonyModules().size(); ++i)
+            {
+                components.push_back(Game::Technology::instance().colonyModules()[i].component());
+            }
 
-            //if (mPlayerNames->count() > 0 || mNPCCount->value() > 0)
+
+
             {
                 Game::Universe::instance().clear();
                 Game::Universe::instance().names().setAvailableStarNames(starNames);

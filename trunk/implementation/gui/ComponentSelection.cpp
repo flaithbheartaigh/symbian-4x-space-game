@@ -46,6 +46,62 @@ ComponentSelection::ComponentSelection(QWidget * parent)
     , mListView(NULL)
     , mShipConfig(NULL)
 {
+    class PrivateSubscriberAdd
+        : public QObject
+        , private SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberAdd()
+        {
+        }
+
+        PrivateSubscriberAdd(SubscribablePushButton * pushButton, ComponentSelection * componentSelection)
+            : QObject(pushButton)
+            , SubscribablePushButton::Subscriber(pushButton)
+            , mComponentSelection(componentSelection)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+
+        }
+
+        ComponentSelection * mComponentSelection;
+    };
+
+    class PrivateSubscriberRemove
+        : public QObject
+        , private SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberRemove()
+        {
+        }
+
+        PrivateSubscriberRemove(SubscribablePushButton * pushButton, ComponentSelection * componentSelection)
+            : QObject(pushButton)
+            , SubscribablePushButton::Subscriber(pushButton)
+            , mComponentSelection(componentSelection)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+
+        }
+
+        ComponentSelection * mComponentSelection;
+    };
+
     class PrivateSubscriberClose
         : public QObject
         , private SubscribablePushButton::Subscriber
@@ -88,31 +144,44 @@ ComponentSelection::ComponentSelection(QWidget * parent)
     mEditView = new TableView(this);
     mEditView->setModel(new ComponentModel(mEditView, NULL));
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
+    mEditView->setSelectionMode(QAbstractItemView::MultiSelection);
     mEditView->viewport()->setAcceptDrops(true);
     mEditView->setDropIndicatorShown(true);
-    mEditView->setDragDropMode(QAbstractItemView::DropOnly);
+    mEditView->setDragDropMode(QAbstractItemView::NoDragDrop);
     mEditView->hideColumn(1);
     mEditView->resizeColumnsToContents();
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mEditView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     tableLayout->addWidget(mEditView);
 
-    //(new QsKineticScroller(mEditView))->enableKineticScrollFor(mEditView);
+    (new QsKineticScroller(mEditView))->enableKineticScrollFor(mEditView);
+
+    QVBoxLayout * copyButtonsLayout = new QVBoxLayout();
+    copyButtonsLayout->addStretch();
+    SubscribablePushButton * addButton = new SubscribablePushButton(this, tr("<<"));
+    addButton->setObjectName("addButton");
+    new PrivateSubscriberAdd(addButton, this);  
+    copyButtonsLayout->addWidget(addButton);
+    SubscribablePushButton * removeButton = new SubscribablePushButton(this, tr(">>"));
+    removeButton->setObjectName("removeButton");
+    new PrivateSubscriberRemove(removeButton, this);  
+    copyButtonsLayout->addWidget(removeButton);
+    copyButtonsLayout->addStretch();
+    tableLayout->addLayout(copyButtonsLayout);
 
     mListView = new TableView(this);
     mListView->setModel(new ComponentModel(mListView, NULL));
     mListView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mListView->setSelectionMode(QAbstractItemView::SingleSelection);
+    mListView->setSelectionMode(QAbstractItemView::MultiSelection);
     mListView->setDragEnabled(true);
     mListView->setDropIndicatorShown(true);
-    mListView->setDragDropMode(QAbstractItemView::DragOnly);
+    mListView->setDragDropMode(QAbstractItemView::NoDragDrop);
     mListView->resizeColumnsToContents();
     mListView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mListView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     tableLayout->addWidget(mListView);
 
-    //(new QsKineticScroller(mListView))->enableKineticScrollFor(mListView);
+    (new QsKineticScroller(mListView))->enableKineticScrollFor(mListView);
 
     QBoxLayout * buttonLayout = new QHBoxLayout();
     topLayout->addItem(buttonLayout);
@@ -144,7 +213,7 @@ void ComponentSelection::loadComponents()
     if (mShipConfig != NULL)
     {
         mSelectedComponents = mShipConfig->components();
-        delete mEditView->model();//->setModel(new ComponentModel(edit, &mSelectedComponents));
+        delete mEditView->model();
         mEditView->setModel(new ComponentModel(mEditView, &mSelectedComponents));
         mEditView->resizeColumnsToContents();
         mEditView->resizeRowsToContents();
@@ -153,30 +222,9 @@ void ComponentSelection::loadComponents()
     if (Game::Universe::instance().game().currentPlayer() != NULL)
     {
         mAvailableComponents = Game::Universe::instance().game().currentPlayer()->components();
-        delete mListView->model();//->setModel(new ComponentModel(edit, &mSelectedComponents));
+        delete mListView->model();
         mListView->setModel(new ComponentModel(mListView, &mAvailableComponents));
         mListView->resizeColumnsToContents();
         mListView->resizeRowsToContents();
     }
 }
-/*
-void ComponentSelection::resizeEvent(QResizeEvent * event)
-{
-    bool switchSize = (event->oldSize().width() >= event->oldSize().height()) && (event->size().width() < event->size().height());
-    switchSize = switchSize || ((event->oldSize().width() < event->oldSize().height()) && (event->size().width() >= event->size().height()));
-
-    if (switchSize)
-    {
-        for (std::set<QBoxLayout *>::const_iterator it = mLayouts.begin(); it != mLayouts.end(); ++it)
-        {
-            if ((*it)->direction() == QBoxLayout::LeftToRight)
-            {
-                (*it)->setDirection(QBoxLayout::TopToBottom);
-            }
-            else if ((*it)->direction() == QBoxLayout::TopToBottom)
-            {
-                (*it)->setDirection(QBoxLayout::LeftToRight);
-            }
-        }
-    }
-}*/
