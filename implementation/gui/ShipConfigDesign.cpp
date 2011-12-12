@@ -71,6 +71,7 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
                 mTableView->model()->insertRow(0);
                 mTableView->model()->setData(mTableView->model()->index(0,0), QString("Ship %1").arg(ID, 4, 10, QLatin1Char('0')));
                 ++ID;
+                mTableView->setCurrentIndex(mTableView->model()->index(0,0));
             }
         }
 
@@ -187,6 +188,7 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
     SubscribablePushButton * addRowButton = new SubscribablePushButton(this, tr("Add"));
     addRowButton->setObjectName("addRowButton");
     new PrivateSubscriberAddRow(addRowButton, mEditView);   
+    new PrivateSubscriberEditRow(addRowButton, mEditView);   
     SubscribablePushButton * editRowButton = new SubscribablePushButton(this, tr("Edit.."));
     editRowButton->setObjectName("editRowButton");
     new PrivateSubscriberEditRow(editRowButton, mEditView);   
