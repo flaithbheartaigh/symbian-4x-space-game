@@ -34,13 +34,13 @@ namespace Game
 
             virtual void shipRemoved(Ship *);
 
-            virtual void planetAdded(Planet *);
+            virtual void planetSet(Planet *);
 
-            virtual void planetRemoved(Planet *);
+            virtual void planetUnset(Planet *);
 
-            virtual void warpAdded(Warp *);
+            virtual void warpSet(Warp *);
 
-            virtual void warpRemoved(Warp *);
+            virtual void warpUnset(Warp *);
 
             virtual void starSet(Star *);
 
@@ -97,21 +97,13 @@ namespace Game
 
         void setStar(Star * star);
 
-        const std::vector<Planet *> & planets() const;
+        Planet * planet() const;
 
-        void addPlanets(const std::vector<Planet *> & planets);
+        void setPlanet(Planet * planet);
 
-        void addPlanet(Planet * planet);
+        Warp * warp() const;
 
-        void removePlanet(Planet * planet);
-
-        const std::vector<Warp *> & warps() const;
-
-        void addWarps(const std::vector<Warp *> & warps);
-
-        void addWarp(Warp * warp);
-
-        void removeWarp(Warp * warp);
+        void setWarp(Warp * warp);
 
         const std::vector<Ship *> & ships() const;
 
@@ -149,8 +141,6 @@ namespace Game
 
         Sector * nextSectorInPath(Sector * sector) const;
 
-        std::vector<Planet *> planets(Player * player) const;
-
     private:
 
         void _addShip(Ship * ship);
@@ -163,9 +153,9 @@ namespace Game
 
         Star * mStar;
 
-        std::vector<Planet *> mPlanets;
+        Planet * mPlanet;
 
-        std::vector<Warp *> mWarps;
+        Warp * mWarp;
 
         std::vector<Ship *> mShips;
 

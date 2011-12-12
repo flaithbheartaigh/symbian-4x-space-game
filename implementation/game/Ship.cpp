@@ -185,8 +185,8 @@ void Ship::setArrival(unsigned int arrival)
 bool Ship::canColonize() const
 {
     bool ret = true;
-    ret = ret && mConfig.has(Component::Colony);
-    ret = ret && !isInTransit() && mSector != NULL && !mSector->planets(NULL).empty();
+    ret = ret && mConfig.has(Component::Colony) && population() > 0.0;
+    ret = ret && !isInTransit() && mSector != NULL && mSector->planet() != NULL && mSector->planet()->player() == NULL;
     return ret;
 }
 
@@ -194,7 +194,7 @@ void Ship::colonize()
 {
     if (mSector != NULL)
     {
-        Planet * planet = mSector->planets(NULL).front();
+        Planet * planet = mSector->planet();
         if (planet != NULL)
         {
             planet->setPlayer(player());
@@ -209,7 +209,7 @@ bool Ship::canUnload() const
 {
     bool ret = true;
     ret = ret && mConfig.has(Component::Colony);
-    ret = ret && !isInTransit() && mSector != NULL && !mSector->planets(player()).empty();
+    ret = ret && !isInTransit() && mSector != NULL && mSector->planet() != NULL && mSector->planet()->player() == player();
     return ret;
 }
 
@@ -217,7 +217,7 @@ void Ship::unload()
 {
     if (mSector != NULL)
     {
-        Planet * planet = mSector->planets(player()).front();
+        Planet * planet = mSector->planet();
         if (planet != NULL)
         {
             planet->setPopulation(planet->population() + mPopulation);
@@ -231,7 +231,7 @@ bool Ship::canLoad() const
 {
     bool ret = true;
     ret = ret && mConfig.has(Component::Colony);
-    ret = ret && !isInTransit() && mSector != NULL && !mSector->planets(player()).empty();
+    ret = ret && !isInTransit() && mSector != NULL && mSector->planet() != NULL && mSector->planet()->player() == player();
     return ret;
 }
 
@@ -239,7 +239,7 @@ void Ship::load()
 {
     if (mSector != NULL)
     {
-        Planet * planet = mSector->planets(player()).front();
+        Planet * planet = mSector->planet();
         if (planet != NULL)
         {
             float population = mConfig.maximumPopulation();

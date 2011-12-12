@@ -178,14 +178,13 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
         {
             paintStar(painter, sector->star(), size, detailLevel);
         }
-        //bool known = Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector->starSystem());
-        if (!sector->planets().empty() && known)
+        if (sector->planet() != NULL && known)
         {
-            paintPlanet(painter, sector->planets()[0], size, detailLevel);
+            paintPlanet(painter, sector->planet(), size, detailLevel);
         }
-        if (!sector->warps().empty() && known)
+        if (sector->warp() != NULL && known)
         {
-            paintWarp(painter, sector->warps()[0], size);
+            paintWarp(painter, sector->warp(), size);
         }
         if (!sector->ships().empty() || !sector->shipsInTransit().empty())
         {
@@ -200,7 +199,7 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
             }
             if (known)
             {
-                if (oneShipPerPlayer.size() == 1 && sector->star() == NULL && sector->planets().empty())
+                if (oneShipPerPlayer.size() == 1 && sector->star() == NULL && sector->planet() == NULL)
                 {
                     paintBadge(painter, oneShipPerPlayer.begin()->first, size, oneShipPerPlayer.begin()->second->isInTransit());
                 }
