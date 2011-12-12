@@ -575,10 +575,10 @@ void Universe::generate()
         {
             StarSystem * starSystem = mStarSystems[rand() % mStarSystems.size()];
             Sector * sector = starSystem->sectors()[rand() % starSystem->sectors().size()];
-            if (sector->planets().size() > 0)
+            if (sector->planet() != NULL)
             {
-                sector->planets()[0]->setPlayer(*it);
-                sector->planets()[0]->setPopulation(100);
+                sector->planet()->setPlayer(*it);
+                sector->planet()->setPopulation(100);
                 (*it)->addKnownSystem(StarSystemReference(starSystem));
                 (*it)->setHomeSector(sector);
                 (*it)->setSelectedSector(sector);

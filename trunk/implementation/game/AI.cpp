@@ -198,9 +198,10 @@ void NPC::run()
         {
             if ((*it)->config().has(Component::Colony) && (*it)->population() > 0.0)
             {
-                if (((*it)->sector()->planets().size() > 0 && (*it)->sector()->planets()[0]->player() == NULL))
+                if ((*it)->canColonize())
+                //if (((*it)->sector()->planet() != NULL && (*it)->sector()->planet()->player() == NULL))
                 {
-                    if ((*it)->canColonize())
+                //    if ((*it)->canColonize())
                     {
                         (*it)->colonize();
                         somethingApplies = true;
@@ -216,7 +217,7 @@ void NPC::run()
                         {
                             for (std::vector<Sector *>::const_iterator sit = (*it2).second->sectors().begin(); sit != (*it2).second->sectors().end(); ++sit)
                             {
-                                if ((*sit)->planets().size() > 0 && (*sit)->planets()[0]->player() == NULL)
+                                if ((*sit)->planet() != NULL && (*sit)->planet()->player() == NULL)
                                 {
                                     if ((*it)->canMoveTo(*sit))
                                     {/*

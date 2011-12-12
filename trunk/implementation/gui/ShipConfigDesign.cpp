@@ -67,7 +67,10 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
         {
             if (mTableView != NULL && mTableView->model() != NULL)
             {
+                static int ID = 1;
                 mTableView->model()->insertRow(0);
+                mTableView->model()->setData(mTableView->model()->index(0,0), QString("Ship %1").arg(ID, 4, 10, QLatin1Char('0')));
+                ++ID;
             }
         }
 

@@ -71,22 +71,22 @@ void Sector::Subscriber::shipRemoved(Ship *)
 
 }
 
-void Sector::Subscriber::planetAdded(Planet *)
+void Sector::Subscriber::planetSet(Planet *)
 {
 
 }
 
-void Sector::Subscriber::planetRemoved(Planet *)
+void Sector::Subscriber::planetUnset(Planet *)
 {
 
 }
 
-void Sector::Subscriber::warpAdded(Warp *)
+void Sector::Subscriber::warpSet(Warp *)
 {
 
 }
 
-void Sector::Subscriber::warpRemoved(Warp *)
+void Sector::Subscriber::warpUnset(Warp *)
 {
 
 }
@@ -147,19 +147,17 @@ void Sector::Subscriber::notify()
                     changed = true;
                 }
             }
-            std::vector<Planet *> planets = mSector->planets();
-            for (std::vector<Planet *>::const_iterator it = planets.begin(); it != planets.end(); ++it)
+            if (mSector->planet() != NULL)
             {
-                planetAdded(*it);
+                planetSet(mSector->planet());
                 if (!changed)
                 {
                     changed = true;
                 }
             }
-            std::vector<Warp *> warps = mSector->warps();
-            for (std::vector<Warp *>::const_iterator it = warps.begin(); it != warps.end(); ++it)
+            if (mSector->warp() != NULL)
             {
-                warpAdded(*it);
+                warpSet(mSector->warp());
                 if (!changed)
                 {
                     changed = true;
@@ -204,12 +202,8 @@ Sector::~Sector()
         removeShip(*it);
         delete *it;
     }
-    std::vector<Planet *> planets = mPlanets;
-    for (std::vector<Planet *>::const_iterator it = planets.begin(); it != planets.end(); ++it)
-    {
-        removePlanet(*it);
-        delete *it;
-    }
+    setWarp(NULL);
+    setPlanet(NULL);
     setStar(NULL);
     std::set<Subscriber *> subscribers = mSubscribers;
     for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
@@ -223,8 +217,8 @@ Sector::Sector()
     , mX(0)
     , mY(0)
     , mStar(NULL)
-    , mPlanets()
-    , mWarps()
+    , mPlanet(NULL)
+    , mWarp(NULL)
     , mShips()
     , mShipsInTransit()
     , mSubscribers()
@@ -237,8 +231,8 @@ Sector::Sector(StarSystem * starSystem)
     , mX(0)
     , mY(0)
     , mStar(NULL)
-    , mPlanets()
-    , mWarps()
+    , mPlanet(NULL)
+    , mWarp(NULL)
     , mShips()
     , mShipsInTransit()
     , mSubscribers()
@@ -325,98 +319,98 @@ void Sector::setStar(Star * star)
     }
 }
 
-const std::vector<Planet *> & Sector::planets() const
+Planet * Sector::planet() const
 {
-    return mPlanets;
+    return mPlanet;
 }
 
-void Sector::addPlanets(const std::vector<Planet *> & planets)
+void Sector::setPlanet(Planet * planet)
 {
-    for (std::vector<Planet *>::const_iterator it = planets.begin(); it != planets.end(); ++it)
+    if (planet != mPlanet)
     {
-        addPlanet(*it);
-    }
-}
-
-void Sector::addPlanet(Planet * planet)
-{
-    if (planet != NULL)
-    {
-        planet->setSector(this);
-        mPlanets.push_back(planet);
-        if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+        bool changed = false;
+        if (mPlanet != NULL)
+        {
+            changed = true;
+            mPlanet->setSector(NULL);
+            if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+            {
+                std::set<Subscriber *> subscribers = mSubscribers;
+                for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+                {
+                    (*it)->planetUnset(mPlanet);
+                }
+            }
+            delete mPlanet;
+        }
+        mPlanet = planet;
+        if (mPlanet != NULL)
+        {
+            changed = true;
+            mPlanet->setSector(this);
+            if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+            {
+                std::set<Subscriber *> subscribers = mSubscribers;
+                for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+                {
+                    (*it)->planetSet(mPlanet);
+                }
+            }
+        }
+        if (changed)
         {
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->planetAdded(planet);
                 (*it)->contentsChanged();
             }
         }
     }
 }
 
-void Sector::removePlanet(Planet * planet)
+Warp * Sector::warp() const
 {
-    if (planet != NULL)
+    return mWarp;
+}
+
+void Sector::setWarp(Warp * warp)
+{
+    if (warp != mWarp)
     {
-        planet->setSector(NULL);
-        mPlanets.erase(std::remove(mPlanets.begin(), mPlanets.end(), planet), mPlanets.end());
-        if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+        bool changed = false;
+        if (mWarp != NULL)
         {
-            std::set<Subscriber *> subscribers = mSubscribers;
-            for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+            changed = true;
+            mWarp->setSector(NULL);
+            if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
             {
-                (*it)->planetRemoved(planet);
-                (*it)->contentsChanged();
+                std::set<Subscriber *> subscribers = mSubscribers;
+                for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+                {
+                    (*it)->warpUnset(mWarp);
+                }
+            }
+            delete mWarp;
+        }
+        mWarp = warp;
+        if (mWarp != NULL)
+        {
+            changed = true;
+            mWarp->setSector(this);
+            if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+            {
+                std::set<Subscriber *> subscribers = mSubscribers;
+                for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+                {
+                    (*it)->warpSet(mWarp);
+                }
             }
         }
-    }
-}
-
-const std::vector<Warp *> & Sector::warps() const
-{
-    return mWarps;
-}
-
-void Sector::addWarps(const std::vector<Warp *> & warps)
-{
-    for (std::vector<Warp *>::const_iterator it = warps.begin(); it != warps.end(); ++it)
-    {
-        addWarp(*it);
-    }
-}
-
-void Sector::addWarp(Warp * warp)
-{
-    if (warp != NULL)
-    {
-        warp->setSector(this);
-        mWarps.push_back(warp);
-        if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
+        if (changed)
         {
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->warpAdded(warp);
-                (*it)->contentsChanged();
-            }
-        }
-    }
-}
-
-void Sector::removeWarp(Warp * warp)
-{
-    if (warp != NULL)
-    {
-        warp->setSector(NULL);
-        mWarps.erase(std::remove(mWarps.begin(), mWarps.end(), warp), mWarps.end());
-        if (mStarSystem != NULL && mStarSystem->universe() != NULL && !mStarSystem->universe()->notificationsBlocked())
-        {
-            std::set<Subscriber *> subscribers = mSubscribers;
-            for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
-            {
-                (*it)->warpRemoved(warp);
                 (*it)->contentsChanged();
             }
         }
@@ -549,12 +543,9 @@ void Sector::removeShipFromTransit(Ship * ship)
 std::set<Player *> Sector::players() const
 {
     std::set<Player *> players;
-    for (std::vector<Planet *>::const_iterator pIt = mPlanets.begin(); pIt != mPlanets.end(); ++pIt)
-    {   
-        if ((*pIt)->player() != NULL)
-        {
-            players.insert((*pIt)->player());
-        }
+    if (mPlanet != NULL && mPlanet->player() != NULL)
+    {
+        players.insert(mPlanet->player());
     }
     for (std::vector<Ship *>::const_iterator sIt = mShips.begin(); sIt != mShips.end(); ++sIt)
     {   
@@ -624,13 +615,13 @@ void Sector::accept(UniverseVisitor * visitor)
         {
             mStar->accept(visitor);
         }
-        std::vector<Planet *> planets = mPlanets;
-        for (std::vector<Planet *>::const_iterator it = planets.begin(); it != planets.end(); ++it)
+        if (mPlanet != NULL)
         {
-            if (*it != NULL)
-            {
-                (*it)->accept(visitor);
-            }
+            mPlanet->accept(visitor);
+        }
+        if (mWarp != NULL)
+        {
+            mWarp->accept(visitor);
         }
         std::vector<Ship *> ships = mShips;
         for (std::vector<Ship *>::const_iterator it = ships.begin(); it != ships.end(); ++it)
@@ -653,7 +644,7 @@ void Sector::accept(UniverseVisitor * visitor)
 
 bool Sector::isEmpty() const
 {
-    return mShipsInTransit.empty() && mShips.empty() && mPlanets.empty() && mStar == NULL && mWarps.empty();
+    return mShipsInTransit.empty() && mShips.empty() && mPlanet == NULL && mStar == NULL && mWarp == NULL;
 }
 
 Sector * Sector::nextSectorInPath(Sector * sector) const
@@ -667,19 +658,6 @@ Sector * Sector::nextSectorInPath(Sector * sector) const
     int dy = sector->y() - mY;
 
     return SectorReference(mStarSystem, mX + direction(dx), mY + direction(dy)).sector();
-}
-
-std::vector<Planet *> Sector::planets(Player * player) const
-{
-    std::vector<Planet *> planets;
-    for (std::vector<Planet *>::const_iterator it = mPlanets.begin(); it != mPlanets.end(); ++it)
-    {
-        if (*it != NULL && (*it)->player() == player)
-        {
-            planets.push_back(*it);
-        }
-    }
-    return planets;
 }
 
 void Sector::_addShip(Ship * ship)
