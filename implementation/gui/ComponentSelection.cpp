@@ -68,7 +68,8 @@ ComponentSelection::ComponentSelection(QWidget * parent)
 
         void clicked(bool checked)
         {
-
+            mComponentSelection->selectedComponentsView()->model()->dropMimeData(mComponentSelection->allComponentsView()->model()->mimeData(
+                mComponentSelection->allComponentsView()->selectionModel()->selectedIndexes()), Qt::CopyAction, -1, -1, QModelIndex());
         }
 
         ComponentSelection * mComponentSelection;
@@ -96,7 +97,16 @@ ComponentSelection::ComponentSelection(QWidget * parent)
 
         void clicked(bool checked)
         {
-
+            QModelIndexList indexList = mComponentSelection->selectedComponentsView()->selectionModel()->selectedRows();
+            std::set<int> rowSet;
+            for (QModelIndexList::const_iterator it = indexList.begin(); it != indexList.end(); ++it)
+            {
+                rowSet.insert((*it).row());
+            }
+            for (std::set<int>::const_reverse_iterator it = rowSet.rbegin(); it != rowSet.rend(); ++it)
+            {
+                mComponentSelection->selectedComponentsView()->model()->removeRow(*it);
+            }
         }
 
         ComponentSelection * mComponentSelection;
@@ -196,6 +206,16 @@ ComponentSelection::ComponentSelection(QWidget * parent)
 const std::vector<Game::Component> & ComponentSelection::selectedComponents() const
 {
     return mSelectedComponents;
+}
+
+QTableView * ComponentSelection::selectedComponentsView()
+{
+    return mEditView;
+}
+
+QTableView * ComponentSelection::allComponentsView()
+{
+    return mListView;
 }
 
 Game::ShipConfig * ComponentSelection::shipConfig() const

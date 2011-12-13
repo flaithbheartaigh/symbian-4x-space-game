@@ -33,6 +33,10 @@ namespace Gui
 
         const std::vector<Game::Component> & selectedComponents() const;
 
+        QTableView * selectedComponentsView();
+
+        QTableView * allComponentsView();
+
         Game::ShipConfig * shipConfig() const;
 
         void setShipConfig(Game::ShipConfig * shipConfig);
