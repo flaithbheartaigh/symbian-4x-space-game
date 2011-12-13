@@ -268,14 +268,20 @@ bool ComponentModel::dropMimeData(const QMimeData * data, Qt::DropAction action,
         stream >> text;
         newItems << text;
     }
+    rows = newItems.size() / columnCount();
 
     insertRows(beginRow, rows, QModelIndex());
     int columnAt = 0;
+    int rowAt = beginRow;
+    int itemAt = 0;
     foreach (const QString &text, newItems) 
     {
-        QModelIndex idx = index(beginRow, columnAt, QModelIndex());
+        QModelIndex idx = index(rowAt, columnAt, QModelIndex());
         setData(idx, text);
-        columnAt++;
+        //columnAt++;
+        itemAt++;
+        columnAt = itemAt % columnCount();
+        rowAt = beginRow + itemAt / columnCount();
     }
 
     return true;
