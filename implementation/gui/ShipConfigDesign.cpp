@@ -224,6 +224,6 @@ void ShipConfigDesign::loadDesigns()
         mEditView->setModel(shipConfigModel);
         mEditView->resizeColumnsToContents();
         mEditView->resizeRowsToContents();
-        mEditView->hideColumn(2);
+        mEditView->hideColumn(6);
     }
 }

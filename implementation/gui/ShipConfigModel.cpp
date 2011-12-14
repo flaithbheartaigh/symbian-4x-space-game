@@ -26,7 +26,7 @@ using namespace Gui;
 
 namespace
 {
-    const QList<QString> Headers = QList<QString>() << "Name" << "Cost" << "Buy";
+    const QList<QString> Headers = QList<QString>() << "Name" << "HP" << "Mvt" << "Star" << "Pop" << "Cost" << "Buy";
 
     QVariant data(const ShipConfigModel::Row & shipConfig, int column)
     {
@@ -37,9 +37,21 @@ namespace
                 variant = QString::fromStdString(shipConfig.config.name());
                 break;
             case 1:
-                variant = shipConfig.config.cost();
+                variant = shipConfig.config.maximumHitPoints();
                 break;
             case 2:
+                variant = shipConfig.config.maximumMovement();
+                break;
+            case 3:
+                variant = shipConfig.config.has(Game::Component::StarDrive) ? "X" : " ";
+                break;
+            case 4:
+                variant = shipConfig.config.maximumPopulation();
+                break;
+            case 5:
+                variant = shipConfig.config.cost();
+                break;
+            case 6:
                 variant = shipConfig.count;
                 break;
         }
@@ -57,6 +69,14 @@ namespace
             case 1:
                 break;
             case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
                 shipConfig.count = value.toUInt();
                 break;
         }
@@ -86,16 +106,22 @@ Qt::ItemFlags ShipConfigModel::flags(const QModelIndex & index) const
     Qt::ItemFlags defaultFlags = QAbstractTableModel::flags(index);
     if (index.isValid())
     {
-        if (index.column() != 1 && ((!mBuy && index.column() != 2) || (mBuy && index.column() == 2)))
+        if (mBuy)
         {
-            return defaultFlags | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable;
+            if (index.column() == 6)
+            {
+                return defaultFlags | Qt::ItemIsEditable;
+            }
         }
         else
         {
-            return defaultFlags | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+            if (index.column() == 0)
+            {
+                return defaultFlags | Qt::ItemIsEditable;
+            }
         }
     }
-    return defaultFlags | Qt::ItemIsDropEnabled;
+    return defaultFlags;
 }
 
 
