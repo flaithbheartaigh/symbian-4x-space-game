@@ -263,65 +263,6 @@ bool Ship::canMoveTo(Sector * sector) const
     }
     return ret;
 }
-/*
-void Ship::moveTo(Sector * sector)
-{
-    ShipMovement shipMovement(sector);
-    shipMovement.addShip(this);
-    shipMovement.move();*/
-    /*
-    setDelayTurns(0);
-    setArrival(0);
-//    setDestination(SectorReference());
-    setDestination(SectorReference(sector));
-    if (sector != NULL && mSector != NULL && sector != mSector)
-    {
-        if (sector->starSystem() != mSector->starSystem())
-        {
-            int highestID = mConfig.highestID(Game::Component::StarDrive);
-            if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
-            {
-                float distance = mSector->starSystem()->distance(sector->starSystem());
-//                setDestination(SectorReference(sector));
-                setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
-                setDelayTurns(Game::Technology::instance().starDriveModules()[highestID].delayTurns());
-            }
-            setMovement(0);
-        }
-        else if (mMovement >= 1)
-        {
-            bool first = true;
-            while (canMoveTo(sector))
-            {
-                Sector * next = mSector->nextSectorInPath(sector);
-                if (next != NULL)
-                {
-                    if (!first)
-                    {
-#ifdef _WIN32
-                        Sleep(500);
-#else
-                        usleep(500000);
-#endif
-                    }
-                    first = false;
-                    //the following two lines modify variable mSector
-                    mSector->removeShip(this);
-                    if (mMovement >= 1)
-                    {
-                        setMovement(mMovement - 1);
-                    }
-                    next->addShip(this, true); 
-                    if (next == sector)
-                    {
-                        setDestination(SectorReference());
-                    }
-                }
-            }
-        }
-    }
-    */
-/*}*/
 
 bool Ship::canFight() const
 {

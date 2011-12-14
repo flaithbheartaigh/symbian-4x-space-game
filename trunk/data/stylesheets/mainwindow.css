@@ -179,16 +179,6 @@ Gui--MainWindow QTableView::item
     min-height: 24px;
 }
 
-Gui--MainWindow QListView::item:selected,
-Gui--MainWindow QListView::item:selected :active,
-Gui--MainWindow QListView::item:selected :!active,
-Gui--MainWindow QTableView::item:selected,
-Gui--MainWindow QTableView::item:selected :active,
-Gui--MainWindow QTableView::item:selected :!active
-{
-    color: white;
-}
-
 Gui--MainWindow QListView::item:!selected:hover ,
 Gui--MainWindow QTableView::item:!selected:hover 
 {

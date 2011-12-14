@@ -159,3 +159,13 @@ float ShipConfig::maximumPopulation() const
     }
     return maximum;
 }
+
+unsigned int ShipConfig::maximumHitPoints() const
+{
+    unsigned int hitPoints = 0;
+    for (std::vector<Component>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+    {
+        hitPoints += (*it).hitPoints();
+    }
+    return hitPoints;
+}

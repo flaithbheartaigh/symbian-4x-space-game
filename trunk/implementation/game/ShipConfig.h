@@ -45,6 +45,8 @@ namespace Game
 
         float maximumPopulation() const;
 
+        unsigned int maximumHitPoints() const;
+
     private:
 
         std::string mName;
