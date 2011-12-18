@@ -46,7 +46,7 @@ SetupPanel::SetupPanel(QWidget * parent)
         {
         }
 
-        PrivateSubscriberOK(SubscribablePushButton * pushButton, QSlider * cacheMode, QSlider * tileResolution, QSlider * detailLevel, QCheckBox * skipEmptyTiles, 
+        PrivateSubscriberOK(SubscribablePushButton * pushButton, QSlider * cacheMode, QSlider * tileResolution, QSlider * detailLevel, QCheckBox * skipEmptyTiles, QSlider * brightness, 
             QCheckBox * viewNPCTurns, QCheckBox * viewUniverse)
             : QObject(pushButton)
             , SubscribablePushButton::Subscriber(pushButton)
@@ -54,6 +54,7 @@ SetupPanel::SetupPanel(QWidget * parent)
             , mTileResolution(tileResolution)
             , mDetailLevel(detailLevel)
             , mSkipEmptyTiles(skipEmptyTiles)
+            , mBrightness(brightness)
             , mViewNPCTurns(viewNPCTurns)
             , mViewUniverse(viewUniverse)
         {
@@ -68,6 +69,7 @@ SetupPanel::SetupPanel(QWidget * parent)
             settings.setValue("graphics/tileResolution", mTileResolution->value());
             settings.setValue("graphics/detailLevel", mDetailLevel->value());
             settings.setValue("graphics/skipEmptyTiles", mSkipEmptyTiles->isChecked());
+            settings.setValue("graphics/brightness", mBrightness->value());
             settings.setValue("game/viewNPCTurns", mViewNPCTurns->isChecked());
             settings.setValue("game/viewUniverse", mViewUniverse->isChecked());
             MainWindow::instance().showFrame(MainWindow::MainFrameIndex);
@@ -80,6 +82,8 @@ SetupPanel::SetupPanel(QWidget * parent)
         QSlider * mDetailLevel;
 
         QCheckBox * mSkipEmptyTiles;
+
+        QSlider * mBrightness;
 
         QCheckBox * mViewNPCTurns;
 
@@ -140,6 +144,13 @@ SetupPanel::SetupPanel(QWidget * parent)
     QCheckBox * skipEmptyTiles = new QCheckBox();
     skipEmptyTiles->setChecked(settings.value("graphics/skipEmptyTiles", MainWindow::Settings_SkipEmptyTiles).toBool());
 
+    QSlider * brightness = new QSlider(Qt::Horizontal);
+    brightness->setTickPosition(QSlider::NoTicks);
+    brightness->setMinimum(1);
+    brightness->setMaximum(250); //1- Black; 100- default; 200- 200%
+    brightness->setPageStep(25);
+    brightness->setValue(settings.value("graphics/brightness", MainWindow::Settings_Brightness).toInt());
+
     QCheckBox * viewNPCTurns = new QCheckBox();
     viewNPCTurns->setChecked(settings.value("game/viewNPCTurns", MainWindow::Settings_ViewUniverse).toBool());
 
@@ -151,6 +162,7 @@ SetupPanel::SetupPanel(QWidget * parent)
     formLayout->addRow(tr("&Cache resolution:"), tileResolution);
     formLayout->addRow(tr("&Detail level:"), detailLevel);
     formLayout->addRow(tr("&Skip empty tiles:"), skipEmptyTiles);
+    formLayout->addRow(tr("&Brightness:"), brightness);
     formLayout->addRow(tr("&View NPC turns:"), viewNPCTurns);
     formLayout->addRow(tr("&View entire universe:"), viewUniverse);
     topLayout->addLayout(formLayout);
@@ -160,7 +172,7 @@ SetupPanel::SetupPanel(QWidget * parent)
     topLayout->addItem(buttonLayout);
     SubscribablePushButton * okButton = new SubscribablePushButton(this, tr("OK"));
     okButton->setObjectName("okButton");
-    new PrivateSubscriberOK(okButton, cacheMode, tileResolution, detailLevel, skipEmptyTiles, viewNPCTurns, viewUniverse);
+    new PrivateSubscriberOK(okButton, cacheMode, tileResolution, detailLevel, skipEmptyTiles, brightness, viewNPCTurns, viewUniverse);
     SubscribablePushButton * cancelButton = new SubscribablePushButton(this, tr("Cancel"));
     cancelButton->setObjectName("cancelButton");
     new PrivateSubscriberCancel(cancelButton);

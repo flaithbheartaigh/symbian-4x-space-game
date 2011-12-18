@@ -122,6 +122,11 @@ Gui--SubscribablePushButton#design QLabel
     qproperty-pixmap: url("%images%/Design.png");
 }
 
+Gui--SubscribablePushButton#research QLabel
+{
+    qproperty-pixmap: url("%images%/Lab.png");
+}
+
 Gui--SubscribablePushButton#build QLabel
 {
     qproperty-pixmap: url("%images%/Build.png");

@@ -16,6 +16,7 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "UniversePainter.h"
+#include "MainWindow.h"
 
 #include <game/Universe.h>
 #include <game/StarSystem.h>
@@ -103,8 +104,8 @@ void UniversePainter::paintStar(QPainter * painter, Game::Star * star, const QSi
 
 void UniversePainter::paintPlanet(QPainter * painter, Game::Planet * planet, const QSizeF & size, int detailLevel)
 {
-    static const QList<QColor> PLANETCOLORS = QList<QColor>() << Qt::darkGray << Qt::darkCyan << Qt::darkMagenta << Qt::darkGreen << Qt::darkRed;
-    static const QList<QColor> ATMOSPHERECOLORS = QList<QColor>() << QColor(0,0,0,0) << QColor(95,160,160,95) << QColor(160,95,160,95) << QColor(95,160,95,95) << QColor(160,95,95,95);
+    static const QList<QColor> PLANETCOLORS = QList<QColor>() << QColor(Qt::darkGray).lighter(MainWindow::Settings_Brightness) << QColor(Qt::darkCyan).lighter(MainWindow::Settings_Brightness) << QColor(Qt::darkMagenta).lighter(MainWindow::Settings_Brightness) << QColor(Qt::darkGreen).lighter(MainWindow::Settings_Brightness) << QColor(Qt::darkRed).lighter(MainWindow::Settings_Brightness);
+    static const QList<QColor> ATMOSPHERECOLORS = QList<QColor>() << QColor(0,0,0,0).lighter(MainWindow::Settings_Brightness) << QColor(95,160,160,95).lighter(MainWindow::Settings_Brightness) << QColor(160,95,160,95).lighter(MainWindow::Settings_Brightness) << QColor(95,160,95,95).lighter(MainWindow::Settings_Brightness) << QColor(160,95,95,95).lighter(MainWindow::Settings_Brightness);
 
     if (painter != NULL && planet != NULL)
     {
