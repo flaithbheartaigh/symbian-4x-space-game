@@ -83,6 +83,8 @@ HelpPanel::HelpPanel(QWidget * parent)
     nextTurnButton->setObjectName("turn");
     SubscribablePushButton * shipDesignButton = new SubscribablePushButton(NULL, tr("D.."));
     shipDesignButton->setObjectName("design");
+    SubscribablePushButton * researchButton = new SubscribablePushButton(NULL, tr("R.."));
+    researchButton->setObjectName("research");
     SubscribablePushButton * newButton = new SubscribablePushButton(NULL, tr("N.."));
     newButton->setObjectName("new");
     SubscribablePushButton * openButton = new SubscribablePushButton(NULL, tr("O.."));
@@ -111,6 +113,7 @@ HelpPanel::HelpPanel(QWidget * parent)
     formLayout->addRow(colonizeButton, new QLabel("Order selected ship to colonize planet."));
     formLayout->addRow(buildShipButton, new QLabel("Create a build order for an existing ship design."));
     formLayout->addRow(shipDesignButton, new QLabel("Create a new ship design."));
+    formLayout->addRow(researchButton, new QLabel("Research new technologies."));
     formLayout->addRow(nextTurnButton, new QLabel("Advance time by one month."));
 
     QScrollArea * scrollArea = new QScrollArea();

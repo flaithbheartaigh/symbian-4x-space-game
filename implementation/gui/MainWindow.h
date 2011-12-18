@@ -36,6 +36,8 @@ namespace Gui
 
         static const int NewGameIndex;
 
+        static const int ResearchIndex;
+
         static int Settings_CacheMode;
 
         static int Settings_TileResolution;
@@ -43,6 +45,8 @@ namespace Gui
         static int Settings_DetailLevel;
 
         static bool Settings_SkipEmptyTiles;
+
+        static int Settings_Brightness;
 
         static bool Settings_ViewUniverse;
 

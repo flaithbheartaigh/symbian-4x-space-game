@@ -19,6 +19,7 @@
 #include "UniverseViewer.h"
 #include "ShipConfigDesign.h"
 #include "ShipConfigBuild.h"
+#include "TechnologyPanel.h"
 #include "ComponentSelection.h"
 #include "SubscribablePushButton.h"
 #include "SectorItemModel.h"
@@ -395,6 +396,47 @@ namespace
         QStackedWidget * mStackedWidget;
     };
 
+    class PrivateSubscriberResearch
+        : public QObject
+        , private Gui::SubscribablePushButton::Subscriber
+    {
+
+    public:
+
+        ~PrivateSubscriberResearch()
+        {
+        }
+
+        PrivateSubscriberResearch(Gui::SubscribablePushButton * pushButton, QStackedWidget * stack)
+            : QObject(pushButton)
+            , Gui::SubscribablePushButton::Subscriber(pushButton)
+            , mStackedWidget(stack)
+        {
+        }
+
+    private:
+
+        void clicked(bool checked)
+        {
+            if (mStackedWidget != NULL)
+            {
+                mStackedWidget->setCurrentIndex(Gui::MainWindow::ResearchIndex);
+            }
+            QWidget * widget = Gui::MainWindow::instance().getFrame(Gui::MainWindow::ResearchIndex);
+            Gui::TechnologyPanel * technologyPanel = dynamic_cast<Gui::TechnologyPanel *>(widget);
+            if (technologyPanel == NULL)
+            {
+                technologyPanel = widget->findChild<Gui::TechnologyPanel *>();
+            }
+            if (technologyPanel != NULL)
+            {
+                //technologyPanel->loadDesigns();
+            }
+        }
+
+        QStackedWidget * mStackedWidget;
+    };
+
     class PrivateSubscriberNextTurn
         : public QObject
         , private Gui::SubscribablePushButton::Subscriber
@@ -748,11 +790,13 @@ const int MainWindow::ComponentsIndex = 4;
 const int MainWindow::SetupIndex = 5;
 const int MainWindow::HelpIndex = 6;
 const int MainWindow::NewGameIndex = 7;
+const int MainWindow::ResearchIndex = 8;
 
 int MainWindow::Settings_CacheMode = 2;
 int MainWindow::Settings_TileResolution = 3;
 int MainWindow::Settings_DetailLevel = 1;
 bool MainWindow::Settings_SkipEmptyTiles = true;
+int MainWindow::Settings_Brightness = 100;
 bool MainWindow::Settings_ViewUniverse = false;
 bool MainWindow::Settings_ViewNPCTurns = false;
 
@@ -784,6 +828,7 @@ MainWindow::MainWindow()
     Settings_TileResolution = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/tileResolution", Settings_TileResolution).toInt();
     Settings_DetailLevel = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/detailLevel", Settings_DetailLevel).toInt();
     Settings_SkipEmptyTiles = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/skipEmptyTiles", Settings_SkipEmptyTiles).toBool();
+    Settings_Brightness = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("graphics/brightness", Settings_Brightness).toInt();
     Settings_ViewUniverse = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewUniverse", Settings_ViewUniverse).toBool();
     Settings_ViewNPCTurns = QSettings("Patrick Pelletier","SpaceEmpiresQt").value("game/viewNPCTurns", Settings_ViewNPCTurns).toBool();
 
@@ -800,6 +845,7 @@ MainWindow::MainWindow()
     mStack->insertWidget(SetupIndex, new SetupPanel(NULL));
     mStack->insertWidget(HelpIndex, new HelpPanel(NULL));
     mStack->insertWidget(NewGameIndex, new NewGamePanel(NULL));
+    mStack->insertWidget(ResearchIndex, new TechnologyPanel(NULL));
 
     UniverseViewer * universeViewer = new UniverseViewer(mainFrame);
 
@@ -824,6 +870,9 @@ MainWindow::MainWindow()
 
     SubscribablePushButton * shipDesignButton = new SubscribablePushButton(NULL, tr("D.."));
     shipDesignButton->setObjectName("design");
+
+    SubscribablePushButton * researchButton = new SubscribablePushButton(NULL, tr("R.."));
+    researchButton->setObjectName("research");
 
     SubscribablePushButton * newButton = new SubscribablePushButton(NULL, tr("N.."));
     newButton->setObjectName("new");
@@ -858,6 +907,7 @@ MainWindow::MainWindow()
     buttonsLayout->addWidget(colonizeButton);
     buttonsLayout->addWidget(buildShipButton);
     buttonsLayout->addWidget(shipDesignButton);
+    buttonsLayout->addWidget(researchButton);
     buttonsLayout->addWidget(nextTurnButton);
     buttonsLayout->addStretch();
     QFrame * buttonsWidget = new QFrame(NULL);
@@ -888,6 +938,7 @@ MainWindow::MainWindow()
     new PrivateSubscriberShipBuild(buildShipButton, mStack);
     new PrivateSubscriberNextTurn(nextTurnButton, universeViewer);
     new PrivateSubscriberShipDesign(shipDesignButton, mStack);
+    new PrivateSubscriberResearch(researchButton, mStack);
     new PrivateSubscriberOpenGame(openButton, universeViewer);
     new PrivateSubscriberSaveGame(saveButton);
     new PrivateSubscriberQuit(quitButton, this);
