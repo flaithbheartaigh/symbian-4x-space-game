@@ -72,9 +72,7 @@ namespace Game
         void load();
 
         bool canMoveTo(Sector * sector) const;
-/*
-        void moveTo(Sector * sector);
-*/
+
         bool canFight() const;
 
         bool isInTransit() const;

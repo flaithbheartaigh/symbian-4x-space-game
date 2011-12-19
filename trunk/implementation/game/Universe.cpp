@@ -19,6 +19,7 @@
 #include "StarSystem.h"
 #include "Sector.h"
 #include "Planet.h"
+#include "Warp.h"
 #include "Player.h"
 #include "UniverseVisitor.h"
 #include "NextTurnVisitor.h"
@@ -568,6 +569,49 @@ void Universe::generate()
             }
         }
     }
+
+    std::vector<Warp *> warps;
+
+    class PrivateWarpVisitor
+        : public UniverseVisitor
+    {
+
+    public:
+
+        PrivateWarpVisitor(std::vector<Warp *> * warps)
+            : UniverseVisitor()
+            , mWarps(warps)
+        {
+
+        }
+
+    private:
+
+        void visit(Warp * warp)
+        {
+            if (mWarps != NULL)
+            {
+                mWarps->push_back(warp);
+            }
+        }
+
+        std::vector<Warp *> * mWarps;
+
+    } visitor(&warps);
+    accept(&visitor);
+
+    while (warps.size() > 1)
+    {
+        Warp * a = warps[rand() % warps.size()];
+        Warp * b = warps[rand() % warps.size()];
+        a->setDestination(SectorReference(b->sector()));
+        warps.erase(std::remove(warps.begin(), warps.end(), a), warps.end());
+        if (a != b)
+        {
+            warps.erase(std::remove(warps.begin(), warps.end(), b), warps.end());
+        }
+    }
+
     for (std::vector<Player *>::const_iterator it = mGame.players().begin(); it != mGame.players().end(); ++it)
     {
         bool found = false;

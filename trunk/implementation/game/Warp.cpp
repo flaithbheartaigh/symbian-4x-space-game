@@ -27,12 +27,14 @@ Warp::~Warp()
 
 Warp::Warp()
     : mSector(NULL)
+    , mDestination()
 {
 
 }
 
 Warp::Warp(Sector * sector)
     : mSector(sector)
+    , mDestination()
 {
 
 }
@@ -47,6 +49,15 @@ void Warp::setSector(Sector * sector)
     mSector = sector;
 }
 
+const SectorReference & Warp::destination() const
+{
+    return mDestination;
+}
+
+void Warp::setDestination(const SectorReference & destination)
+{
+    mDestination = destination;
+}
 
 void Warp::accept(UniverseVisitor * visitor)
 {
