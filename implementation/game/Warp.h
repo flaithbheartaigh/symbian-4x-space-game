@@ -1,6 +1,8 @@
 #ifndef WARP_H
 #define WARP_H
 
+#include "SectorReference.h"
+
 namespace Game
 {
     class Sector;
@@ -21,11 +23,17 @@ namespace Game
 
         void setSector(Sector * sector);
 
+        const SectorReference & destination() const;
+
+        void setDestination(const SectorReference & destination);
+
         void accept(UniverseVisitor * visitor);
 
     private:
         
         Sector * mSector;
+
+        SectorReference mDestination;
 
         Warp(const Warp & other);
         

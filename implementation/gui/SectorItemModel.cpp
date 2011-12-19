@@ -19,6 +19,7 @@
 #include "UniversePainter.h"
 #include "MainWindow.h"
 
+#include <game/StarSystem.h>
 #include <game/Sector.h>
 #include <game/Star.h>
 #include <game/Planet.h>
@@ -107,7 +108,10 @@ public:
         , mWarp(warp)
         , mShip(NULL)
     {
-
+        if (mWarp != NULL && mWarp->destination().sector() != NULL && mWarp->destination().sector()->starSystem() != NULL)
+        {
+            mName = warp->destination().sector()->starSystem()->name();
+        }
     }
 
     const std::string & name() const

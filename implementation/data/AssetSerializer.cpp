@@ -390,16 +390,16 @@ namespace
 
     void serialize(const Game::Warp & warp, Json::Value & value)
     {
-        //static const char * PROPERTY_NAME = "Name";
+        static const char * PROPERTY_DESTINATION = "Destination";
 
-        //serialize(warp.name(), value[PROPERTY_NAME]);
+        serialize(warp.destination(), value[PROPERTY_DESTINATION]);
     }
 
     void deserialize(const Json::Value & value, Game::Warp & warp)
     {
-        //static const char * PROPERTY_NAME = "Name";
+        static const char * PROPERTY_DESTINATION = "Destination";
 
-        //deserializeObject(value[PROPERTY_NAME], warp, &Game::Warp::setName);
+        deserializeObject(value[PROPERTY_DESTINATION], warp, &Game::Warp::setDestination);
     }
 
     void serialize(const Game::Star & star, Json::Value & value)
