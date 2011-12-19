@@ -604,10 +604,11 @@ void Universe::generate()
     {
         Warp * a = warps[rand() % warps.size()];
         Warp * b = warps[rand() % warps.size()];
-        a->setDestination(SectorReference(b->sector()));
         warps.erase(std::remove(warps.begin(), warps.end(), a), warps.end());
         if (a != b)
         {
+            a->setDestination(SectorReference(b->sector()));
+            b->setDestination(SectorReference(a->sector()));
             warps.erase(std::remove(warps.begin(), warps.end(), b), warps.end());
         }
     }
