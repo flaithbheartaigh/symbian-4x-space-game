@@ -16,20 +16,20 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "TechnologyPanel.h"
-#include "ComponentSelection.h"
+#include "ComponentModel.h"
 #include "SubscribablePushButton.h"
 #include "MainWindow.h"
-#include "QsKineticScroller.h"
 #include "TableView.h"
+#include "QsKineticScroller.h"
 
 #include <game/Universe.h>
 #include <game/Player.h>
-#include <game/ShipConfig.h>
+#include <game/Technology.h>
+#include <game/Component.h>
 
-#include <QBoxLayout>
+#include <QHBoxLayout>
 #include <QTableView>
-#include <QDialog>
-#include <QDialogButtonBox>
+#include <QResizeEvent>
 
 using namespace Gui;
 
@@ -40,25 +40,26 @@ TechnologyPanel::~TechnologyPanel()
 
 TechnologyPanel::TechnologyPanel(QWidget * parent)
     : QFrame(parent)
+    , mSelectedComponents()
+    , mAvailableComponents()
     , mEditView(NULL)
-   /* , mShipConfigs()*/
+    , mListView(NULL)
 {
-    /*
-    class PrivateSubscriberAddRow
+    class PrivateSubscriberAdd
         : public QObject
         , private SubscribablePushButton::Subscriber
     {
 
     public:
 
-        ~PrivateSubscriberAddRow()
+        ~PrivateSubscriberAdd()
         {
         }
 
-        PrivateSubscriberAddRow(SubscribablePushButton * pushButton, QTableView * tableVew)
+        PrivateSubscriberAdd(SubscribablePushButton * pushButton, TechnologyPanel * technologyPanel)
             : QObject(pushButton)
             , SubscribablePushButton::Subscriber(pushButton)
-            , mTableView(tableVew)
+            , mTechnologyPanel(technologyPanel)
         {
         }
 
@@ -66,66 +67,13 @@ TechnologyPanel::TechnologyPanel(QWidget * parent)
 
         void clicked(bool checked)
         {
-            if (mTableView != NULL && mTableView->model() != NULL)
-            {
-                static int ID = 1;
-                mTableView->model()->insertRow(0);
-                mTableView->model()->setData(mTableView->model()->index(0,0), QString("Ship %1").arg(ID, 4, 10, QLatin1Char('0')));
-                ++ID;
-                mTableView->setCurrentIndex(mTableView->model()->index(0,0));
-            }
+            mTechnologyPanel->selectedComponentsView()->model()->dropMimeData(mTechnologyPanel->allComponentsView()->model()->mimeData(
+                mTechnologyPanel->allComponentsView()->selectionModel()->selectedIndexes()), Qt::CopyAction, -1, -1, QModelIndex());
         }
 
-        QTableView * mTableView;
+        TechnologyPanel * mTechnologyPanel;
     };
 
-    class PrivateSubscriberEditRow
-        : public QObject
-        , private SubscribablePushButton::Subscriber
-    {
-
-    public:
-
-        ~PrivateSubscriberEditRow()
-        {
-        }
-
-        PrivateSubscriberEditRow(SubscribablePushButton * pushButton, QTableView * tableVew)
-            : QObject(pushButton)
-            , SubscribablePushButton::Subscriber(pushButton)
-            , mTableView(tableVew)
-        {
-        }
-
-    private:
-
-        void clicked(bool checked)
-        {
-            Game::ShipConfig * shipConfig = NULL;
-            if (mTableView != NULL && mTableView->currentIndex().internalPointer() != NULL)
-            {
-                shipConfig = static_cast<Game::ShipConfig *>(mTableView->currentIndex().internalPointer());
-            }
-            if (shipConfig != NULL)
-            {
-                QWidget * widget = MainWindow::instance().getFrame(MainWindow::ComponentsIndex);
-                ComponentSelection * componentSelection = dynamic_cast<ComponentSelection *>(widget);
-                if (componentSelection == NULL)
-                {
-                    componentSelection = widget->findChild<ComponentSelection *>();
-                }
-                if (componentSelection != NULL)
-                {
-                    componentSelection->setShipConfig(shipConfig);
-                    componentSelection->loadComponents();
-                }
-                MainWindow::instance().showFrame(MainWindow::ComponentsIndex);
-            }
-        }
-
-        QTableView * mTableView;
-    };
-*/
     class PrivateSubscriberClose
         : public QObject
         , private SubscribablePushButton::Subscriber
@@ -137,10 +85,10 @@ TechnologyPanel::TechnologyPanel(QWidget * parent)
         {
         }
 
-        PrivateSubscriberClose(SubscribablePushButton * pushButton, TechnologyPanel * shipConfigDesign)
+        PrivateSubscriberClose(SubscribablePushButton * pushButton, TechnologyPanel * technologyPanel)
             : QObject(pushButton)
             , SubscribablePushButton::Subscriber(pushButton)
-            , mTechnologyPanel(shipConfigDesign)
+            , mTechnologyPanel(technologyPanel)
         {
         }
 
@@ -148,17 +96,12 @@ TechnologyPanel::TechnologyPanel(QWidget * parent)
 
         void clicked(bool checked)
         {
-            if (Game::Universe::instance().game().currentPlayer() != NULL)
-            {/*
-                const std::vector<ShipConfigModel::Row> & shipConfigs = mTechnologyPanel->shipConfigs();
-                std::vector<Game::ShipConfig> configs;
-                for (std::vector<ShipConfigModel::Row>::const_iterator it = shipConfigs.begin(); it != shipConfigs.end(); ++it)
-                {
-                    configs.push_back((*it).config);
-                }
-                Game::Universe::instance().game().currentPlayer()->setShipConfigs(configs);
-                */
+            /*
+            if (mTechnologyPanel->shipConfig() != NULL)
+            {
+                mTechnologyPanel->shipConfig()->setComponents(mTechnologyPanel->selectedComponents());
             }
+            */
             MainWindow::instance().showFrame(MainWindow::MainFrameIndex);
         }
 
@@ -169,67 +112,89 @@ TechnologyPanel::TechnologyPanel(QWidget * parent)
     setLayout(topLayout);
     topLayout->setContentsMargins(0,0,0,0);
 
+    QBoxLayout * tableLayout = new QHBoxLayout();
+    topLayout->addItem(tableLayout);
+
     mEditView = new TableView(this);
-    /*
-    ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, NULL);
-    mEditView->setModel(shipConfigModel);
-    */
+    mEditView->setModel(new ComponentModel(mEditView, NULL));
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
+    mEditView->setSelectionMode(QAbstractItemView::NoSelection);
+    mEditView->viewport()->setAcceptDrops(true);
+    mEditView->setDropIndicatorShown(true);
+    mEditView->setDragDropMode(QAbstractItemView::NoDragDrop);
+    mEditView->hideColumn(1);
+    mEditView->resizeColumnsToContents();
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     mEditView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
-    mEditView->resizeColumnsToContents();
-    topLayout->addWidget(mEditView);
+    tableLayout->addWidget(mEditView);
 
-    QsKineticScroller * kineticScroller = new QsKineticScroller(mEditView);
-    kineticScroller->enableKineticScrollFor(mEditView);
+    (new QsKineticScroller(mEditView))->enableKineticScrollFor(mEditView);
+
+    QVBoxLayout * copyButtonsLayout = new QVBoxLayout();
+    copyButtonsLayout->addStretch();
+    SubscribablePushButton * addButton = new SubscribablePushButton(this, tr("<<"));
+    addButton->setObjectName("addButton");
+    new PrivateSubscriberAdd(addButton, this);  
+    copyButtonsLayout->addWidget(addButton);
+    copyButtonsLayout->addStretch();
+    tableLayout->addLayout(copyButtonsLayout);
+
+    mListView = new TableView(this);
+    mListView->setModel(new ComponentModel(mListView, NULL));
+    mListView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    mListView->setSelectionMode(QAbstractItemView::MultiSelection);
+    mListView->setDragEnabled(true);
+    mListView->setDropIndicatorShown(true);
+    mListView->setDragDropMode(QAbstractItemView::NoDragDrop);
+    mListView->resizeColumnsToContents();
+    mListView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    mListView->setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
+    tableLayout->addWidget(mListView);
+
+    (new QsKineticScroller(mListView))->enableKineticScrollFor(mListView);
 
     QBoxLayout * buttonLayout = new QHBoxLayout();
     topLayout->addItem(buttonLayout);
-/*
-    SubscribablePushButton * addRowButton = new SubscribablePushButton(this, tr("Add"));
-    addRowButton->setObjectName("addRowButton");
-    new PrivateSubscriberAddRow(addRowButton, mEditView);   
-    new PrivateSubscriberEditRow(addRowButton, mEditView);   
-    SubscribablePushButton * editRowButton = new SubscribablePushButton(this, tr("Edit.."));
-    editRowButton->setObjectName("editRowButton");
-    new PrivateSubscriberEditRow(editRowButton, mEditView);  
-    */
+
     SubscribablePushButton * closeButton = new SubscribablePushButton(this, tr("Close"));
     closeButton->setObjectName("closeButton");
     new PrivateSubscriberClose(closeButton, this);  
-    
     buttonLayout->addStretch();   
-    /*
-    buttonLayout->addWidget(addRowButton);
-    buttonLayout->addWidget(editRowButton);
-    */
     buttonLayout->addWidget(closeButton);
 }
-/*
-const std::vector<ShipConfigModel::Row> & TechnologyPanel::shipConfigs() const
+
+const std::vector<Game::Component> & TechnologyPanel::selectedComponents() const
 {
-    return mShipConfigs;
+    return mSelectedComponents;
 }
 
-void TechnologyPanel::loadDesigns()
+QTableView * TechnologyPanel::selectedComponentsView()
 {
-    mShipConfigs.clear();
+    return mEditView;
+}
+
+QTableView * TechnologyPanel::allComponentsView()
+{
+    return mListView;
+}
+
+void TechnologyPanel::loadComponents()
+{
     if (Game::Universe::instance().game().currentPlayer() != NULL)
     {
-        const std::vector<Game::ShipConfig> & shipConfigs = Game::Universe::instance().game().currentPlayer()->shipConfigs();
-        for (std::vector<Game::ShipConfig>::const_iterator it = shipConfigs.begin(); it != shipConfigs.end(); ++it)
-        {
-            ShipConfigModel::Row row;
-            row.config = *it;
-            row.count = 0;
-            mShipConfigs.push_back(row);
-        }
+        mSelectedComponents = Game::Universe::instance().game().currentPlayer()->components();
         delete mEditView->model();
-        ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, &mShipConfigs);
-        mEditView->setModel(shipConfigModel);
+        mEditView->setModel(new ComponentModel(mEditView, &mSelectedComponents));
         mEditView->resizeColumnsToContents();
         mEditView->resizeRowsToContents();
-        mEditView->hideColumn(6);
     }
-}*/
+
+    //if (Game::Technology::instance() :Universe::instance().game().currentPlayer() != NULL)
+    //{
+    //mAvailableComponents = Game::Universe::instance().game().currentPlayer()->components();
+    delete mListView->model();
+    mListView->setModel(new ComponentModel(mListView, &mAvailableComponents));
+    mListView->resizeColumnsToContents();
+    mListView->resizeRowsToContents();
+    //}
+}

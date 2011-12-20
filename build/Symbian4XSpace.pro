@@ -16,92 +16,105 @@ symbian:TARGET.UID3 = 0xE6A4EF8A
 CONFIG += mobility
 MOBILITY += multimedia
 
-SOURCES += ../implementation/main/main.cpp \ 
-    ../implementation/data/NamesData.cpp \
-    ../implementation/data/AssetSerializer.cpp \
-    ../implementation/game/UniverseVisitor.cpp \
-    ../implementation/game/Universe.cpp \
-    ../implementation/game/StarSystem.cpp \
-    ../implementation/game/Star.cpp \
-    ../implementation/game/Shipyard.cpp \
-    ../implementation/game/ShipConfig.cpp \
-    ../implementation/game/Ship.cpp \
-    ../implementation/game/SectorReference.cpp \
-    ../implementation/game/StarSystemReference.cpp \
-    ../implementation/game/Sector.cpp \
-    ../implementation/game/Player.cpp \
-    ../implementation/game/AI.cpp \
-    ../implementation/game/Planet.cpp \
-    ../implementation/game/Parameters.cpp \
-    ../implementation/game/NextTurnVisitor.cpp \
-    ../implementation/game/NextPlayerVisitor.cpp \
-    ../implementation/game/Events.cpp \
-    ../implementation/game/DeserializeVisitor.cpp \
-    ../implementation/game/Component.cpp \
-    ../implementation/game/StatsVisitor.cpp \
-    ../implementation/game/Messages.cpp \
-    ../implementation/gui/UniverseViewer.cpp \
-    ../implementation/gui/UniversePainter.cpp \
-    ../implementation/gui/SubscribablePushButton.cpp \
-    ../implementation/gui/ShipConfigDesign.cpp \
-    ../implementation/gui/ShipConfigBuild.cpp \
-    ../implementation/gui/ShipConfigModel.cpp \
-    ../implementation/gui/SectorItemModel.cpp \
-    ../implementation/gui/PlanetListModel.cpp \
-    ../implementation/gui/SectorListView.cpp \
-    ../implementation/gui/SetupPanel.cpp \
-    ../implementation/gui/HelpPanel.cpp \
-	../implementation/gui/NewGamePanel.cpp \
-    ../implementation/gui/MainWindow.cpp \
-    ../implementation/gui/CSSHelper.cpp \
-    ../implementation/gui/ComponentSelection.cpp \
-    ../implementation/gui/ComponentModel.cpp \
-    ../implementation/gui/QsKineticScroller.cpp \
-    ../implementation/gui/TableView.cpp
-
-HEADERS += \ 
-    ../implementation/data/NamesData.h \
-    ../implementation/data/AssetSerializer.h \
+HEADERS += \
+    ../implementation/gui/UniverseViewer.h \
+    ../implementation/gui/UniversePainter.h \
+    ../implementation/gui/TechnologyPanel.h \
+    ../implementation/gui/TableView.h \
+    ../implementation/gui/SubscribablePushButton.h \
+    ../implementation/gui/Soundtrack.h \
+    ../implementation/gui/ShipConfigModel.h \
+    ../implementation/gui/ShipConfigDesign.h \
+    ../implementation/gui/ShipConfigBuild.h \
+    ../implementation/gui/SetupPanel.h \
+    ../implementation/gui/SectorListView.h \
+    ../implementation/gui/SectorItemModel.h \
+    ../implementation/gui/QsKineticScroller.h \
+    ../implementation/gui/PlanetListModel.h \
+    ../implementation/gui/NewGamePanel.h \
+    ../implementation/gui/MainWindow.h \
+    ../implementation/gui/HelpPanel.h \
+    ../implementation/gui/CSSHelper.h \
+    ../implementation/gui/ComponentSelection.h \
+    ../implementation/gui/ComponentModel.h \
+    ../implementation/game/Warp.h \
     ../implementation/game/UniverseVisitor.h \
     ../implementation/game/Universe.h \
-    ../implementation/game/StarSystem.h \
+    ../implementation/game/Technology.h \
+    ../implementation/game/StatsVisitor.h \
     ../implementation/game/StarSystemReference.h \
+    ../implementation/game/StarSystem.h \
     ../implementation/game/Star.h \
     ../implementation/game/Shipyard.h \
+    ../implementation/game/ShipMovement.h \
     ../implementation/game/ShipConfig.h \
     ../implementation/game/Ship.h \
     ../implementation/game/SectorReference.h \
+    ../implementation/game/SectorCombat.h \
     ../implementation/game/Sector.h \
+    ../implementation/game/Resources.h \
     ../implementation/game/Player.h \
-    ../implementation/game/AI.h \
     ../implementation/game/Planet.h \
-    ../implementation/game/Parameters.h \
     ../implementation/game/NextTurnVisitor.h \
     ../implementation/game/NextPlayerVisitor.h \
+    ../implementation/game/Messages.h \
     ../implementation/game/Events.h \
     ../implementation/game/Event.h \
     ../implementation/game/DeserializeVisitor.h \
     ../implementation/game/Component.h \
-    ../implementation/game/StatsVisitor.h \
-    ../implementation/game/Messages.h \
-    ../implementation/gui/UniverseViewer.h \
-    ../implementation/gui/UniversePainter.h \
-    ../implementation/gui/SubscribablePushButton.h \
-    ../implementation/gui/ShipConfigDesign.h \
-    ../implementation/gui/ShipConfigBuild.h \
-    ../implementation/gui/ShipConfigModel.h \
-    ../implementation/gui/SectorItemModel.h \
-    ../implementation/gui/PlanetListModel.h \
-    ../implementation/gui/SectorListView.h \
-    ../implementation/gui/SetupPanel.h \
-    ../implementation/gui/HelpPanel.h \
-	../implementation/gui/NewGamePanel.h \
-    ../implementation/gui/MainWindow.h \
-    ../implementation/gui/CSSHelper.h \
-    ../implementation/gui/ComponentSelection.h \
-    ../implementation/gui/ComponentModel.h \
-    ../implementation/gui/QsKineticScroller.h \
-    ../implementation/gui/TableView.h
+    ../implementation/game/AI.h \
+    ../implementation/data/NamesData.h \
+    ../implementation/data/AssetSerializer.h
+
+SOURCES += \
+    ../implementation/gui/UniverseViewer.cpp \
+    ../implementation/gui/UniversePainter.cpp \
+    ../implementation/gui/TechnologyPanel.cpp \
+    ../implementation/gui/TableView.cpp \
+    ../implementation/gui/SubscribablePushButton.cpp \
+    ../implementation/gui/Soundtrack.cpp \
+    ../implementation/gui/ShipConfigModel.cpp \
+    ../implementation/gui/ShipConfigDesign.cpp \
+    ../implementation/gui/ShipConfigBuild.cpp \
+    ../implementation/gui/SetupPanel.cpp \
+    ../implementation/gui/SectorListView.cpp \
+    ../implementation/gui/SectorItemModel.cpp \
+    ../implementation/gui/QsKineticScroller.cpp \
+    ../implementation/gui/PlanetListModel.cpp \
+    ../implementation/gui/NewGamePanel.cpp \
+    ../implementation/gui/MainWindow.cpp \
+    ../implementation/gui/HelpPanel.cpp \
+    ../implementation/gui/CSSHelper.cpp \
+    ../implementation/gui/ComponentSelection.cpp \
+    ../implementation/gui/ComponentModel.cpp \
+    ../implementation/game/Warp.cpp \
+    ../implementation/game/UniverseVisitor.cpp \
+    ../implementation/game/Universe.cpp \
+    ../implementation/game/Technology.cpp \
+    ../implementation/game/StatsVisitor.cpp \
+    ../implementation/game/StarSystemReference.cpp \
+    ../implementation/game/StarSystem.cpp \
+    ../implementation/game/Star.cpp \
+    ../implementation/game/Shipyard.cpp \
+    ../implementation/game/ShipMovement.cpp \
+    ../implementation/game/ShipConfig.cpp \
+    ../implementation/game/Ship.cpp \
+    ../implementation/game/SectorReference.cpp \
+    ../implementation/game/SectorCombat.cpp \
+    ../implementation/game/Sector.cpp \
+    ../implementation/game/Resources.cpp \
+    ../implementation/game/Player.cpp \
+    ../implementation/game/Planet.cpp \
+    ../implementation/game/NextTurnVisitor.cpp \
+    ../implementation/game/NextPlayerVisitor.cpp \
+    ../implementation/game/Messages.cpp \
+    ../implementation/game/Events.cpp \
+    ../implementation/game/DeserializeVisitor.cpp \
+    ../implementation/game/Component.cpp \
+    ../implementation/game/AI.cpp \
+    ../implementation/data/NamesData.cpp \
+    ../implementation/data/AssetSerializer.cpp \
+    ../implementation/main/main.cpp
 
 OTHER_FILES += \
     ../data/configs/parameters.json \

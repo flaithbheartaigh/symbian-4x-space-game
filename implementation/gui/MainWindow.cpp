@@ -430,7 +430,7 @@ namespace
             }
             if (technologyPanel != NULL)
             {
-                //technologyPanel->loadDesigns();
+                technologyPanel->loadComponents();
             }
         }
 
