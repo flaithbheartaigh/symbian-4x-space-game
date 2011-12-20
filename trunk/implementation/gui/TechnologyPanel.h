@@ -1,13 +1,16 @@
-#ifndef TECHNOLOGY_H
-#define TECHNOLOGY_H
-/*
-#include "ShipConfigModel.h"
-*/
+#ifndef TECHNOLOGYPANEL_H
+#define TECHNOLOGYPANEL_H
+
 #include <QFrame>
 
 #include <vector>
 
 class QTableView;
+
+namespace Game
+{
+    class Component;
+}
 
 namespace Gui
 {
@@ -21,17 +24,25 @@ namespace Gui
         ~TechnologyPanel();
 
         TechnologyPanel(QWidget * parent);
-/*
-        const std::vector<ShipConfigModel::Row> & shipConfigs() const;
 
-        void loadDesigns();
-*/
+        const std::vector<Game::Component> & selectedComponents() const;
+
+        QTableView * selectedComponentsView();
+
+        QTableView * allComponentsView();
+
+        void loadComponents();
+
     private:
 
+        std::vector<Game::Component> mSelectedComponents;
+
+        std::vector<Game::Component> mAvailableComponents;
+
         QTableView * mEditView;
-/*
-        std::vector<ShipConfigModel::Row> mShipConfigs;
-*/
+
+        QTableView * mListView;
+
         TechnologyPanel();
 
         TechnologyPanel(const TechnologyPanel & other);
