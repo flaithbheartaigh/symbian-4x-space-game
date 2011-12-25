@@ -94,7 +94,7 @@ Gui--SubscribablePushButton#help QLabel
 
 Gui--SubscribablePushButton#flag QLabel
 {
-    qproperty-pixmap: url("%images%/red.svg");
+    /*qproperty-pixmap: url("%images%/red.svg");*/
     min-width: 56px;
     min-height: 56px;
     max-width: 56px;

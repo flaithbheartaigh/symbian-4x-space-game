@@ -144,7 +144,7 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
                 for (QModelIndexList::const_iterator it = indexList.begin(); it!= indexList.end(); ++it)
                 {
                     ShipConfigModel::Row * shipConfig = static_cast<ShipConfigModel::Row *>((*it).internalPointer());
-                    const_cast<QAbstractItemModel *>(mShipConfigBuild->selectionModel()->model())->setData((*it).sibling((*it).row(), 2), shipConfig->count + 1, Qt::EditRole);
+                    const_cast<QAbstractItemModel *>(mShipConfigBuild->selectionModel()->model())->setData((*it).sibling((*it).row(), 6), shipConfig->count + 1, Qt::EditRole);
                 }
             }
         }
@@ -182,7 +182,7 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
                     ShipConfigModel::Row * shipConfig = static_cast<ShipConfigModel::Row *>((*it).internalPointer());
                     if (shipConfig->count > 0)
                     {
-                        const_cast<QAbstractItemModel *>(mShipConfigBuild->selectionModel()->model())->setData((*it).sibling((*it).row(), 2), shipConfig->count - 1, Qt::EditRole);
+                        const_cast<QAbstractItemModel *>(mShipConfigBuild->selectionModel()->model())->setData((*it).sibling((*it).row(), 6), shipConfig->count - 1, Qt::EditRole);
                     }
                 }
             }
@@ -310,6 +310,8 @@ void ShipConfigBuild::loadDesigns()
         delete mEditView->model();
         ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, &mShipConfigs, true);
         mEditView->setModel(shipConfigModel);
+        mEditView->resizeColumnsToContents();
+        mEditView->resizeRowsToContents();
     }
 }
 
