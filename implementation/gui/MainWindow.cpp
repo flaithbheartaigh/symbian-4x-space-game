@@ -59,6 +59,7 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QScrollArea>
+#include <QPixmapCache>
 
 namespace
 {
@@ -209,13 +210,26 @@ namespace
 
         void paintEvent(QPaintEvent *)
         {
+            static std::map<unsigned int, QPixmapCache::Key> mPixmapCache;
+            QPixmap pixmap(56,56);
             Game::Player * player = Game::Universe::instance().game().currentPlayer();
             if (player != NULL)
             {
-                QPainter painter(this);
-                painter.translate(contentsRect().x()+contentsRect().width()/2,contentsRect().y()+contentsRect().height()/2);
-                Gui::UniversePainter universePainter;
-                universePainter.paintBadge(&painter, player, contentsRect().size(), false);
+                if (mPixmapCache.find(Game::Universe::instance().game().playerIndex(player)) == mPixmapCache.end())
+                {
+                    Gui::UniversePainter painter;
+                    QPainter p(&pixmap);   
+                    p.translate(56/2,56/2);
+                    painter.paintBadge(&p, player, pixmap.size(), false);
+                    p.end(); 
+
+                    mPixmapCache[Game::Universe::instance().game().playerIndex(player)] = QPixmapCache::insert(pixmap);
+                }
+                QPixmapCache::find(mPixmapCache[Game::Universe::instance().game().playerIndex(player)], &pixmap);
+                {
+                    QPainter painter(this);
+                    painter.drawPixmap(contentsRect().x(),contentsRect().y(),pixmap);
+                }
             }
         }
 

@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QStringList>
+#include <QPixmapCache>
 
 #include <algorithm>
 
@@ -149,14 +150,21 @@ QVariant ComponentModel::data(const QModelIndex & index, int role) const
 
     if (index.column() == 0 && role == Qt::DecorationRole)
     {
-        UniversePainter painter;
-        QPixmap pic(24,24); 
-        QPainter p(&pic);   
-        p.fillRect(QRect(0,0,pic.width(),pic.height()), QBrush(Qt::black));
-        p.translate(12,12);
-        painter.paintComponent(&p, &(*mComponents)[index.row()], pic.size());
-        p.end(); 
-        return pic;
+        static std::map<Game::Component::Type, QPixmapCache::Key> mPixmapCache;
+        QPixmap pixmap(24,24);
+        if (mPixmapCache.find((*mComponents)[index.row()].type()) == mPixmapCache.end())
+        {
+            UniversePainter painter;
+            QPainter p(&pixmap);   
+            p.fillRect(QRect(0,0,pixmap.width(),pixmap.height()), QBrush(Qt::black));
+            p.translate(12,12);
+            painter.paintComponent(&p, &(*mComponents)[index.row()], pixmap.size());
+            p.end(); 
+
+            mPixmapCache[(*mComponents)[index.row()].type()] = QPixmapCache::insert(pixmap);
+        }
+        QPixmapCache::find(mPixmapCache[(*mComponents)[index.row()].type()], &pixmap);
+        return pixmap;
     }
 
     return QVariant();

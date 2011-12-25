@@ -32,6 +32,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QAbstractItemView>
+#include <QPixmapCache>
 
 #include <algorithm>
 
@@ -346,14 +347,48 @@ QVariant SectorItemModel::data(const QModelIndex & index, int role) const
                 }
                 else if (mItems[index.row()].ship() != NULL)
                 {
-                    UniversePainter painter;
-                    QPixmap pic(24,24); 
-                    QPainter p(&pic);   
-                    p.fillRect(QRect(0,0,pic.width(),pic.height()), QBrush(Qt::black));
-                    p.translate(12,12);
-                    painter.paintBadge(&p, mItems[index.row()].ship()->player(), pic.size(), mItems[index.row()].ship()->isInTransit());
-                    p.end(); 
-                    variant = pic;
+                    if (mItems[index.row()].ship()->isInTransit())
+                    {
+                        static std::map<unsigned int, QPixmapCache::Key> mPixmapCache;
+                        QPixmap pixmap(24,24);
+                        Game::Player * player = mItems[index.row()].ship()->player();
+                        if (player != NULL)
+                        {
+                            if (mPixmapCache.find(Game::Universe::instance().game().playerIndex(player)) == mPixmapCache.end())
+                            {
+                                Gui::UniversePainter painter;
+                                QPainter p(&pixmap);   
+                                p.translate(24/2,24/2);
+                                painter.paintBadge(&p, player, pixmap.size(), false);
+                                p.end(); 
+
+                                mPixmapCache[Game::Universe::instance().game().playerIndex(player)] = QPixmapCache::insert(pixmap);
+                            }
+                            QPixmapCache::find(mPixmapCache[Game::Universe::instance().game().playerIndex(player)], &pixmap);
+                        }
+                        variant = pixmap;
+                    }
+                    else
+                    {
+                        static std::map<unsigned int, QPixmapCache::Key> mPixmapCache;
+                        QPixmap pixmap(24,24);
+                        Game::Player * player = mItems[index.row()].ship()->player();
+                        if (player != NULL)
+                        {
+                            if (mPixmapCache.find(Game::Universe::instance().game().playerIndex(player)) == mPixmapCache.end())
+                            {
+                                Gui::UniversePainter painter;
+                                QPainter p(&pixmap);   
+                                p.translate(24/2,24/2);
+                                painter.paintBadge(&p, player, pixmap.size(), true);
+                                p.end(); 
+
+                                mPixmapCache[Game::Universe::instance().game().playerIndex(player)] = QPixmapCache::insert(pixmap);
+                            }
+                            QPixmapCache::find(mPixmapCache[Game::Universe::instance().game().playerIndex(player)], &pixmap);
+                        }
+                        variant = pixmap;
+                    }
                 }
                 break;
         }
