@@ -120,6 +120,19 @@ Component & Component::operator =(const Component & other)
     return *this;
 }
 
+bool Component::operator ==(const Component & other)
+{
+    if (&other == this)
+    {
+        return true;
+    }
+    if (mName != other.mName || mType != other.mType || mID != other.mID)
+    {
+        return false;
+    }
+    return true;
+}
+
 const std::string & Component::name() const
 {
     return mName;

@@ -82,19 +82,19 @@ NewGamePanel::NewGamePanel(QWidget * parent)
             std::vector<std::string> playerNames;
             Data::NamesData("empires.json", &playerNames, Data::NamesData::Load);
             std::vector<Game::Component> components;
-            for (unsigned int i = 0; i < Game::Technology::instance().engineModules().size(); ++i)
+            for (unsigned int i = 0; i < 1/*Game::Technology::instance().engineModules().size()*/; ++i)
             {
                 components.push_back(Game::Technology::instance().engineModules()[i].component());
             }
-            for (unsigned int i = 0; i < Game::Technology::instance().weaponModules().size(); ++i)
+            for (unsigned int i = 0; i < 1/*Game::Technology::instance().weaponModules().size()*/; ++i)
             {
                 components.push_back(Game::Technology::instance().weaponModules()[i].component());
             }
-            for (unsigned int i = 0; i < Game::Technology::instance().starDriveModules().size(); ++i)
+            for (unsigned int i = 0; i < 1/*Game::Technology::instance().starDriveModules().size()*/; ++i)
             {
                 components.push_back(Game::Technology::instance().starDriveModules()[i].component());
             }
-            for (unsigned int i = 0; i < Game::Technology::instance().colonyModules().size(); ++i)
+            for (unsigned int i = 0; i < 1/*Game::Technology::instance().colonyModules().size()*/; ++i)
             {
                 components.push_back(Game::Technology::instance().colonyModules()[i].component());
             }

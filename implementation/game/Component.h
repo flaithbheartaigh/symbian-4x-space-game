@@ -38,6 +38,8 @@ namespace Game
         
         Component & operator =(const Component & other);
 
+        bool operator ==(const Component & other);
+
         const std::string & name() const;
 
         void setName(const std::string & name);
