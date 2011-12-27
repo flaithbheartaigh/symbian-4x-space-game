@@ -31,6 +31,8 @@
 #include <QTableView>
 #include <QResizeEvent>
 
+#include <algorithm>
+
 using namespace Gui;
 
 TechnologyPanel::~TechnologyPanel()
@@ -69,6 +71,22 @@ TechnologyPanel::TechnologyPanel(QWidget * parent)
         {
             mTechnologyPanel->selectedComponentsView()->model()->dropMimeData(mTechnologyPanel->allComponentsView()->model()->mimeData(
                 mTechnologyPanel->allComponentsView()->selectionModel()->selectedIndexes()), Qt::CopyAction, -1, -1, QModelIndex());
+
+            QModelIndexList indexList = mTechnologyPanel->allComponentsView()->selectionModel()->selectedRows();
+            std::set<int> rowSet;
+            for (QModelIndexList::const_iterator it = indexList.begin(); it != indexList.end(); ++it)
+            {
+                rowSet.insert((*it).row());
+            }
+            for (std::set<int>::const_reverse_iterator it = rowSet.rbegin(); it != rowSet.rend(); ++it)
+            {
+                mTechnologyPanel->allComponentsView()->model()->removeRow(*it);
+            }
+
+            if (Game::Universe::instance().game().currentPlayer() != NULL)
+            {
+                Game::Universe::instance().game().currentPlayer()->setComponents(mTechnologyPanel->selectedComponents());
+            }
         }
 
         TechnologyPanel * mTechnologyPanel;
@@ -96,12 +114,6 @@ TechnologyPanel::TechnologyPanel(QWidget * parent)
 
         void clicked(bool checked)
         {
-            /*
-            if (mTechnologyPanel->shipConfig() != NULL)
-            {
-                mTechnologyPanel->shipConfig()->setComponents(mTechnologyPanel->selectedComponents());
-            }
-            */
             MainWindow::instance().showFrame(MainWindow::MainFrameIndex);
         }
 
@@ -189,12 +201,39 @@ void TechnologyPanel::loadComponents()
         mEditView->resizeRowsToContents();
     }
 
-    //if (Game::Technology::instance() :Universe::instance().game().currentPlayer() != NULL)
-    //{
-    //mAvailableComponents = Game::Universe::instance().game().currentPlayer()->components();
+    std::vector<Game::Component> components;
+    for (unsigned int i = 0; i < Game::Technology::instance().engineModules().size(); ++i)
+    {
+        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().engineModules()[i].component()) == mSelectedComponents.end())
+        {
+            components.push_back(Game::Technology::instance().engineModules()[i].component());
+        }
+    }
+    for (unsigned int i = 0; i < Game::Technology::instance().weaponModules().size(); ++i)
+    {
+        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().weaponModules()[i].component()) == mSelectedComponents.end())
+        {
+            components.push_back(Game::Technology::instance().weaponModules()[i].component());
+        }
+    }
+    for (unsigned int i = 0; i < Game::Technology::instance().starDriveModules().size(); ++i)
+    {
+        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().starDriveModules()[i].component()) == mSelectedComponents.end())
+        {
+            components.push_back(Game::Technology::instance().starDriveModules()[i].component());
+        }
+    }
+    for (unsigned int i = 0; i < Game::Technology::instance().colonyModules().size(); ++i)
+    {
+        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().colonyModules()[i].component()) == mSelectedComponents.end())
+        {
+            components.push_back(Game::Technology::instance().colonyModules()[i].component());
+        }
+    }
+    mAvailableComponents = components;
+
     delete mListView->model();
     mListView->setModel(new ComponentModel(mListView, &mAvailableComponents));
     mListView->resizeColumnsToContents();
     mListView->resizeRowsToContents();
-    //}
 }
