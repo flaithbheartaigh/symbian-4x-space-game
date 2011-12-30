@@ -24,6 +24,7 @@
 #include "UniverseVisitor.h"
 #include "NextTurnVisitor.h"
 #include "NextPlayerVisitor.h"
+#include "StatsVisitor.h"
 #include "StarSystemReference.h"
 #include "Messages.h"
 #include <string>
@@ -549,16 +550,15 @@ Universe::Game & Universe::game()
     return mGame;
 }
 
-void Universe::generate()
+void Universe::generate(unsigned int density, unsigned int size)
 {
-    const int SYSTEMCOUNT = 24;
-    const int UNIVERSESIZE = 6;
-    const int UNIVERSECOUNT = UNIVERSESIZE * UNIVERSESIZE * 4;
+    const int UNIVERSESIZE = size;
+    const int UNIVERSECOUNT = density;
     for (int x = -UNIVERSESIZE; x < UNIVERSESIZE; ++x)
     {
         for (int y = -UNIVERSESIZE; y < UNIVERSESIZE; ++y)
         {
-            if (rand() % UNIVERSECOUNT < SYSTEMCOUNT)
+            if (rand() % UNIVERSESIZE < UNIVERSECOUNT)
             {
                 StarSystem * starSystem = new StarSystem(this);
                 starSystem->setX(x);
@@ -613,21 +613,22 @@ void Universe::generate()
         }
     }
 
-    for (std::vector<Player *>::const_iterator it = mGame.players().begin(); it != mGame.players().end(); ++it)
+    std::set<Planet *> homeworlds;
+    StatsVisitor statsVisitor(NULL);
+    accept(&statsVisitor);
+    if (statsVisitor.mPlanets.size() > 0)
     {
-        bool found = false;
-        while (!found)
+        for (std::vector<Player *>::const_iterator it = mGame.players().begin(); it != mGame.players().end(); ++it)
         {
-            StarSystem * starSystem = mStarSystems[rand() % mStarSystems.size()];
-            Sector * sector = starSystem->sectors()[rand() % starSystem->sectors().size()];
-            if (sector->planet() != NULL)
+            Planet * planet = statsVisitor.mPlanets[rand() % statsVisitor.mPlanets.size()];
+            if (planet != NULL && homeworlds.find(planet) == homeworlds.end())
             {
-                sector->planet()->setPlayer(*it);
-                sector->planet()->setPopulation(100);
-                (*it)->addKnownSystem(StarSystemReference(starSystem));
-                (*it)->setHomeSector(sector);
-                (*it)->setSelectedSector(sector);
-                found = true;
+                homeworlds.insert(planet);
+                planet->setPlayer(*it);
+                planet->setPopulation(100);
+                (*it)->addKnownSystem(StarSystemReference(planet->sector()->starSystem()));
+                (*it)->setHomeSector(planet->sector());
+                (*it)->setSelectedSector(planet->sector());
             }
         }
     }
