@@ -621,7 +621,13 @@ void Universe::generate(unsigned int density, unsigned int size)
         for (std::vector<Player *>::const_iterator it = mGame.players().begin(); it != mGame.players().end(); ++it)
         {
             Planet * planet = statsVisitor.mPlanets[rand() % statsVisitor.mPlanets.size()];
-            if (planet != NULL && homeworlds.find(planet) == homeworlds.end())
+            int max = 100;
+            while (homeworlds.find(planet) != homeworlds.end() && max > 0)
+            {
+                --max;
+                planet = statsVisitor.mPlanets[rand() % statsVisitor.mPlanets.size()];
+            }
+            if (homeworlds.find(planet) == homeworlds.end())
             {
                 homeworlds.insert(planet);
                 planet->setPlayer(*it);

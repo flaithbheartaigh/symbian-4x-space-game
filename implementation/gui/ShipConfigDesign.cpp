@@ -168,10 +168,7 @@ ShipConfigDesign::ShipConfigDesign(QWidget * parent)
     topLayout->setContentsMargins(0,0,0,0);
 
     mEditView = new TableView(this);
-    /*
-    ShipConfigModel * shipConfigModel = new ShipConfigModel(mEditView, NULL);
-    mEditView->setModel(shipConfigModel);
-    */
+
     mEditView->setSelectionBehavior(QAbstractItemView::SelectRows);
     mEditView->setSelectionMode(QAbstractItemView::SingleSelection);
     mEditView->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);

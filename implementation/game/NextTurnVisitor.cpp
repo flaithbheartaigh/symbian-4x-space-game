@@ -79,54 +79,7 @@ void NextTurnVisitor::visit(Planet * planet)
 
 void NextTurnVisitor::visit(Ship * ship)
 {
-    /*
-    if (ship->destination().isValid())
-    {
-        bool becameReady = false;
-        bool justArrived = false;
-        bool localTravel = false;
-        if (ship->delayTurns() >= 1)
-        {
-            ship->setDelayTurns(ship->delayTurns() - 1);
-            becameReady = ship->delayTurns() < 1;
-        }
-        else if (ship->arrival() >= 1)
-        {
-            ship->setArrival(ship->arrival() - 1);
-            justArrived = ship->arrival() < 1;
-        }
-        else
-        {
-            localTravel = true;
-        }
-        if (becameReady)
-        {
-            ship->sector()->removeShip(ship);
-            ship->destination().sector()->addShipInTransit(ship); 
-        }
-        if (justArrived)
-        {
-            ship->destination().sector()->removeShipFromTransit(ship); 
-            ship->destination().sector()->addShip(ship);
-            ship->setDelayTurns(0);
-            ship->setArrival(0);
-            ship->setDestination(SectorReference());
-            ship->setMovement(ship->config().maximumMovement());
-        }
-        else if (localTravel)
-        {
-            ship->setMovement(ship->config().maximumMovement());
-        }
-        else
-        {
-            ship->setMovement(0);
-        }
-    }
-    else
-    {*/
-        ship->setMovement(ship->config().maximumMovement());
-    /*}
-    */
+    ship->setMovement(ship->config().maximumMovement());
 }
 
 void NextTurnVisitor::visit(Shipyard * shipyard)

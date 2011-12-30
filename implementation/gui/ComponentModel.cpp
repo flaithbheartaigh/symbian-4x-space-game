@@ -106,7 +106,7 @@ Qt::ItemFlags ComponentModel::flags(const QModelIndex & index) const
     Qt::ItemFlags defaultFlags = QAbstractTableModel::flags(index);
     if (index.isValid())
     {
-        return Qt::ItemIsDragEnabled | /*Qt::ItemIsDropEnabled | */defaultFlags;
+        return Qt::ItemIsDragEnabled | defaultFlags;
     }
     return Qt::ItemIsDropEnabled | defaultFlags;
 }
