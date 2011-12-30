@@ -170,8 +170,6 @@ bool ShipConfigModel::setData(const QModelIndex & index, const QVariant & value,
     {
         ::setData((*mShipConfigs)[index.row()], index.column(), value);
         emit dataChanged(index, index);
-        //static_cast<QTableView *>(QObject::parent())->resizeColumnToContents(index.column());
-        //static_cast<QTableView *>(QObject::parent())->resizeRowToContents(index.row());
         return true;
     }
     return false;
@@ -179,13 +177,12 @@ bool ShipConfigModel::setData(const QModelIndex & index, const QVariant & value,
 
 bool ShipConfigModel::insertRows(int position, int rows, const QModelIndex & index)
 {
-    //position+=1;
     if (mShipConfigs != NULL)
     {
         beginInsertRows(QModelIndex(), position, position+rows-1);
         for (int row = 0; row < rows; ++row) 
         {
-            mShipConfigs->insert(mShipConfigs->begin() + position, Row()/*Game::ShipConfig()*/);
+            mShipConfigs->insert(mShipConfigs->begin() + position, Row());
         }
         endInsertRows();
         return true;
@@ -198,7 +195,6 @@ bool ShipConfigModel::insertRows(int position, int rows, const QModelIndex & ind
 
 bool ShipConfigModel::removeRows(int position, int rows, const QModelIndex & index)
 {
-    //position+=1;
     if (mShipConfigs != NULL)
     {
         beginRemoveRows(QModelIndex(), position, position+rows-1);

@@ -4,11 +4,6 @@
 #include <QFrame>
 
 #include <vector>
-//#include <set>
-/*
-class QBoxLayout;
-class QResizeEvent;
-*/
 
 class QTableView;
 

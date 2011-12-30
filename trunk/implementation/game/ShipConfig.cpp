@@ -107,9 +107,10 @@ int ShipConfig::highestID(Component::Type type) const
     int ID = -1;
     for (std::vector<Component>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
     {
-        if ((*it).type() == type && static_cast<int>((*it).ID()) > ID && !(*it).destroyed())
+        int id = static_cast<int>((*it).ID());
+        if ((*it).type() == type && id > ID && !(*it).destroyed())
         {
-            ID = (*it).ID();
+            ID = id;
         }
     }
     return ID;

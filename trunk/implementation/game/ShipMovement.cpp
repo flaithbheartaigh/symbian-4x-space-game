@@ -40,38 +40,6 @@ namespace
         usleep(250000);
 #endif
     }
-/*
-    void warp(Game::Ship * ship, Game::Sector * destination)
-    {
-        int highestID = ship->config().highestID(Game::Component::StarDrive);
-        if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
-        {
-            float distance = ship->sector()->starSystem()->distance(destination->starSystem());
-            ship->setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
-            ship->setDelayTurns(Game::Technology::instance().starDriveModules()[highestID].delayTurns());
-        }
-        ship->setMovement(0);
-    }
-
-    void move(Game::Ship * ship, Game::Sector * destination)
-    {
-        Game::Sector * next = ship->sector()->nextSectorInPath(destination);
-        if (next != NULL)
-        {
-            //the following two lines modify variable mSector
-            ship->sector()->removeShip(ship);
-            if (ship->movement() >= 1)
-            {
-                ship->setMovement(ship->movement() - 1);
-            }
-            next->addShip(ship, true); 
-            if (next == destination)
-            {
-                ship->setDestination(Game::SectorReference());
-            }
-        }
-    }
-*/
 }
 
 using namespace Game;
@@ -122,31 +90,7 @@ void ShipMovement::setDestination(Sector * sector)
 }
 
 void ShipMovement::run()
-{/*
-    if (mCurrent->starSystem()  mDestination->starSystem())
-    {
-        for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
-        {*/
-            /*
-            Ship * ship = *it;
-            ship->setDelayTurns(0);
-            ship->setArrival(0);
-            ship->setDestination(SectorReference(mDestination));
-            */
-            /*
-            int highestID = ship->config().highestID(Game::Component::StarDrive);
-            if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
-            {
-                float distance = ship->sector()->starSystem()->distance(mDestination->starSystem());
-                ship->setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
-                ship->setDelayTurns(Game::Technology::instance().starDriveModules()[highestID].delayTurns());
-            }
-            ship->setMovement(0);
-            */
- /*       }
-    }
-    else
-    {*/
+{
     std::map<Sector *, std::vector<Ship *> > movementMap;
     do
     {
@@ -160,11 +104,15 @@ void ShipMovement::run()
             Ship * ship = *it;
             if (ship->movement() >= 1 && ship->canMoveTo(ship->destination().sector()))
             {
-                movementMap[ship->sector()->nextSectorInPath(ship->destination().sector())].push_back(ship);
-                ship->sector()->removeShip(ship);
-                if (ship->movement() >= 1)
+                Game::Sector * sector = ship->sector()->nextSectorInPath(ship->destination().sector());
+                if (sector != NULL)
                 {
-                    ship->setMovement(ship->movement() - 1);
+                    movementMap[ship->sector()->nextSectorInPath(ship->destination().sector())].push_back(ship);
+                    ship->sector()->removeShip(ship);
+                    if (ship->movement() >= 1)
+                    {
+                        ship->setMovement(ship->movement() - 1);
+                    }
                 }
             }
         }
@@ -175,146 +123,6 @@ void ShipMovement::run()
         }
     }
     while (!movementMap.empty());
-/*
 
-        bool first = true;
-        bool canStillMove = true;
-        while (canStillMove)
-        {
-            mCurrent = mCurrent->nextSectorInPath(mDestination);
-            if (mCurrent != NULL)
-            {
-                if (!first)
-                {
-                    sleep500();
-                }
-                first = false;
-                std::vector<Ship *> movedShips;
-                for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
-                {
-                    Ship * ship = *it;
-                    ship->setDelayTurns(0);
-                    ship->setArrival(0);
-                    ship->setDestination(SectorReference(mDestination));
-                    if (ship->movement() >= 1 && ship->canMoveTo(mDestination))
-                    {
-                        //the following two lines modify variable mSector
-                        ship->sector()->removeShip(ship);
-                        if (ship->movement() >= 1)
-                        {
-                            ship->setMovement(ship->movement() - 1);
-                        }
-                        movedShips.push_back(ship);
-                        if (mCurrent == mDestination)
-                        {
-                            ship->setDestination(Game::SectorReference());
-                        }
-                    }
-                }
-                mCurrent->addShips(movedShips, true); 
-            }
-      //  }
-    }
-    */
     mShips.clear();
-
-/*
-    for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
-    {
-        Ship * ship = *it;
-        ship->setDelayTurns(0);
-        ship->setArrival(0);
-        ship->setDestination(SectorReference(mDestination));
-
-        if (mCurrent->starSystem() != mDestination->starSystem())
-        {
-            int highestID = ship->config().highestID(Game::Component::StarDrive);
-            if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
-            {
-                float distance = ship->sector()->starSystem()->distance(mDestination->starSystem());
-                ship->setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
-                ship->setDelayTurns(Game::Technology::instance().starDriveModules()[highestID].delayTurns());
-            }
-            ship->setMovement(0);
-        }
-    }
-
-    if (mCurrent->starSystem() == mDestination->starSystem())
-    {
-        bool canMove = true;
-        while (canMove)
-        {
-            for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
-            {
-                if (ship->movement() < 1 || !ship->canMoveTo(mDestination))
-                {
-                    canMove = false;
-                    break;
-                }
-            }
-            if (!canMove)
-            {
-                break;
-            }
-            Game::Sector * next = mCurrent->nextSectorInPath(mDestination);
-            if (next != NULL)
-            {
-                for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
-                {
-                    if (ship->movement() >= 1 && ship->canMoveTo(mDestination))
-                    {
-
-                    }
-                }
-                mCurrent = next;
-            }
-        }
-    }
-*/
-/*
-    for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
-    {
-        Ship * ship = *it;
-        ship->setDelayTurns(0);
-        ship->setArrival(0);
-        ship->setDestination(SectorReference(mDestination));
-        if (ship->sector()->starSystem() != mDestination->starSystem())
-        {
-            int highestID = ship->config().highestID(Game::Component::StarDrive);
-            if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
-            {
-                float distance = ship->sector()->starSystem()->distance(mDestination->starSystem());
-                ship->setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
-                ship->setDelayTurns(Game::Technology::instance().starDriveModules()[highestID].delayTurns());
-            }
-            ship->setMovement(0);
-        }
-        else if (ship->movement() >= 1)
-        {
-            bool first = true;
-            while (ship->canMoveTo(mDestination))
-            {
-                if (!first)
-                {
-                    first = false;
-                    sleep500();
-                }
-                Game::Sector * next = ship->sector()->nextSectorInPath(mDestination);
-                if (next != NULL)
-                {
-                    //the following two lines modify variable mSector
-                    ship->sector()->removeShip(ship);
-                    if (ship->movement() >= 1)
-                    {
-                        ship->setMovement(ship->movement() - 1);
-                    }
-                    next->addShip(ship, true); 
-                    if (next == mDestination)
-                    {
-                        ship->setDestination(Game::SectorReference());
-                    }
-                }
-            }
-        }
-    }*/
 }
