@@ -97,7 +97,7 @@ void SectorCombat::run()
                         bool hit = rand() % (enemy->config().maximumMovement() + 1) == 0;
                         if (hit)
                         {
-                            int damage = (rand() % Technology::instance().weaponModules()[(*itc).ID()].damage()) + 1;
+                            int damage = (rand() % static_cast<int>((*itc).value())/*Technology::instance().weaponModules()[(*itc).ID()].damage())*/ + 1);
                             enemy->damage(damage);
                             if (enemy->hitPoints() <= 0)
                             {

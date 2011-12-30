@@ -76,17 +76,21 @@ Component::~Component()
 Component::Component()
     : mName()
     , mType(Component::None)
+    , mValue(0.0f)
+    /*
     , mID(0)
+    */
     , mHitPoints(0)
     , mDamage(0)
     , mCost(0)
 {
 
 }
-
+/*
 Component::Component(const std::string & name, Component::Type type, unsigned int ID, unsigned int hitPoints, int cost)
     : mName(name)
     , mType(type)
+    , mValue(0.0f)
     , mID(ID)
     , mHitPoints(hitPoints)
     , mDamage(0)
@@ -94,11 +98,11 @@ Component::Component(const std::string & name, Component::Type type, unsigned in
 {
 
 }
-
+*/
 Component::Component(const Component & other)
     : mName(other.mName)
     , mType(other.mType)
-    , mID(other.mID)
+    , mValue(other.mValue)
     , mHitPoints(other.mHitPoints)
     , mDamage(other.mDamage)
     , mCost(other.mCost)
@@ -112,7 +116,7 @@ Component & Component::operator =(const Component & other)
     {
         mName = other.mName;
         mType = other.mType;
-        mID = other.mID;
+        mValue = other.mValue;
         mHitPoints = other.mHitPoints;
         mDamage = other.mDamage;
         mCost = other.mCost;
@@ -126,7 +130,7 @@ bool Component::operator ==(const Component & other)
     {
         return true;
     }
-    if (mName != other.mName || mType != other.mType || mID != other.mID)
+    if (mName != other.mName || mType != other.mType || mValue != other.mValue)
     {
         return false;
     }
@@ -162,7 +166,7 @@ void Component::setTypeIndex(int type)
 {
     mType = Component::Type(type);
 }
-
+/*
 unsigned int Component::ID() const
 {
     return mID;
@@ -171,6 +175,16 @@ unsigned int Component::ID() const
 void Component::setID(unsigned int ID)
 {
     mID = ID;
+}
+*/
+float Component::value() const
+{
+    return mValue;
+}
+
+void Component::setValue(float value)
+{
+    mValue = value;
 }
 
 unsigned int Component::hitPoints() const

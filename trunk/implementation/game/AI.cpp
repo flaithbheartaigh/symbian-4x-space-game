@@ -38,11 +38,11 @@ namespace
         Game::Component component_;
         for (std::vector<Game::Component>::const_iterator it = components.begin(); it != components.end(); ++it)
         {
-            int id = static_cast<int>((*it).ID());
-            if ((*it).type() == type && id > ID)
+            //int id = static_cast<int>((*it).ID());
+            if ((*it).type() == type/* && id > ID*/)
             {
                 component_ = (*it);
-                ID = id;
+                //ID = id;
             }
         }
         return component_;

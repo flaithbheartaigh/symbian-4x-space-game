@@ -202,6 +202,14 @@ void TechnologyPanel::loadComponents()
     }
 
     std::vector<Game::Component> components;
+    for (unsigned int i = 0; i < Game::Technology::instance().components().size(); ++i)
+    {
+        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().components()[i]) == mSelectedComponents.end())
+        {
+            components.push_back(Game::Technology::instance().components()[i]);
+        }
+    }
+    /*
     for (unsigned int i = 0; i < Game::Technology::instance().engineModules().size(); ++i)
     {
         if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().engineModules()[i].component()) == mSelectedComponents.end())
@@ -230,6 +238,7 @@ void TechnologyPanel::loadComponents()
             components.push_back(Game::Technology::instance().colonyModules()[i].component());
         }
     }
+    */
     mAvailableComponents = components;
 
     delete mListView->model();

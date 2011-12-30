@@ -51,10 +51,15 @@ namespace Game
         void setType(Component::Type type);
 
         void setTypeIndex(int type);
-
+/*
         unsigned int ID() const;
 
         void setID(unsigned int ID);
+*/
+
+        float value() const;
+
+        void setValue(float value);
 
         unsigned int hitPoints() const;
 
@@ -80,8 +85,10 @@ namespace Game
 
         Component::Type mType;
 
+        float mValue;
+/*
         unsigned int mID;
-
+*/
         unsigned int mHitPoints;
 
         unsigned int mDamage;
