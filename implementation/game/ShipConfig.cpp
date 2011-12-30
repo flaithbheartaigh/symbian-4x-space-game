@@ -101,7 +101,7 @@ std::vector<Component> ShipConfig::components(Component::Type type) const
     }
     return ret;
 }
-
+/*
 int ShipConfig::highestID(Component::Type type) const
 {
     int ID = -1;
@@ -128,7 +128,7 @@ int ShipConfig::lowestID(Component::Type type) const
     }
     return ID;
 }
-
+*/
 int ShipConfig::cost() const
 {
     int cost = 0;
@@ -145,7 +145,7 @@ unsigned int ShipConfig::maximumMovement() const
     std::vector<Component> comps = components(Component::Engine);
     for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
     {
-        maximum += Technology::instance().engineModules()[(*it).ID()].speed();
+        maximum += (*it).value();//Technology::instance().engineModules()[(*it).ID()].speed();
     }
     return maximum;
 }
@@ -156,7 +156,7 @@ float ShipConfig::maximumPopulation() const
     std::vector<Component> comps = components(Component::Colony);
     for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
     {
-        maximum += Technology::instance().colonyModules()[(*it).ID()].population();
+        maximum += (*it).value();//Technology::instance().colonyModules()[(*it).ID()].population();
     }
     return maximum;
 }

@@ -77,6 +77,7 @@ void ShipMovement::setDestination(Sector * sector)
             (*it)->setDestination(sector);
             if (sector->starSystem() != (*it)->sector()->starSystem())
             {
+                /*
                 int highestID = (*it)->config().highestID(Game::Component::StarDrive);
                 if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
                 {
@@ -84,6 +85,7 @@ void ShipMovement::setDestination(Sector * sector)
                     (*it)->setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
                     (*it)->setMovement(0);
                 }
+                */
             }
         }
     }

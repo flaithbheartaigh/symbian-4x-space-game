@@ -2,156 +2,132 @@
    "Author" : "Patrick Pelletier",
    "Content" : 
    {
-      "ColonyModules" : [
+      "Components" : [
          {
-            "ID" : 0,
             "Name" : "Colony Module I",
             "Type" : 2,
             "HitPoints" : 4,
             "Cost" : 10,
-            "Population" : 10.0
+            "Value" : 10.0
          },
          {
-            "ID" : 1,
             "Name" : "Colony Module II",
             "Type" : 2,
             "HitPoints" : 4,
             "Cost" : 20,
-            "Population" : 50.0
+            "Value" : 50.0
          },
          {
-            "ID" : 2,
             "Name" : "Colony Module III",
             "Type" : 2,
             "HitPoints" : 4,
             "Cost" : 40,
-            "Population" : 200.0
+            "Value" : 200.0
          },
          {
-            "ID" : 3,
             "Name" : "Colony Module IV",
             "Type" : 2,
             "HitPoints" : 4,
             "Cost" : 80,
-            "Population" : 500.0
-         }
-      ],
-      "StarDriveModules" : [
+            "Value" : 500.0
+         },
          {
-            "ID" : 0,
             "Name" : "Star Drive I",
             "Type" : 1,
             "HitPoints" : 4,
             "Cost" : 10,
-            "TravelSpeed" : 0.1
+            "Value" : 0.1
          },
          {
-            "ID" : 1,
             "Name" : "Star Drive II",
             "Type" : 1,
             "HitPoints" : 4,
             "Cost" : 20,
-            "TravelSpeed" : 0.2
+            "Value" : 0.2
          },
          {
-            "ID" : 2,
             "Name" : "Star Drive III",
             "Type" : 1,
             "HitPoints" : 4,
             "Cost" : 40,
-            "TravelSpeed" : 0.4
+            "Value" : 0.4
          },
          {
-            "ID" : 3,
             "Name" : "Star Drive IV",
             "Type" : 1,
             "HitPoints" : 4,
             "Cost" : 80,
-            "TravelSpeed" : 0.8
+            "Value" : 0.8
          },
          {
-            "ID" : 4,
             "Name" : "Star Drive V",
             "Type" : 1,
             "HitPoints" : 4,
             "Cost" : 160,
-            "TravelSpeed" : 1.6
-         }
-      ],
-      "EngineModules" : [
+            "Value" : 1.6
+         },
          {
-            "ID" : 0,
             "Name" : "Ion Engine I",
             "Type" : 3,
             "HitPoints" : 4,
             "Cost" : 80,
-            "Speed" : 1
+            "Value" : 1.0
          },
          {
-            "ID" : 1,
             "Name" : "Ion Engine II",
             "Type" : 3,
             "HitPoints" : 4,
             "Cost" : 40,
-            "Speed" : 1
+            "Value" : 1.0
          },
          {
-            "ID" : 2,
             "Name" : "Ion Engine III",
             "Type" : 3,
             "HitPoints" : 4,
             "Cost" : 20,
-            "Speed" : 1
+            "Value" : 1.0
          },
          {
-            "HitPoints" : 4,
             "Name" : "Ion Engine IV",
             "Type" : 3,
-            "ID" : 3,
+            "HitPoints" : 4,
             "Cost" : 10,
-            "Speed" : 1
+            "Value" : 1.0
          },
          {
-            "ID" : 4,
             "Name" : "Ion Engine V",
             "Type" : 3,
             "HitPoints" : 4,
             "Cost" : 80,
-            "Speed" : 2
-         }
-      ],
-      "WeaponModules" : [
+            "Value" : 2.0
+         },
          {
-            "ID" : 0,
             "Name" : "Laser Beam I",
             "Type" : 4,
             "HitPoints" : 4,
             "Cost" : 10,       
-            "Damage" : 1
+            "Value" : 1.0
          },
          {
-            "ID" : 1,
             "Name" : "Laser Beam II",
             "Type" : 4,
             "HitPoints" : 4,
             "Cost" : 20,       
-            "Damage" : 2
+            "Value" : 2.0
          },
          {
-            "ID" : 2,
             "Name" : "Laser Beam III",
             "Type" : 4,
             "HitPoints" : 4,
             "Cost" : 40,       
-            "Damage" : 3
+            "Value" : 3.0
          },
          {
-            "ID" : 3,
             "Name" : "Laser Beam IV",
             "Type" : 4,
             "HitPoints" : 4,
             "Cost" : 80,       
-            "Damage" : 4
+            "Value" : 4.0
          }
       ]   	  
    },

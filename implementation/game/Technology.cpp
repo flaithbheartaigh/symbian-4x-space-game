@@ -22,7 +22,7 @@
 #include <limits>
 
 using namespace Game;
-
+/*
 Technology::ColonyModule::~ColonyModule()
 {
 
@@ -243,7 +243,7 @@ Component & Technology::WeaponModule::component()
 {
     return mComponent;
 }
-
+*/
 Technology * Technology::_instance = NULL;
 
 Technology & Technology::instance()
@@ -259,7 +259,7 @@ Technology::~Technology()
 {
     _instance = NULL;
 }
-
+/*
 const std::vector<Technology::ColonyModule> & Technology::colonyModules() const
 {
     return mColonyModules;
@@ -299,12 +299,23 @@ void Technology::setWeaponModules(const std::vector<WeaponModule> & weaponModule
 {
     mWeaponModules = weaponModules;
 }
+*/
+const std::vector<Component> & Technology::components() const
+{
+    return mComponents;
+}
+
+void Technology::setComponents(const std::vector<Component> & components)
+{
+    mComponents = components;
+}
 
 Technology::Technology()
-    : mColonyModules()
+    : mComponents()
+    /*mColonyModules()
     , mStarDriveModules()
     , mEngineModules()
-    , mWeaponModules()
+    , mWeaponModules()*/
 {
 
 }

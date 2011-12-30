@@ -12,7 +12,7 @@ namespace Game
     {
 
     public:
-
+/*
         class ColonyModule
         {
 
@@ -130,11 +130,11 @@ namespace Game
             unsigned int mDamage;
 
         };
-
+*/
         static Technology & instance();
 
         ~Technology();
-
+/*
         const std::vector<ColonyModule> & colonyModules() const;
 
         void setColonyModules(const std::vector<ColonyModule> & colonyModules);
@@ -150,9 +150,13 @@ namespace Game
         const std::vector<WeaponModule> & weaponModules() const;
 
         void setWeaponModules(const std::vector<WeaponModule> & weaponModules);
+*/
+        const std::vector<Component> & components() const;
+
+        void setComponents(const std::vector<Component> & components);
 
     private:
-
+/*
         std::vector<ColonyModule> mColonyModules;
 
         std::vector<StarDriveModule> mStarDriveModules;
@@ -160,6 +164,8 @@ namespace Game
         std::vector<EngineModule> mEngineModules;
 
         std::vector<WeaponModule> mWeaponModules;
+*/
+        std::vector<Component> mComponents;
 
         static Technology * _instance;
 
