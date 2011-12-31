@@ -101,34 +101,7 @@ std::vector<Component> ShipConfig::components(Component::Type type) const
     }
     return ret;
 }
-/*
-int ShipConfig::highestID(Component::Type type) const
-{
-    int ID = -1;
-    for (std::vector<Component>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
-    {
-        int id = static_cast<int>((*it).ID());
-        if ((*it).type() == type && id > ID && !(*it).destroyed())
-        {
-            ID = id;
-        }
-    }
-    return ID;
-}
 
-int ShipConfig::lowestID(Component::Type type) const
-{
-    int ID = -1;
-    for (std::vector<Component>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
-    {
-        if ((*it).type() == type && (ID < 0 || static_cast<int>((*it).ID()) < ID) && !(*it).destroyed())
-        {
-            ID = (*it).ID();
-        }
-    }
-    return ID;
-}
-*/
 int ShipConfig::cost() const
 {
     int cost = 0;
@@ -145,7 +118,7 @@ unsigned int ShipConfig::maximumMovement() const
     std::vector<Component> comps = components(Component::Engine);
     for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
     {
-        maximum += (*it).value();//Technology::instance().engineModules()[(*it).ID()].speed();
+        maximum += static_cast<int>((*it).value());
     }
     return maximum;
 }
@@ -156,7 +129,7 @@ float ShipConfig::maximumPopulation() const
     std::vector<Component> comps = components(Component::Colony);
     for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
     {
-        maximum += (*it).value();//Technology::instance().colonyModules()[(*it).ID()].population();
+        maximum += (*it).value();
     }
     return maximum;
 }

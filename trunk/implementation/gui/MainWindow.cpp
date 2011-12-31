@@ -220,7 +220,7 @@ namespace
                     Gui::UniversePainter painter;
                     QPainter p(&pixmap);   
                     p.translate(56/2,56/2);
-                    painter.paintBadge(&p, player, pixmap.size(), false);
+                    painter.paintBadge(&p, player, pixmap.size());
                     p.end(); 
 
                     mPixmapCache[Game::Universe::instance().game().playerIndex(player)] = QPixmapCache::insert(pixmap);
