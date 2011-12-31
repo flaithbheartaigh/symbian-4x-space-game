@@ -32,8 +32,6 @@ namespace Game
 
         Component();
 
-        Component(const std::string & name, Component::Type type, unsigned int ID, unsigned int hitPoints, int cost);
-
         Component(const Component & other);
         
         Component & operator =(const Component & other);
@@ -51,11 +49,6 @@ namespace Game
         void setType(Component::Type type);
 
         void setTypeIndex(int type);
-/*
-        unsigned int ID() const;
-
-        void setID(unsigned int ID);
-*/
 
         float value() const;
 
@@ -86,9 +79,7 @@ namespace Game
         Component::Type mType;
 
         float mValue;
-/*
-        unsigned int mID;
-*/
+
         unsigned int mHitPoints;
 
         unsigned int mDamage;

@@ -66,7 +66,9 @@ void UniversePainter::paintShip(QPainter * painter, Game::Ship * ship, const QSi
         QPointF posRect(-size.width() / 2.0f + column * size.width() / 4.0f + sizeRect.width() / 2.0f, -size.height() / 2.0f + row * size.height() / 4.0f + sizeRect.height() / 2.0f);
 
         painter->translate(posRect);
-        paintBadge(painter, ship->player(), sizeRect, false);
+        painter->setOpacity(ship->isInTransit() ? 0.6 : 1.0);
+        paintBadge(painter, ship->player(), sizeRect);
+        painter->setOpacity(1.0);
         painter->translate(-posRect);
     }
 }
@@ -202,7 +204,9 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
             {
                 if (oneShipPerPlayer.size() == 1 && sector->star() == NULL && sector->planet() == NULL)
                 {
-                    paintBadge(painter, oneShipPerPlayer.begin()->first, size, oneShipPerPlayer.begin()->second->isInTransit());
+                    painter->setOpacity(oneShipPerPlayer.begin()->second->isInTransit() ? 0.6 : 1.0);
+                    paintBadge(painter, oneShipPerPlayer.begin()->first, size);
+                    painter->setOpacity(1.0);
                 }
                 else
                 {
@@ -220,7 +224,9 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
                 {
                     if ((*it).first == Game::Universe::instance().game().currentPlayer())
                     {
-                        paintBadge(painter, (*it).first, size, (*it).second->isInTransit());
+                        painter->setOpacity((*it).second->isInTransit() ? 0.6 : 1.0);
+                        paintBadge(painter, (*it).first, size);
+                        painter->setOpacity(1.0);
                         break;
                     }
                 }
@@ -243,7 +249,7 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
     }
 }
 
-void UniversePainter::paintBadge(QPainter * painter, Game::Player * player, const QSizeF & size, bool translucent)
+void UniversePainter::paintBadge(QPainter * painter, Game::Player * player, const QSizeF & size/*, bool translucent*/)
 {
     if (painter != NULL)
     {
@@ -258,11 +264,13 @@ void UniversePainter::paintBadge(QPainter * painter, Game::Player * player, cons
 
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize));
+            /*
             if (translucent)
             {
                 painter->setPen(QColor(Qt::white));
                 painter->drawText(QRectF(-QPointF(badgeSize.width()/2.0f, badgeSize.height() / 2.0f), badgeSize), "T");
             }
+            */
         }
     }
 }

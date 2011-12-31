@@ -209,36 +209,6 @@ void TechnologyPanel::loadComponents()
             components.push_back(Game::Technology::instance().components()[i]);
         }
     }
-    /*
-    for (unsigned int i = 0; i < Game::Technology::instance().engineModules().size(); ++i)
-    {
-        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().engineModules()[i].component()) == mSelectedComponents.end())
-        {
-            components.push_back(Game::Technology::instance().engineModules()[i].component());
-        }
-    }
-    for (unsigned int i = 0; i < Game::Technology::instance().weaponModules().size(); ++i)
-    {
-        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().weaponModules()[i].component()) == mSelectedComponents.end())
-        {
-            components.push_back(Game::Technology::instance().weaponModules()[i].component());
-        }
-    }
-    for (unsigned int i = 0; i < Game::Technology::instance().starDriveModules().size(); ++i)
-    {
-        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().starDriveModules()[i].component()) == mSelectedComponents.end())
-        {
-            components.push_back(Game::Technology::instance().starDriveModules()[i].component());
-        }
-    }
-    for (unsigned int i = 0; i < Game::Technology::instance().colonyModules().size(); ++i)
-    {
-        if (std::find(mSelectedComponents.begin(), mSelectedComponents.end(), Game::Technology::instance().colonyModules()[i].component()) == mSelectedComponents.end())
-        {
-            components.push_back(Game::Technology::instance().colonyModules()[i].component());
-        }
-    }
-    */
     mAvailableComponents = components;
 
     delete mListView->model();

@@ -34,11 +34,7 @@ namespace Game
         bool has(Component::Type type) const;
 
         std::vector<Component> components(Component::Type type) const;
-/*
-        int highestID(Component::Type type) const;
 
-        int lowestID(Component::Type type) const;
-*/
         int cost() const;
 
         unsigned int maximumMovement() const;

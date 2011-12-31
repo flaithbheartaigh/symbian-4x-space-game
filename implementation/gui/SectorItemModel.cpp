@@ -359,7 +359,9 @@ QVariant SectorItemModel::data(const QModelIndex & index, int role) const
                                 Gui::UniversePainter painter;
                                 QPainter p(&pixmap);   
                                 p.translate(24/2,24/2);
-                                painter.paintBadge(&p, player, pixmap.size(), false);
+                                p.setOpacity(0.6);
+                                painter.paintBadge(&p, player, pixmap.size());
+                                p.setOpacity(1.0);
                                 p.end(); 
 
                                 mPixmapCache[Game::Universe::instance().game().playerIndex(player)] = QPixmapCache::insert(pixmap);
@@ -380,7 +382,7 @@ QVariant SectorItemModel::data(const QModelIndex & index, int role) const
                                 Gui::UniversePainter painter;
                                 QPainter p(&pixmap);   
                                 p.translate(24/2,24/2);
-                                painter.paintBadge(&p, player, pixmap.size(), true);
+                                painter.paintBadge(&p, player, pixmap.size());
                                 p.end(); 
 
                                 mPixmapCache[Game::Universe::instance().game().playerIndex(player)] = QPixmapCache::insert(pixmap);

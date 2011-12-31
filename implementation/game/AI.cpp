@@ -32,20 +32,17 @@
 
 namespace
 {
-    Game::Component component(const std::vector<Game::Component> & components, Game::Component::Type type) 
+    Game::Component bestComponent(const std::vector<Game::Component> & components, Game::Component::Type type) 
     {
-        int ID = -1;
-        Game::Component component_;
-        for (std::vector<Game::Component>::const_iterator it = components.begin(); it != components.end(); ++it)
+        Game::Component component;
+        for (std::vector<Game::Component>::const_reverse_iterator it = components.rbegin(); it != components.rend(); ++it)
         {
-            //int id = static_cast<int>((*it).ID());
-            if ((*it).type() == type/* && id > ID*/)
+            if ((*it).type() == type)
             {
-                component_ = (*it);
-                //ID = id;
+                component = (*it);
             }
         }
-        return component_;
+        return component;
     }
 
     std::multimap<float, Game::StarSystem *> distances(Game::StarSystem * start) 
@@ -60,33 +57,33 @@ namespace
 
     bool canColonizeLocal(Game::Player * player)
     {
-        Game::Component engine = component(player->components(), Game::Component::Engine);
-        Game::Component colony = component(player->components(), Game::Component::Colony);
+        Game::Component engine = bestComponent(player->components(), Game::Component::Engine);
+        Game::Component colony = bestComponent(player->components(), Game::Component::Colony);
 
         return engine.type() != Game::Component::None && colony.type() != Game::Component::None;
     }
 
     bool canColonizeRemote(Game::Player * player)
     {
-        Game::Component engine = component(player->components(), Game::Component::Engine);
-        Game::Component colony = component(player->components(), Game::Component::Colony);
-        Game::Component starDrive = component(player->components(), Game::Component::StarDrive);
+        Game::Component engine = bestComponent(player->components(), Game::Component::Engine);
+        Game::Component colony = bestComponent(player->components(), Game::Component::Colony);
+        Game::Component starDrive = bestComponent(player->components(), Game::Component::StarDrive);
 
         return engine.type() != Game::Component::None && colony.type() != Game::Component::None && starDrive.type() != Game::Component::None;
     }
 
     bool canExplore(Game::Player * player)
     {
-        Game::Component engine = component(player->components(), Game::Component::Engine);
-        Game::Component starDrive = component(player->components(), Game::Component::StarDrive);
+        Game::Component engine = bestComponent(player->components(), Game::Component::Engine);
+        Game::Component starDrive = bestComponent(player->components(), Game::Component::StarDrive);
 
         return engine.type() != Game::Component::None && starDrive.type() != Game::Component::None;
     }
 
     Game::ShipConfig colonyLocal(Game::Player * player)
     {
-        Game::Component engine = component(player->components(), Game::Component::Engine);
-        Game::Component colony = component(player->components(), Game::Component::Colony);
+        Game::Component engine = bestComponent(player->components(), Game::Component::Engine);
+        Game::Component colony = bestComponent(player->components(), Game::Component::Colony);
 
         Game::ShipConfig config;
         config.setName("Colony");
@@ -98,9 +95,9 @@ namespace
 
     Game::ShipConfig colonyRemote(Game::Player * player)
     {
-        Game::Component engine = component(player->components(), Game::Component::Engine);
-        Game::Component colony = component(player->components(), Game::Component::Colony);
-        Game::Component starDrive = component(player->components(), Game::Component::StarDrive);
+        Game::Component engine = bestComponent(player->components(), Game::Component::Engine);
+        Game::Component colony = bestComponent(player->components(), Game::Component::Colony);
+        Game::Component starDrive = bestComponent(player->components(), Game::Component::StarDrive);
 
         Game::ShipConfig config;
         config.setName("Colony X");
@@ -113,8 +110,8 @@ namespace
 
     Game::ShipConfig explorer(Game::Player * player)
     {
-        Game::Component engine = component(player->components(), Game::Component::Engine);
-        Game::Component starDrive = component(player->components(), Game::Component::StarDrive);
+        Game::Component engine = bestComponent(player->components(), Game::Component::Engine);
+        Game::Component starDrive = bestComponent(player->components(), Game::Component::StarDrive);
 
         Game::ShipConfig config;
         config.setName("Explorer");
@@ -221,29 +218,22 @@ void NPC::run()
         }
     }
 
-
-
     Game::ShipMovement shipMovement;
-    //shipMovement.addShips(mSector.sector());
-
     for (std::vector<Ship *>::iterator it = visitor.mShips.begin(); it != visitor.mShips.end(); ++it)
     {
         bool somethingApplies = false;
         if ((*it)->config().has(Component::Colony) && (*it)->population() > 0.0)
         {
             if ((*it)->canColonize())
-            //if (((*it)->sector()->planet() != NULL && (*it)->sector()->planet()->player() == NULL))
             {
-            //    if ((*it)->canColonize())
-                {
-                    (*it)->colonize();
-                    somethingApplies = true;
-                }
+                (*it)->colonize();
+                somethingApplies = true;
             }
         }
         if ((*it)->damage() > 0)
         {
             //repair(ship);
+            //somethingApplies = true;
         }
         else if (!(*it)->destination().isValid())
         {
@@ -261,7 +251,10 @@ void NPC::run()
                                 {
                                     if ((*it)->canMoveTo(*sit))
                                     {
-                                        (*it)->setDestination(*sit);
+                                        Game::ShipMovement shipDestination;
+                                        shipDestination.addShip(*it);
+                                        shipDestination.setDestination(*sit);
+
                                         shipMovement.addShip(*it);
                                         somethingApplies = true;
                                         break;
@@ -284,9 +277,13 @@ void NPC::run()
                 {
                     if (!player()->knows((*it2).second))
                     {
-                        if ((*it)->canMoveTo(SectorReference((*it2).second, 1, 1).sector()))
+                        Sector * sector = SectorReference((*it2).second, 1, 1).sector();
+                        if ((*it)->canMoveTo(sector))
                         {
-                            (*it)->setDestination(SectorReference((*it2).second, 1, 1).sector());
+                            Game::ShipMovement shipDestination;
+                            shipDestination.addShip(*it);
+                            shipDestination.setDestination(sector);
+
                             shipMovement.addShip(*it);
                             break;
                         }

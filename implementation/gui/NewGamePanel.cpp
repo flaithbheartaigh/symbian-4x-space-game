@@ -84,25 +84,16 @@ NewGamePanel::NewGamePanel(QWidget * parent)
             std::vector<std::string> playerNames;
             Data::NamesData("empires.json", &playerNames, Data::NamesData::Load);
             std::vector<Game::Component> components;
-/*
-            for (unsigned int i = 0; i < 1; ++i)
-            {
-                components.push_back(Game::Technology::instance().engineModules()[i].component());
-            }
-            for (unsigned int i = 0; i < 1; ++i)
-            {
-                components.push_back(Game::Technology::instance().weaponModules()[i].component());
-            }
-            for (unsigned int i = 0; i < 1; ++i)
-            {
-                components.push_back(Game::Technology::instance().starDriveModules()[i].component());
-            }
-            for (unsigned int i = 0; i < 1; ++i)
-            {
-                components.push_back(Game::Technology::instance().colonyModules()[i].component());
-            }
-*/
 
+            Game::Component::Type type = Game::Component::None;
+            for (unsigned int i = 0; i < Game::Technology::instance().components().size(); ++i)
+            {
+                if (type != Game::Technology::instance().components()[i].type())
+                {
+                    type = Game::Technology::instance().components()[i].type();
+                    components.push_back(Game::Technology::instance().components()[i]);
+                }
+            }
 
             {
                 Game::Universe::instance().clear();

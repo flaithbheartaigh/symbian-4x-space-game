@@ -173,17 +173,6 @@ namespace
     // Technology
     void serialize(const Game::Technology & technology, Json::Value & value)
     {
-        /*
-        static const char * PROPERTY_COLONYMODULES = "ColonyModules";
-        static const char * PROPERTY_STARDRIVEMODULES = "StarDriveModules";
-        static const char * PROPERTY_ENGINEMODULES = "EngineModules";
-        static const char * PROPERTY_WEAPONMODULES = "WeaponModules";
-
-        serialize(technology.colonyModules(), value[PROPERTY_COLONYMODULES]);
-        serialize(technology.starDriveModules(), value[PROPERTY_STARDRIVEMODULES]);
-        serialize(technology.engineModules(), value[PROPERTY_ENGINEMODULES]);
-        serialize(technology.weaponModules(), value[PROPERTY_WEAPONMODULES]);
-        */
         static const char * PROPERTY_COMPONENTS = "Components";
 
         serialize(technology.components(), value[PROPERTY_COMPONENTS]);
@@ -191,86 +180,11 @@ namespace
 
     void deserialize(const Json::Value & value, Game::Technology & technology)
     {
-/*
-        static const char * PROPERTY_COLONYMODULES = "ColonyModules";
-        static const char * PROPERTY_STARDRIVEMODULES = "StarDriveModules";
-        static const char * PROPERTY_ENGINEMODULES = "EngineModules";
-        static const char * PROPERTY_WEAPONMODULES = "WeaponModules";
-        
-        deserializeObject(value[PROPERTY_COLONYMODULES], technology, &Game::Technology::setColonyModules);
-        deserializeObject(value[PROPERTY_STARDRIVEMODULES], technology, &Game::Technology::setStarDriveModules);
-        deserializeObject(value[PROPERTY_ENGINEMODULES], technology, &Game::Technology::setEngineModules);
-        deserializeObject(value[PROPERTY_WEAPONMODULES], technology, &Game::Technology::setWeaponModules);
-*/
         static const char * PROPERTY_COMPONENTS = "Components";
 
         deserializeObject(value[PROPERTY_COMPONENTS], technology, &Game::Technology::setComponents);
     }
-/*
-    void serialize(const Game::Technology::ColonyModule & colonyModule, Json::Value & value)
-    {
-        static const char * PROPERTY_COLONYMODULE_POPULATION = "Population";
-        
-        serialize(colonyModule.component(), value);
-        serialize(colonyModule.population(), value[PROPERTY_COLONYMODULE_POPULATION]);
-    }
 
-    void deserialize(const Json::Value & value, Game::Technology::ColonyModule & colonyModule)
-    {
-        static const char * PROPERTY_COLONYMODULE_POPULATION = "Population";
-
-        deserialize(value, colonyModule.component());
-        deserializeValue(value[PROPERTY_COLONYMODULE_POPULATION], colonyModule, &Game::Technology::ColonyModule::setPopulation);
-    }
-
-    void serialize(const Game::Technology::StarDriveModule & starDriveModule, Json::Value & value)
-    {
-        static const char * PROPERTY_STARDRIVEMODULE_TRAVELSPEED = "TravelSpeed";
-
-        serialize(starDriveModule.component(), value);
-        serialize(starDriveModule.travelSpeed(), value[PROPERTY_STARDRIVEMODULE_TRAVELSPEED]);
-    }
-
-    void deserialize(const Json::Value & value, Game::Technology::StarDriveModule & starDriveModule)
-    {
-        static const char * PROPERTY_STARDRIVEMODULE_TRAVELSPEED = "TravelSpeed";
-
-        deserialize(value, starDriveModule.component());
-        deserializeValue(value[PROPERTY_STARDRIVEMODULE_TRAVELSPEED], starDriveModule, &Game::Technology::StarDriveModule::setTravelSpeed);
-    }
-
-    void serialize(const Game::Technology::EngineModule & engineModule, Json::Value & value)
-    {
-        static const char * PROPERTY_ENGINEMODULE_SPEED = "Speed";
-
-        serialize(engineModule.component(), value);
-        serialize(engineModule.speed(), value[PROPERTY_ENGINEMODULE_SPEED]);
-    }
-
-    void deserialize(const Json::Value & value, Game::Technology::EngineModule & engineModule)
-    {
-        static const char * PROPERTY_ENGINEMODULE_SPEED = "Speed";
-
-        deserialize(value, engineModule.component());
-        deserializeValue(value[PROPERTY_ENGINEMODULE_SPEED], engineModule, &Game::Technology::EngineModule::setSpeed);
-    }
-
-    void serialize(const Game::Technology::WeaponModule & weaponModule, Json::Value & value)
-    {
-        static const char * PROPERTY_WEAPONMODULE_DAMAGE = "Damage";
-
-        serialize(weaponModule.component(), value);
-        serialize(weaponModule.damage(), value[PROPERTY_WEAPONMODULE_DAMAGE]);
-    }
-
-    void deserialize(const Json::Value & value, Game::Technology::WeaponModule & weaponModule)
-    {
-        static const char * PROPERTY_WEAPONMODULE_DAMAGE = "Damage";
-
-        deserialize(value, weaponModule.component());
-        deserializeValue(value[PROPERTY_WEAPONMODULE_DAMAGE], weaponModule, &Game::Technology::WeaponModule::setDamage);
-    }
-*/
     // Universe
     void serialize(const Game::ShipConfig & shipConfig, Json::Value & value)
     {
