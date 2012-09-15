@@ -134,6 +134,17 @@ float ShipConfig::maximumPopulation() const
     return maximum;
 }
 
+float ShipConfig::starDriveSpeed() const
+{
+    float speed = 0.0f;
+    std::vector<Component> comps = components(Component::StarDrive);
+    for (std::vector<Component>::const_iterator it = comps.begin(); it != comps.end(); ++it)
+    {
+        speed += (*it).value();
+    }
+    return speed;
+}
+
 unsigned int ShipConfig::maximumHitPoints() const
 {
     unsigned int hitPoints = 0;

@@ -248,7 +248,7 @@ namespace
         static const char * PROPERTY_POPULATION = "Population";
         static const char * PROPERTY_MOVEMENT = "Movement";
         static const char * PROPERTY_DESTINATION = "Destination";
-        static const char * PROPERTY_ARRIVALS = "Arrival";
+        static const char * PROPERTY_ARRIVAL = "Arrival";
         static const char * PROPERTY_SHIPCONFIG = "ShipConfig";
 
         serialize(ship.name(), value[PROPERTY_NAME]);
@@ -257,7 +257,7 @@ namespace
         serialize(ship.population(), value[PROPERTY_POPULATION]);
         serialize(ship.movement(), value[PROPERTY_MOVEMENT]);
         serialize(ship.destination(), value[PROPERTY_DESTINATION]);
-        serialize(ship.arrival(), value[PROPERTY_ARRIVALS]);
+        serialize(ship.arrival(), value[PROPERTY_ARRIVAL]);
         serialize(ship.config(), value[PROPERTY_SHIPCONFIG]);
     }
 
@@ -269,7 +269,7 @@ namespace
         static const char * PROPERTY_POPULATION = "Population";
         static const char * PROPERTY_MOVEMENT = "Movement";
         static const char * PROPERTY_DESTINATION = "Destination";
-        static const char * PROPERTY_ARRIVALS = "Arrival";
+        static const char * PROPERTY_ARRIVAL = "Arrival";
         static const char * PROPERTY_SHIPCONFIG = "ShipConfig";
 
         deserializeObject(value[PROPERTY_NAME], ship, &Game::Ship::setName);
@@ -278,7 +278,7 @@ namespace
         deserializeValue(value[PROPERTY_POPULATION], ship, &Game::Ship::setPopulation);
         deserializeValue(value[PROPERTY_MOVEMENT], ship, &Game::Ship::setMovement);
         deserializeObject(value[PROPERTY_DESTINATION], ship, &Game::Ship::setDestination);
-        deserializeValue(value[PROPERTY_ARRIVALS], ship, &Game::Ship::setArrival);
+        deserializeValue(value[PROPERTY_ARRIVAL], ship, &Game::Ship::setArrival);
         deserializeObject(value[PROPERTY_SHIPCONFIG], ship, &Game::Ship::setConfig);
     }
 

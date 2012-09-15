@@ -27,6 +27,7 @@
 #include <game/Sector.h>
 #include <game/Ship.h>
 #include <game/ShipConfig.h>
+#include <game/Messages.h>
 
 #include <QBoxLayout>
 #include <QTableView>
@@ -75,13 +76,20 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
             {
                 for (std::vector<ShipConfigModel::Row>::iterator it = mShipConfigBuild->shipConfigs().begin(); it!= mShipConfigBuild->shipConfigs().end(); ++it)
                 {
-                    while ((*it).count > 0 && (*it).config.cost() <= Game::Universe::instance().game().currentPlayer()->money())
+                    while ((*it).count > 0)
                     {
-                        --(*it).count;
-                        Game::Universe::instance().game().currentPlayer()->setMoney(Game::Universe::instance().game().currentPlayer()->money() - (*it).config.cost());
-                        Game::Ship * ship = new Game::Ship(mShipConfigBuild->sector(), (*it).config);
-                        ship->setPlayer(Game::Universe::instance().game().currentPlayer());
-                        mShipConfigBuild->sector()->addShip(ship);
+                        if ((*it).config.cost() <= Game::Universe::instance().game().currentPlayer()->money())
+                        {
+                            --(*it).count;
+                            Game::Universe::instance().game().currentPlayer()->setMoney(Game::Universe::instance().game().currentPlayer()->money() - (*it).config.cost());
+                            Game::Ship * ship = new Game::Ship(mShipConfigBuild->sector(), (*it).config);
+                            ship->setPlayer(Game::Universe::instance().game().currentPlayer());
+                            mShipConfigBuild->sector()->addShip(ship);
+                        }
+                        else
+                        {
+                            Game::Messages::instance().post("Insufficient funds.");
+                        }
                     }
                 }
             }

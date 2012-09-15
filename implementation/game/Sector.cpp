@@ -649,6 +649,11 @@ bool Sector::isEmpty() const
 
 Sector * Sector::nextSectorInPath(Sector * sector) const
 {
+    if (warp() != NULL && warp()->destination() == SectorReference(sector))
+    {
+        return sector;
+    }
+
     if (sector == NULL || sector->starSystem() != mStarSystem)
     {
         return NULL;

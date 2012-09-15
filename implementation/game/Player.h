@@ -36,6 +36,8 @@ namespace Game
 
                 virtual void selectedSectorChanged(Sector * sector);
 
+                virtual void selectedSectorReselected(Sector * sector);
+
             private:
 
                 void unsubscribe();
@@ -116,6 +118,8 @@ namespace Game
         const SectorReference & selectedSector() const;
 
         void setSelectedSector(const SectorReference & selectedSector);
+
+        void reselectSector();
 
         const SectorReference & homeSector() const;
 

@@ -19,6 +19,7 @@
 #include "StarSystem.h"
 #include "SectorReference.h"
 #include "Sector.h"
+#include "Warp.h"
 #include "Ship.h"
 #include "Player.h"
 #include "Technology.h"
@@ -77,15 +78,20 @@ void ShipMovement::setDestination(Sector * sector)
             (*it)->setDestination(sector);
             if (sector->starSystem() != (*it)->sector()->starSystem())
             {
-                /*
-                int highestID = (*it)->config().highestID(Game::Component::StarDrive);
-                if (highestID >= 0 && highestID < static_cast<int>(Game::Technology::instance().starDriveModules().size()))
+                if ((*it)->sector()->warp() != NULL && (*it)->sector()->warp()->destination() == SectorReference(sector))
                 {
-                    float distance = (*it)->sector()->starSystem()->distance(sector->starSystem());
-                    (*it)->setArrival(Game::Technology::instance().starDriveModules()[highestID].arrival(distance));
-                    (*it)->setMovement(0);
+                    //nothing special to do
                 }
-                */
+                else
+                {
+                    float speed = (*it)->config().starDriveSpeed();
+                    if (speed > 0.0f)
+                    {
+                        float distance = (*it)->sector()->starSystem()->distance(sector->starSystem());
+                        (*it)->setArrival(static_cast<unsigned int>(distance / speed));
+                        (*it)->setMovement(0);
+                    }
+                }
             }
         }
     }
@@ -109,7 +115,7 @@ void ShipMovement::run()
                 Game::Sector * sector = ship->sector()->nextSectorInPath(ship->destination().sector());
                 if (sector != NULL)
                 {
-                    movementMap[ship->sector()->nextSectorInPath(ship->destination().sector())].push_back(ship);
+                    movementMap[sector].push_back(ship);
                     ship->sector()->removeShip(ship);
                     if (ship->movement() >= 1)
                     {
