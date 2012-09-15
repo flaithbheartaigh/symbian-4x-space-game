@@ -36,6 +36,7 @@
 #include <game/Sector.h>
 #include <game/Planet.h>
 #include <game/Ship.h>
+#include <game/Warp.h>
 #include <game/Player.h>
 #include <game/SectorReference.h>
 #include <game/DeserializeVisitor.h>
@@ -596,11 +597,7 @@ namespace
                             {
                                 if (ships[i]->canMoveTo(mSector.sector()))
                                 {
-                                    //ships[i]->setDestination(mSector);
-                                    //ShipMovement shipMovement(SectorReference((*it2).second, 1, 1).sector());
                                     shipMovement.addShip(ships[i]);
-                                    //shipMovement.move();
-                                    //ships[i]->moveTo(mSector.sector());
                                 }
                             }
                         }
@@ -610,6 +607,14 @@ namespace
                 }
 
                 mMoveButton->click();
+            }
+        }
+
+        void selectedSectorReselected(Game::Sector * sector)
+        {
+            if (sector != NULL && sector->warp() != NULL)
+            {
+                selectedSectorChanged(sector->warp()->destination().sector());
             }
         }
 

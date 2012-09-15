@@ -41,6 +41,8 @@ namespace Game
 
         float maximumPopulation() const;
 
+        float starDriveSpeed() const;
+
         unsigned int maximumHitPoints() const;
 
     private:

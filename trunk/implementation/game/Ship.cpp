@@ -21,10 +21,10 @@
 #include "StarSystem.h"
 #include "Sector.h"
 #include "Planet.h"
+#include "Warp.h"
 #include "Component.h"
 #include "Technology.h"
 #include "UniverseVisitor.h"
-//#include "ShipMovement.h"
 
 #ifdef _WIN32
     #define NOMINMAX
@@ -259,7 +259,9 @@ bool Ship::canMoveTo(Sector * sector) const
     ret = ret && sector != NULL && sector != mSector;
     if (ret)
     {
-        ret = ret && (sector->starSystem() == mSector->starSystem()) || (sector->starSystem() != mSector->starSystem() && mConfig.has(Component::StarDrive));
+        ret = ret && ((sector->starSystem() == mSector->starSystem()) 
+            || (sector->starSystem() != mSector->starSystem() && mConfig.has(Component::StarDrive))
+            || (mSector->warp() != NULL && mSector->warp()->destination() == SectorReference(sector)));
     }
     return ret;
 }

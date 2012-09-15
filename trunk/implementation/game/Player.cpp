@@ -43,6 +43,11 @@ void Player::Current::Subscriber::selectedSectorChanged(Sector * sector)
 
 }
 
+void Player::Current::Subscriber::selectedSectorReselected(Sector * sector)
+{
+
+}
+
 void Player::Current::Subscriber::unsubscribe()
 {
     Player::Current::instance().unsubscribe(this);
@@ -258,6 +263,18 @@ void Player::setSelectedSector(const SectorReference & selectedSector)
         for (std::set<Current::Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
         {
             (*it)->selectedSectorChanged(mSelectedSector.sector());
+        }
+    }
+}
+
+void Player::reselectSector()
+{
+    if (Current::instance().selectionAllowed())
+    {
+        std::set<Current::Subscriber *> subscribers = Current::instance().mSubscribers;
+        for (std::set<Current::Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
+        {
+            (*it)->selectedSectorReselected(mSelectedSector.sector());
         }
     }
 }

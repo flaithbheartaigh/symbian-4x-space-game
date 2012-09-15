@@ -671,6 +671,10 @@ UniverseViewer::UniverseViewer(QWidget * parent)
                         {
                             Game::Universe::instance().game().currentPlayer()->setSelectedSector(sectorItem->sector());
                         }
+                        else
+                        {
+                            Game::Universe::instance().game().currentPlayer()->reselectSector();
+                        }
                     }
                 }
             }
