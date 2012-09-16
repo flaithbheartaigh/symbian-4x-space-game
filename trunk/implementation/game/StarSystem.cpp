@@ -143,6 +143,9 @@ void StarSystem::generate()
     static const int PROBABILITYPLANET = int(1000.0f * 8.0f / (Size * Size));
     static const int PROBABILITYSTAR = int(1000.0f * 0.3f / (Size * Size));
     static const int PROBABILITYWARP = int(1000.0f * 1.0f / (Size * Size));
+    static const int PROBABILITYHYDROGEN = int(1000.0f * 5.0f / (Size * Size));
+    static const int PROBABILITYURANIUM = int(1000.0f * 8.0f / (Size * Size));
+    static const int PROBABILITYANTIHYDROGEN = int(1000.0f * 0.5f / (Size * Size));
 
     int planetId = 1;
     int starId = 2;
@@ -189,6 +192,24 @@ void StarSystem::generate()
             {
                 Game::Warp * warp = new Game::Warp(*it);
                 (*it)->setWarp(warp);
+            }
+            if ((*it)->planet())
+            {
+                if (rand() % 1000 < PROBABILITYURANIUM)
+                {
+                    (*it)->elements().Uranium = static_cast<unsigned int>(rand() % 100);
+                }
+            }
+            else if (!(*it)->warp() && !(*it)->star())
+            {
+                if (rand() % 1000 < PROBABILITYHYDROGEN)
+                {
+                    (*it)->elements().Hydrogen = static_cast<unsigned int>(rand() % 1000);
+                }
+                if (rand() % 1000 < PROBABILITYANTIHYDROGEN)
+                {
+                    (*it)->elements().AntiHydrogen = static_cast<unsigned int>(rand() % 10);
+                }
             }
         }
     }

@@ -193,6 +193,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\implementation\game\Elements.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\implementation\game\Elements.h"
+			>
+		</File>
+		<File
 			RelativePath="..\implementation\game\Event.h"
 			>
 		</File>

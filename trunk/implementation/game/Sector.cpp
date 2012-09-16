@@ -219,6 +219,7 @@ Sector::Sector()
     , mStar(NULL)
     , mPlanet(NULL)
     , mWarp(NULL)
+    , mElements()
     , mShips()
     , mShipsInTransit()
     , mSubscribers()
@@ -233,6 +234,7 @@ Sector::Sector(StarSystem * starSystem)
     , mStar(NULL)
     , mPlanet(NULL)
     , mWarp(NULL)
+    , mElements()
     , mShips()
     , mShipsInTransit()
     , mSubscribers()
@@ -644,7 +646,7 @@ void Sector::accept(UniverseVisitor * visitor)
 
 bool Sector::isEmpty() const
 {
-    return mShipsInTransit.empty() && mShips.empty() && mPlanet == NULL && mStar == NULL && mWarp == NULL;
+    return mShipsInTransit.empty() && mShips.empty() && mPlanet == NULL && mStar == NULL && mWarp == NULL && mElements.AntiHydrogen == 0 && mElements.Hydrogen == 0;
 }
 
 Sector * Sector::nextSectorInPath(Sector * sector) const

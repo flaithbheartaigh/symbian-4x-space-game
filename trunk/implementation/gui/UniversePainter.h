@@ -35,6 +35,8 @@ namespace Gui
 
         void paintWarp(QPainter * painter, Game::Warp * warp, const QSizeF & size);
 
+        void paintElement(QPainter * painter, const QSizeF & size, unsigned int index);
+
         void paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel = 2, bool known = true);
 
         void paintBadge(QPainter * painter, Game::Player * player, const QSizeF & size/*, bool translucent*/);

@@ -14,7 +14,7 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.1 "
-   sodipodi:docname="uranium.svg">
+   sodipodi:docname="hydrogen.svg">
   <defs
      id="defs2987">
     <inkscape:perspective
@@ -89,7 +89,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="14.047022"
+     inkscape:cx="-6.5893416"
      inkscape:cy="32.400833"
      inkscape:current-layer="layer2"
      showgrid="true"
@@ -108,22 +108,10 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:groupmode="layer"
-     id="layer4"
-     inkscape:label="Layer#1">
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3899"
-       width="60.18182"
-       height="57.090908"
-       x="2"
-       y="4" />
-  </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
@@ -184,8 +172,4 @@
          x="25.198587"
          y="40.777149">H</tspan></text>
   </g>
-  <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer" />
 </svg>
