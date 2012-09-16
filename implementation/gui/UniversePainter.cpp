@@ -173,6 +173,36 @@ void UniversePainter::paintWarp(QPainter * painter, Game::Warp * warp, const QSi
     }
 }
 
+void UniversePainter::paintElement(QPainter * painter, const QSizeF & size, unsigned int index)
+{
+    if (painter != NULL)
+    {
+        QString filename;
+        switch (index) 
+        {
+        case 0:
+            filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/Hydrogen.svg"));
+            break;
+        case 1:
+            filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/Uranium.svg"));
+            break;
+        case 2:
+            filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/AntiHydrogen.svg"));
+            break;
+        }
+
+        unsigned int column = index / 4 + 3;
+        unsigned int row = index % 4;
+        QSizeF sizeRect(size.width() / 4.0f, size.height() / 4.0f);
+        QPointF posRect(-size.width() / 2.0f + column * size.width() / 4.0f + sizeRect.width() / 2.0f, -size.height() / 2.0f + row * size.height() / 4.0f + sizeRect.height() / 2.0f);
+
+        painter->translate(posRect);
+        QSvgRenderer svgRenderer(filename);
+        svgRenderer.render(painter, QRectF(-QPointF(sizeRect.width()/2.0f, sizeRect.height() / 2.0f), sizeRect));
+        painter->translate(-posRect);
+    }
+}
+
 void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, const QSizeF & size, bool selected, int detailLevel, bool known)
 {
     if (painter != NULL && sector != NULL)
@@ -188,6 +218,18 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
         if (sector->warp() != NULL && known)
         {
             paintWarp(painter, sector->warp(), size);
+        }
+        if (sector->elements().Hydrogen > 0 && known)
+        {
+            paintElement(painter, size, 0);
+        }
+        if (sector->elements().Uranium > 0 && known)
+        {
+            paintElement(painter, size, 1);
+        }
+        if (sector->elements().AntiHydrogen > 0 && known)
+        {
+            paintElement(painter, size, 2);
         }
         if (!sector->ships().empty() || !sector->shipsInTransit().empty())
         {

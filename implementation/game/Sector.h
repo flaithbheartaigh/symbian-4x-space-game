@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 
+#include "Elements.h"
+
 namespace Game
 {
     class Star;
@@ -103,6 +105,10 @@ namespace Game
 
         Warp * warp() const;
 
+        Elements & elements() { return mElements; }
+
+        const Elements & elements() const { return mElements; }
+
         void setWarp(Warp * warp);
 
         const std::vector<Ship *> & ships() const;
@@ -156,6 +162,8 @@ namespace Game
         Planet * mPlanet;
 
         Warp * mWarp;
+
+        Elements mElements;
 
         std::vector<Ship *> mShips;
 
