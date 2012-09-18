@@ -121,7 +121,7 @@ void Sector::Subscriber::deselected()
 
 }
 
-void Sector::Subscriber::contentsChanged(bool)
+void Sector::Subscriber::contentsChanged(Content, bool)
 {
 
 }
@@ -137,43 +137,26 @@ void Sector::Subscriber::notify()
     {
         if (mSector->starSystem() != NULL && mSector->starSystem()->universe() != NULL && !mSector->starSystem()->universe()->notificationsBlocked())
         {
-            bool changed = false;
             std::vector<Ship *> ships = mSector->ships();
             for (std::vector<Ship *>::const_iterator it = ships.begin(); it != ships.end(); ++it)
             {
                 shipAdded(*it);
-                if (!changed)
-                {
-                    changed = true;
-                }
             }
             if (mSector->planet() != NULL)
             {
                 planetSet(mSector->planet());
-                if (!changed)
-                {
-                    changed = true;
-                }
             }
             if (mSector->warp() != NULL)
             {
                 warpSet(mSector->warp());
-                if (!changed)
-                {
-                    changed = true;
-                }
             }
             if (mSector->star() != NULL)
             {
                 starSet(mSector->star());
-                if (!changed)
-                {
-                    changed = true;
-                }
             }
-            if (!changed)
+            if (!mSector->isEmpty())
             {
-                contentsChanged();
+                contentsChanged(mSector->contents());
             }
         }
     }
@@ -272,6 +255,36 @@ void Sector::setY(int y)
     mY = y;
 }
 
+Sector::Content Sector::contents() const
+{
+    unsigned char content = NoContents;
+    if (mStar != NULL)
+    {
+        content |= HasStar;
+    }
+    if (mPlanet != NULL)
+    {
+        content |= HasPlanet;
+    }
+    if (mWarp != NULL)
+    {
+        content |= HasWarp;
+    }
+    if (!mShips.empty())
+    {
+        content |= HasShips;
+    }
+    if (!mShipsInTransit.empty())
+    {
+        content |= HasShipsInTransit;
+    }
+    if (!mElements.isEmpty())
+    {
+        content |= HasElements;
+    }
+    return content;
+}
+
 Star * Sector::star() const
 {
     return mStar;
@@ -315,7 +328,7 @@ void Sector::setStar(Star * star)
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->contentsChanged();
+                (*it)->contentsChanged(HasStar);
             }
         }
     }
@@ -364,7 +377,7 @@ void Sector::setPlanet(Planet * planet)
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->contentsChanged();
+                (*it)->contentsChanged(HasPlanet);
             }
         }
     }
@@ -413,7 +426,7 @@ void Sector::setWarp(Warp * warp)
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->contentsChanged();
+                (*it)->contentsChanged(HasWarp);
             }
         }
     }
@@ -447,7 +460,7 @@ void Sector::addShips(const std::vector<Ship *> & ships, bool forceRedraw)
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->contentsChanged(forceRedraw);
+                (*it)->contentsChanged(HasShips, forceRedraw);
             }
         }
     }
@@ -468,7 +481,7 @@ void Sector::addShip(Ship * ship, bool forceRedraw)
             std::set<Subscriber *> subscribers = mSubscribers;
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
-                (*it)->contentsChanged(forceRedraw);
+                (*it)->contentsChanged(HasShips, forceRedraw);
             }
         }
     }
@@ -486,7 +499,7 @@ void Sector::removeShip(Ship * ship, bool forceRedraw)
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
                 (*it)->shipRemoved(ship);
-                (*it)->contentsChanged(forceRedraw);
+                (*it)->contentsChanged(HasShips, forceRedraw);
             }
         }
     }
@@ -518,7 +531,7 @@ void Sector::addShipInTransit(Ship * ship)
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
                 (*it)->shipInTransitAdded(ship);
-                (*it)->contentsChanged();
+                (*it)->contentsChanged(HasShipsInTransit);
             }
         }
     }
@@ -536,7 +549,7 @@ void Sector::removeShipFromTransit(Ship * ship)
             for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
             {
                 (*it)->shipInTransitRemoved(ship);
-                (*it)->contentsChanged();
+                (*it)->contentsChanged(HasShipsInTransit);
             }
         }
     }
@@ -559,12 +572,16 @@ std::set<Player *> Sector::players() const
     return players;
 }
 
-void Sector::notifyChanged()
+void Sector::notifyChanged(Content changed)
 {
+    if (changed == NoContents)
+    {
+        changed = contents();
+    }
     std::set<Subscriber *> subscribers = mSubscribers;
     for (std::set<Subscriber *>::iterator it = subscribers.begin(); it != subscribers.end(); ++it)
     {
-        (*it)->contentsChanged();
+        (*it)->contentsChanged(changed);
     }
 }
 
@@ -646,7 +663,7 @@ void Sector::accept(UniverseVisitor * visitor)
 
 bool Sector::isEmpty() const
 {
-    return mShipsInTransit.empty() && mShips.empty() && mPlanet == NULL && mStar == NULL && mWarp == NULL && mElements.AntiHydrogen == 0 && mElements.Hydrogen == 0;
+    return contents() == NoContents;
 }
 
 Sector * Sector::nextSectorInPath(Sector * sector) const

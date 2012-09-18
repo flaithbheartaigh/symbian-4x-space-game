@@ -76,7 +76,7 @@ SectorListView::SectorListView(QWidget * parent)
                     {
                     }
 
-                    void contentsChanged(bool)
+                    void contentsChanged(Game::Sector::Content, bool)
                     {
                         if (mItemModel != NULL)
                         {

@@ -10,6 +10,7 @@ namespace Game
     class Universe;
     class Sector;
     class Player;
+    class Warp;
     class UniverseVisitor;
     class DeserializeVisitor;
 
@@ -88,6 +89,8 @@ namespace Game
         void removeSector(Sector * sector);
 
         std::set<Player *> players() const;
+
+        std::set<Warp *> warps() const;
 
         float distance(StarSystem * starSystem) const;
 

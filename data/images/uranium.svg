@@ -89,7 +89,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
-     inkscape:cx="14.047022"
+     inkscape:cx="-14.043887"
      inkscape:cy="32.400833"
      inkscape:current-layer="layer2"
      showgrid="true"
@@ -108,7 +108,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -144,19 +144,19 @@
       <path
          sodipodi:type="inkscape:box3dside"
          id="path3861"
-         style="fill:#9f7d4d;fill-rule:evenodd;stroke:none;fill-opacity:0.32432431"
+         style="fill:#9f7d4d;fill-rule:evenodd;stroke:none;fill-opacity:0.627451"
          inkscape:box3dsidetype="5"
          d="M 10.222506,18.954964 32.975687,26.539358 55.718592,18.958389 32.965411,11.373995 z" />
       <path
          sodipodi:type="inkscape:box3dside"
          id="path3865"
-         style="fill:#ffefd7;fill-rule:evenodd;stroke:none;fill-opacity:0.32432431"
+         style="fill:#ffefd7;fill-rule:evenodd;stroke:none;fill-opacity:0.627451"
          inkscape:box3dsidetype="14"
          d="m 32.975687,26.539358 0,27.695506 22.742905,-7.580969 0,-27.695506 z" />
       <path
          sodipodi:type="inkscape:box3dside"
          id="path3863"
-         style="fill:#bfa987;fill-rule:evenodd;stroke:none;fill-opacity:0.32549021"
+         style="fill:#bfa987;fill-rule:evenodd;stroke:none;fill-opacity:0.627451"
          inkscape:box3dsidetype="3"
          d="m 10.222506,18.954964 22.753181,7.584394 0,27.695506 -22.753181,-7.584394 z" />
     </g>

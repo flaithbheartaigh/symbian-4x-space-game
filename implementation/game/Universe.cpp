@@ -610,6 +610,8 @@ void Universe::generate(unsigned int density, unsigned int size)
             a->setDestination(SectorReference(b->sector()));
             b->setDestination(SectorReference(a->sector()));
             warps.erase(std::remove(warps.begin(), warps.end(), b), warps.end());
+            a->sector()->notifyChanged(Sector::HasWarp);
+            b->sector()->notifyChanged(Sector::HasWarp);
         }
     }
 
