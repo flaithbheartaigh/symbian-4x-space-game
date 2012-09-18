@@ -23,6 +23,21 @@ namespace Game
 
     public:
 
+        typedef unsigned char Content;
+
+        enum Contents
+        {
+            NoContents          = 0x00,
+            HasStar             = 0x01,
+            HasPlanet           = 0x02,
+            HasWarp             = 0x04,
+            HasElements         = 0x08,
+            HasShips            = 0x10,
+            HasShipsInTransit   = 0x20
+            //Future1         = 0x40
+            //Future2         = 0x80
+        };
+
         class Subscriber
         {
 
@@ -56,7 +71,7 @@ namespace Game
 
             virtual void deselected();
 
-            virtual void contentsChanged(bool forcedRedraw = false);
+            virtual void contentsChanged(Content changed, bool forcedRedraw = false);
 
             Sector * sector() const;
 
@@ -95,6 +110,8 @@ namespace Game
 
         void setY(int y);
 
+        Content contents() const;
+
         Star * star() const;
 
         void setStar(Star * star);
@@ -131,7 +148,7 @@ namespace Game
 
         std::set<Player *> players() const;
 
-        void notifyChanged();
+        void notifyChanged(Content changed = NoContents);
 
         void notifySelected();
 

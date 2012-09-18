@@ -340,6 +340,28 @@ namespace
         deserializeObject(value[PROPERTY_NAME], star, &Game::Star::setName);
     }
 
+    void serialize(const Game::Elements & elements, Json::Value & value)
+    {
+        static const char * PROPERTY_EL1 = "El1";
+        static const char * PROPERTY_EL2 = "El2";
+        static const char * PROPERTY_EL3 = "El3";
+
+        serialize(elements.Hydrogen, value[PROPERTY_EL1]);
+        serialize(elements.Uranium, value[PROPERTY_EL2]);
+        serialize(elements.AntiHydrogen, value[PROPERTY_EL3]);
+    }
+
+    void deserialize(const Json::Value & value, Game::Elements & elements)
+    {
+        static const char * PROPERTY_EL1 = "El1";
+        static const char * PROPERTY_EL2 = "El2";
+        static const char * PROPERTY_EL3 = "El3";
+
+        deserialize(value[PROPERTY_EL1], elements.Hydrogen);
+        deserialize(value[PROPERTY_EL2], elements.Uranium);
+        deserialize(value[PROPERTY_EL3], elements.AntiHydrogen);
+    }
+
     void serialize(const Game::Sector & sector, Json::Value & value)
     {
         static const char * PROPERTY_X = "X";
@@ -349,9 +371,7 @@ namespace
         static const char * PROPERTY_WARP = "Warp";
         static const char * PROPERTY_SHIPS = "Ships";
         static const char * PROPERTY_TRANSITSHIPS = "TransitShips";
-        static const char * PROPERTY_EL1 = "El1";
-        static const char * PROPERTY_EL2 = "El2";
-        static const char * PROPERTY_EL3 = "El3";
+        static const char * PROPERTY_ELEMENTS = "Elements";
 
         serialize(sector.x(), value[PROPERTY_X]);
         serialize(sector.y(), value[PROPERTY_Y]);
@@ -360,9 +380,7 @@ namespace
         serialize(sector.warp(), value[PROPERTY_WARP]);
         serialize(sector.ships(), value[PROPERTY_SHIPS]);
         serialize(sector.shipsInTransit(), value[PROPERTY_TRANSITSHIPS]);
-        value[PROPERTY_EL1] = sector.elements().Hydrogen;
-        value[PROPERTY_EL2] = sector.elements().Uranium;
-        value[PROPERTY_EL3] = sector.elements().AntiHydrogen;
+        serialize(sector.elements(), value[PROPERTY_ELEMENTS]);
     }
 
     void serialize(const std::vector<Game::Sector *> & vector, Json::Value & parent)
@@ -387,9 +405,7 @@ namespace
         static const char * PROPERTY_WARP = "Warp";
         static const char * PROPERTY_SHIPS = "Ships";
         static const char * PROPERTY_TRANSITSHIPS = "TransitShips";
-        static const char * PROPERTY_EL1 = "El1";
-        static const char * PROPERTY_EL2 = "El2";
-        static const char * PROPERTY_EL3 = "El3";
+        static const char * PROPERTY_ELEMENTS = "Elements";
 
         deserializeValue(value[PROPERTY_X], sector, &Game::Sector::setX);
         deserializeValue(value[PROPERTY_Y], sector, &Game::Sector::setY);
@@ -398,9 +414,7 @@ namespace
         deserializeObject(value[PROPERTY_WARP], sector, &Game::Sector::setWarp);
         deserializeObject(value[PROPERTY_SHIPS], sector, &Game::Sector::addShips);
         deserializeObject(value[PROPERTY_TRANSITSHIPS], sector, &Game::Sector::addShipsInTransit);
-        sector.elements().Hydrogen = value[PROPERTY_EL1].asUInt();
-        sector.elements().Uranium = value[PROPERTY_EL2].asUInt();
-        sector.elements().AntiHydrogen = value[PROPERTY_EL3].asUInt();
+        deserialize(value[PROPERTY_ELEMENTS], sector.elements());
     }
 
     void serialize(const Game::StarSystem & starSystem, Json::Value & value)

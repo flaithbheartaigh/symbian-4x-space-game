@@ -20,11 +20,12 @@
 #include "MainWindow.h"
 #include "QsKineticScroller.h"
 #include "SectorListView.h"
-
+#include <sstream>
 #include <game/Universe.h>
 #include <game/StarSystem.h>
 #include <game/Sector.h>
 #include <game/Star.h>
+#include <game/Warp.h>
 #include <game/Player.h>
 #include <game/Messages.h>
 
@@ -42,8 +43,11 @@
 #include <QSettings>
 #include <QLabel>
 #include <cmath>
-
+#include <ctime>
 #include <map>
+
+#define USE_CLIPPING 0
+#define SHOW_DRAWTIME 0
 
 namespace
 {
@@ -175,7 +179,7 @@ namespace
 
     private:
 
-        void contentsChanged(bool forcedRedraw);
+        void contentsChanged(Game::Sector::Content changed, bool forcedRedraw);
 
         void selected();
 
@@ -237,6 +241,7 @@ namespace
 
     void TextGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
+#if USE_CLIPPING
         if (Gui::MainWindow::Settings_CacheMode < 2)
         {
             painter->setClipRect(option->exposedRect);
@@ -245,6 +250,7 @@ namespace
         {
             painter->setClipRect(boundingRect());
         }
+#endif
         painter->drawText(boundingRect(), QString::fromStdString(mText));
     }
 
@@ -326,6 +332,7 @@ namespace
     {
         if (starSystem() != NULL)
         {
+#if USE_CLIPPING
             if (Gui::MainWindow::Settings_CacheMode < 2)//3
             {
                 painter->setClipRect(option->exposedRect);
@@ -334,7 +341,7 @@ namespace
             {
                 //painter->setClipRect(boundingRect());
             }
-
+#endif
             if (Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()))
             {
                 std::set<Game::Player *> players = starSystem()->players();
@@ -409,7 +416,7 @@ namespace
         }
     }
 
-    void SectorGraphicsItem::contentsChanged(bool forcedRedraw)
+    void SectorGraphicsItem::contentsChanged(Game::Sector::Content changed, bool forcedRedraw)
     {
         update();
         if (Gui::MainWindow::Settings_SkipEmptyTiles)
@@ -427,6 +434,11 @@ namespace
             {
                 QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
             }
+        }
+        
+        if (changed & Game::Sector::HasWarp)
+        {
+            //todo
         }
     }
 
@@ -466,6 +478,7 @@ namespace
 
     void SectorGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
     {
+#if USE_CLIPPING
         if (Gui::MainWindow::Settings_CacheMode < 1)
         {
             painter->setClipRect(option->exposedRect);
@@ -474,6 +487,7 @@ namespace
         {
             painter->setClipRect(boundingRect());
         }
+#endif
         Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Gui::MainWindow::Settings_DetailLevel, 
             Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
     }
@@ -494,6 +508,8 @@ namespace
         void wheelEvent(QWheelEvent * event);
 
         void mouseDoubleClickEvent(QMouseEvent  * event);
+
+        void paintEvent(QPaintEvent * event);
 
     private:
 
@@ -569,6 +585,21 @@ namespace
         bool blocked = mZoomSlider->blockSignals(true);
         mZoomSlider->setValue(value);
         mZoomSlider->blockSignals(blocked);
+    }
+
+    void ScalableGraphicsView::paintEvent(QPaintEvent * event)
+    {
+#if SHOW_DRAWTIME
+        int start_s = clock();
+#endif
+	    QGraphicsView::paintEvent(event);
+#if SHOW_DRAWTIME
+        int stop_s = clock();
+        int result = (stop_s-start_s)/double(CLOCKS_PER_SEC) * 1000;
+        std::stringstream ss;
+        ss << result;
+        Game::Messages::instance().post(ss.str());
+#endif
     }
 
     void ScalableGraphicsView::playerActivated(Game::Player * player)

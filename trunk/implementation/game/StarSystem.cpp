@@ -311,6 +311,20 @@ std::set<Player *> StarSystem::players() const
     return players;
 }
 
+std::set<Warp *> StarSystem::warps() const
+{
+    std::set<Warp *> warps;
+    for (std::vector<Sector *>::const_iterator it = mSectors.begin(); it != mSectors.end(); ++it)
+    {
+        Sector * sector = *it;
+        if (sector->warp() != NULL)
+        {
+            warps.insert(sector->warp());
+        }
+    }
+    return warps;
+}
+
 float StarSystem::distance(StarSystem * starSystem) const
 {
     float distance = 0;

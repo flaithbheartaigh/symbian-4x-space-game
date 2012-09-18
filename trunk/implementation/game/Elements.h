@@ -24,6 +24,7 @@ namespace Game
 
         unsigned int AntiHydrogen;
 
+        bool isEmpty() const { return Hydrogen == 0 && Uranium == 0 && AntiHydrogen == 0; }
     };
 }
 
