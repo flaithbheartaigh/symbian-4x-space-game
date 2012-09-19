@@ -17,6 +17,9 @@ CONFIG += mobility
 MOBILITY += multimedia
 
 HEADERS += \
+    ../implementation/gui/SectorGraphicsItem.h \
+    ../implementation/gui/StarSystemGraphicsItem.h \
+    ../implementation/gui/UniverseScene.h \
     ../implementation/gui/UniverseViewer.h \
     ../implementation/gui/UniversePainter.h \
     ../implementation/gui/TechnologyPanel.h \
@@ -37,6 +40,7 @@ HEADERS += \
     ../implementation/gui/CSSHelper.h \
     ../implementation/gui/ComponentSelection.h \
     ../implementation/gui/ComponentModel.h \
+    ../implementation/game/Elements.h \
     ../implementation/game/Warp.h \
     ../implementation/game/UniverseVisitor.h \
     ../implementation/game/Universe.h \
@@ -67,6 +71,9 @@ HEADERS += \
     ../implementation/data/AssetSerializer.h
 
 SOURCES += \
+    ../implementation/gui/SectorGraphicsItem.cpp \
+    ../implementation/gui/StarSystemGraphicsItem.cpp \
+    ../implementation/gui/UniverseScene.cpp \
     ../implementation/gui/UniverseViewer.cpp \
     ../implementation/gui/UniversePainter.cpp \
     ../implementation/gui/TechnologyPanel.cpp \
@@ -87,6 +94,7 @@ SOURCES += \
     ../implementation/gui/CSSHelper.cpp \
     ../implementation/gui/ComponentSelection.cpp \
     ../implementation/gui/ComponentModel.cpp \
+    ../implementation/game/Elements.cpp \
     ../implementation/game/Warp.cpp \
     ../implementation/game/UniverseVisitor.cpp \
     ../implementation/game/Universe.cpp \
