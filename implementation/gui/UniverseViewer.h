@@ -29,6 +29,8 @@ namespace Gui
 
     public:
 
+        static double ReferenceSize;
+
         ~UniverseViewer();
 
         UniverseViewer(QWidget * parent);
