@@ -107,10 +107,33 @@ void StarSystemGraphicsItem::sectorAdded(Game::Sector * sector)
     }
     if (mText == NULL)
     {
-        mText = scene()->addSimpleText(QString::fromStdString(starSystem()->name()), QFont("tahoma", 32));
-        mText->setPos(pos() - QPointF(mText->boundingRect().width() / 2.0, -UniverseViewer::ReferenceSize / 2.0));
+        class TextItem
+            : public QGraphicsSimpleTextItem
+        {
+        public:
+            TextItem(const QString & text)
+                : QGraphicsSimpleTextItem(text)
+            {
+
+            }
+            void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+            {
+                painter->translate(boundingRect().topLeft());
+                QGraphicsSimpleTextItem::paint(painter, option, widget);
+                painter->translate(-boundingRect().topLeft());
+            }
+            QRectF boundingRect() const
+            {
+                QRectF b = QGraphicsSimpleTextItem::boundingRect();
+                return QRectF(b.x()-b.width()/2.0, b.y()-b.height()/2.0, b.width(), b.height());
+            }
+        };
+        mText = new TextItem(QString::fromStdString(starSystem()->name()));
+        scene()->addItem(mText);
+        mText->setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
+        mText->setFont(QFont("tahoma", 10));
+        mText->setPos(pos() + QPointF(0.0, UniverseViewer::ReferenceSize/2.0));
         mText->setBrush(QBrush(Qt::white));
-        mText->setZValue(-1);
         mText->hide();
     }
 }
