@@ -33,6 +33,15 @@
 
 using namespace Gui;
 
+QPointF StarSystemGraphicsItem::scenePosition(Game::StarSystem * starSystem)
+{
+    if (starSystem == NULL)
+    {
+        return QPointF();
+    }
+    return QPointF(starSystem->x()*Game::StarSystem::Size*UniverseViewer::ReferenceSize, starSystem->y()*Game::StarSystem::Size*UniverseViewer::ReferenceSize);
+}
+
 StarSystemGraphicsItem::~StarSystemGraphicsItem()
 {
     delete mText;
@@ -102,7 +111,7 @@ void StarSystemGraphicsItem::sectorAdded(Game::Sector * sector)
     if (sector != NULL)
     {
         SectorGraphicsItem * sectorGraphicsItem = new SectorGraphicsItem(this, sector);
-        sectorGraphicsItem->setPos(sector->x()*UniverseViewer::ReferenceSize, sector->y()*UniverseViewer::ReferenceSize);
+        sectorGraphicsItem->setPos(SectorGraphicsItem::scenePositionRelative(sector));
         mItems[sector] = sectorGraphicsItem;
     }
     if (mText == NULL)
