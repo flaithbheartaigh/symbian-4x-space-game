@@ -22,6 +22,8 @@ namespace Gui
 
     public:
 
+        static QPointF scenePosition(Game::StarSystem * starSystem);
+
         ~StarSystemGraphicsItem();
 
         StarSystemGraphicsItem(QGraphicsItem * parent, Game::StarSystem * starSystem);

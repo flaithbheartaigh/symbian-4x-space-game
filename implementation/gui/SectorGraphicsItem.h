@@ -5,6 +5,8 @@
 
 #include <game/Sector.h>
 
+class QGraphicsLineItem;
+
 namespace Gui
 {
     class SectorGraphicsItem
@@ -13,6 +15,10 @@ namespace Gui
     {
 
     public:
+
+        static QPointF scenePositionAbsolute(Game::Sector * sector);
+
+        static QPointF scenePositionRelative(Game::Sector * sector);
 
         ~SectorGraphicsItem();
 
@@ -31,6 +37,8 @@ namespace Gui
         void deselected();
 
         bool mIsSelected;
+
+        QGraphicsLineItem * mLine;
 
         SectorGraphicsItem(const SectorGraphicsItem & other);
         

@@ -16,30 +16,54 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "SectorGraphicsItem.h"
+#include "StarSystemGraphicsItem.h"
 #include "MainWindow.h"
 #include "UniversePainter.h"
 #include "UniverseViewer.h"
 
 #include <game/Universe.h>
 #include <game/Player.h>
+#include <game/StarSystem.h>
+#include <game/Warp.h>
 
 #include <QCoreApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QGraphicsLineItem>
 
 #define USE_CLIPPING 0
 
 using namespace Gui;
 
+QPointF SectorGraphicsItem::scenePositionAbsolute(Game::Sector * sector)
+{
+    if (sector == NULL)
+    {
+        return QPointF();
+    }
+    return StarSystemGraphicsItem::scenePosition(sector->starSystem()) + SectorGraphicsItem::scenePositionRelative(sector);
+}
+
+QPointF SectorGraphicsItem::scenePositionRelative(Game::Sector * sector)
+{
+    if (sector == NULL)
+    {
+        return QPointF();
+    }
+    return QPointF(sector->x()*UniverseViewer::ReferenceSize, sector->y()*UniverseViewer::ReferenceSize);
+}
+
 SectorGraphicsItem::~SectorGraphicsItem()
 {
-
+    delete mLine;
+    mLine = NULL;
 }
 
 SectorGraphicsItem::SectorGraphicsItem(QGraphicsItem * parent, Game::Sector * sector)
     : QGraphicsItem(parent)
     , Game::Sector::Subscriber(sector)
     , mIsSelected(false)
+    , mLine(NULL)
 {
     if (Gui::MainWindow::Settings_SkipEmptyTiles)
     {
@@ -73,7 +97,14 @@ void SectorGraphicsItem::contentsChanged(Game::Sector::Content changed, bool for
     
     if (changed & Game::Sector::HasWarp)
     {
-        //todo
+        if (mLine == NULL)
+        {
+            QPointF from = scenePositionAbsolute(sector());
+            QPointF to = scenePositionAbsolute(sector()->warp()->destination().sector());
+            to = to - ((to - from) / 2);
+            mLine = scene()->addLine(from.x(), from.y(), to.x(), to.y(), QPen(QColor(63,127,195,63), 24));
+            mLine->setZValue(-1);
+        }
     }
 }
 

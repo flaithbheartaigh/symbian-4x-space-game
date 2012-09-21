@@ -77,7 +77,7 @@ void UniverseScene::starSystemAdded(Game::StarSystem * starSystem)
     if (starSystem != NULL)
     {
         StarSystemGraphicsItem * starSystemGraphicsItem = new StarSystemGraphicsItem(NULL, starSystem);
-        starSystemGraphicsItem->setPos(starSystem->x()*Game::StarSystem::Size*UniverseViewer::ReferenceSize, starSystem->y()*Game::StarSystem::Size*UniverseViewer::ReferenceSize);
+        starSystemGraphicsItem->setPos(StarSystemGraphicsItem::scenePosition(starSystem));
         addItem(starSystemGraphicsItem);
         mItems[starSystem] = starSystemGraphicsItem;
     }
