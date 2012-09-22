@@ -550,7 +550,7 @@ Universe::Game & Universe::game()
     return mGame;
 }
 
-void Universe::generate(unsigned int density, unsigned int size)
+void Universe::generate(unsigned int density, unsigned int size, unsigned int connections)
 {
     const int UNIVERSESIZE = size;
     const int UNIVERSECOUNT = density;
@@ -565,7 +565,7 @@ void Universe::generate(unsigned int density, unsigned int size)
                 starSystem->setY(y);
                 starSystem->setName(mNames.nextAvailableStarName());
                 addStarSystem(starSystem);
-                starSystem->generate();
+                starSystem->generate(connections);
             }
         }
     }
@@ -612,6 +612,25 @@ void Universe::generate(unsigned int density, unsigned int size)
             warps.erase(std::remove(warps.begin(), warps.end(), b), warps.end());
             a->sector()->notifyChanged(Sector::HasWarp);
             b->sector()->notifyChanged(Sector::HasWarp);
+        }
+    }
+
+    if (connections > 0)
+    {
+        for (unsigned int i = 0; i < mStarSystems.size() - 1; ++i)
+        {
+            if (connections > 1 || rand() % 2 == 0)
+            {
+                bool done = false;
+                int count = 10;
+                while (!done && count > 0)
+                {
+                    --count;
+                    Sector * from = mStarSystems[i]->sectors()[rand() % mStarSystems[i]->sectors().size()];
+                    Sector * to = mStarSystems[i+1]->sectors()[rand() % mStarSystems[i+1]->sectors().size()];
+                    done = Warp::connect(from, to);
+                }
+            }
         }
     }
 

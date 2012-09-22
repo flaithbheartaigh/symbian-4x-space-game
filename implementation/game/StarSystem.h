@@ -66,7 +66,7 @@ namespace Game
 
         void setUniverse(Universe * universe);
 
-        void generate();
+        void generate(unsigned int connections = 2);
 
         const std::string & name() const;
 

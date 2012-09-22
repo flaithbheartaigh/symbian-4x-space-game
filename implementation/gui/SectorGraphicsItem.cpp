@@ -98,7 +98,7 @@ void SectorGraphicsItem::contentsChanged(Game::Sector::Content changed, bool for
     
     if (changed & Game::Sector::HasWarp)
     {
-        if (mLine == NULL)
+        if (mLine == NULL && sector()->warp()->destination().isValid())
         {
             QPointF from = scenePositionAbsolute(sector());
             QPointF to = scenePositionAbsolute(sector()->warp()->destination().sector());

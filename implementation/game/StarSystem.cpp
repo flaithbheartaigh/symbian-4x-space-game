@@ -138,14 +138,14 @@ void StarSystem::setUniverse(Universe * universe)
     mUniverse = universe;
 }
 
-void StarSystem::generate()
+void StarSystem::generate(unsigned int connections)
 {
-    static const int PROBABILITYPLANET = int(1000.0f * 8.0f / (Size * Size));
-    static const int PROBABILITYSTAR = int(1000.0f * 0.3f / (Size * Size));
-    static const int PROBABILITYWARP = int(1000.0f * 1.0f / (Size * Size));
-    static const int PROBABILITYHYDROGEN = int(1000.0f * 5.0f / (Size * Size));
-    static const int PROBABILITYURANIUM = int(1000.0f * 8.0f / (Size * Size));
-    static const int PROBABILITYANTIHYDROGEN = int(1000.0f * 0.5f / (Size * Size));
+    const int PROBABILITYPLANET = int(1000.0f * 8.0f / (Size * Size));
+    const int PROBABILITYSTAR = int(1000.0f * 0.3f / (Size * Size));
+    const int PROBABILITYWARP = int(1000.0f * ((std::max(1, int(connections)) - 1) * 0.5f) / (Size * Size));
+    const int PROBABILITYHYDROGEN = int(1000.0f * 5.0f / (Size * Size));
+    const int PROBABILITYURANIUM = int(1000.0f * 8.0f / (Size * Size));
+    const int PROBABILITYANTIHYDROGEN = int(1000.0f * 0.5f / (Size * Size));
 
     int planetId = 1;
     int starId = 2;
@@ -170,28 +170,31 @@ void StarSystem::generate()
     {
         if ((*it)->x() != 0 || (*it)->y() != 0)
         {
-            if (rand() % 1000 < PROBABILITYPLANET)
+            if ((*it)->isEmpty())
             {
-                Game::Planet * planet = new Game::Planet(*it);
-                std::ostringstream ss;
-                ss << planetId++;
-                planet->setName(ss.str());
-                planet->setAtmosphere(Planet::Atmosphere(rand() % 5));
-                planet->setSize(Planet::Size(rand() % 3));
-                (*it)->setPlanet(planet);
-            }
-            else if (rand() % 1000 < PROBABILITYSTAR)
-            {
-                Game::Star * star = new Game::Star(*it);
-                std::ostringstream ss;
-                ss << starId++;
-                star->setName(ss.str());
-                (*it)->setStar(star);
-            }
-            else if (rand() % 1000 < PROBABILITYWARP)
-            {
-                Game::Warp * warp = new Game::Warp(*it);
-                (*it)->setWarp(warp);
+                if (rand() % 1000 < PROBABILITYPLANET)
+                {
+                    Game::Planet * planet = new Game::Planet(*it);
+                    std::ostringstream ss;
+                    ss << planetId++;
+                    planet->setName(ss.str());
+                    planet->setAtmosphere(Planet::Atmosphere(rand() % 5));
+                    planet->setSize(Planet::Size(rand() % 3));
+                    (*it)->setPlanet(planet);
+                }
+                else if (rand() % 1000 < PROBABILITYSTAR)
+                {
+                    Game::Star * star = new Game::Star(*it);
+                    std::ostringstream ss;
+                    ss << starId++;
+                    star->setName(ss.str());
+                    (*it)->setStar(star);
+                }
+                else if (rand() % 1000 < PROBABILITYWARP)
+                {
+                    Game::Warp * warp = new Game::Warp(*it);
+                    (*it)->setWarp(warp);
+                }
             }
             if ((*it)->planet())
             {

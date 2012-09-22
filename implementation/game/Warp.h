@@ -13,6 +13,8 @@ namespace Game
 
     public:
 
+        static bool connect(Sector * from, Sector * to);
+
         ~Warp();
 
         Warp();

@@ -205,7 +205,7 @@ namespace Game
 
         Game & game();
 
-        void generate(unsigned int density = 1, unsigned int size = 4);
+        void generate(unsigned int density = 1, unsigned int size = 4, unsigned int connections = 2);
 
         bool notificationsBlocked() const;
 
