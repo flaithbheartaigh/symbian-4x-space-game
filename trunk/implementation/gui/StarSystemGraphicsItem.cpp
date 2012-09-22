@@ -143,7 +143,7 @@ void StarSystemGraphicsItem::sectorAdded(Game::Sector * sector)
         mText->setFont(QFont("tahoma", 10));
         mText->setPos(pos() + QPointF(0.0, UniverseViewer::ReferenceSize/2.0));
         mText->setBrush(QBrush(Qt::white));
-        mText->hide();
+        mText->setVisible(Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(starSystem()));
     }
 }
 
@@ -175,5 +175,8 @@ void StarSystemGraphicsItem::becameKnown()
 
 void StarSystemGraphicsItem::playerActivated(Game::Player * player)
 {
-    mText->setVisible(Gui::MainWindow::Settings_ViewUniverse || player == NULL || player->knows(starSystem()));
+    if (mText != NULL)
+    {
+        mText->setVisible(Gui::MainWindow::Settings_ViewUniverse || player == NULL || player->knows(starSystem()));
+    }
 }
