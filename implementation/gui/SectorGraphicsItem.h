@@ -4,6 +4,7 @@
 #include <QGraphicsItem>
 
 #include <game/Sector.h>
+#include <game/Universe.h>
 
 class QGraphicsLineItem;
 
@@ -12,6 +13,7 @@ namespace Gui
     class SectorGraphicsItem
         : public QGraphicsItem
         , public Game::Sector::Subscriber
+        , private Game::Universe::Game::Subscriber
     {
 
     public:
@@ -35,6 +37,10 @@ namespace Gui
         void selected();
 
         void deselected();
+
+        void becameKnown();
+
+        void playerActivated(Game::Player * player);
 
         bool mIsSelected;
 

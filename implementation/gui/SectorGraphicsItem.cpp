@@ -62,6 +62,7 @@ SectorGraphicsItem::~SectorGraphicsItem()
 SectorGraphicsItem::SectorGraphicsItem(QGraphicsItem * parent, Game::Sector * sector)
     : QGraphicsItem(parent)
     , Game::Sector::Subscriber(sector)
+    , Game::Universe::Game::Subscriber()
     , mIsSelected(false)
     , mLine(NULL)
 {
@@ -104,6 +105,7 @@ void SectorGraphicsItem::contentsChanged(Game::Sector::Content changed, bool for
             to = to - ((to - from) / 2);
             mLine = scene()->addLine(from.x(), from.y(), to.x(), to.y(), QPen(QColor(63,127,195,63), 24));
             mLine->setZValue(-1);
+            mLine->setVisible(Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
         }
     }
 }
@@ -160,4 +162,20 @@ void SectorGraphicsItem::paint(QPainter * painter, const QStyleOptionGraphicsIte
 #endif
     Gui::UniversePainter().paintSector(painter, sector(), boundingRect().size(), mIsSelected, Gui::MainWindow::Settings_DetailLevel, 
         Gui::MainWindow::Settings_ViewUniverse || Game::Universe::instance().game().currentPlayer() == NULL || Game::Universe::instance().game().currentPlayer()->knows(sector()->starSystem()));
+}
+
+void SectorGraphicsItem::becameKnown()
+{
+    if (mLine != NULL)
+    {
+        mLine->show();
+    }
+}
+
+void SectorGraphicsItem::playerActivated(Game::Player * player)
+{
+    if (mLine != NULL)
+    {
+        mLine->setVisible(Gui::MainWindow::Settings_ViewUniverse || player == NULL || player->knows(sector()->starSystem()));
+    }
 }
