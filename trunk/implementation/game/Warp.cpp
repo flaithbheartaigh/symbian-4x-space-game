@@ -16,9 +16,25 @@
 // with this program. See <http://www.opensource.org/licenses/gpl-3.0.html>
 
 #include "Warp.h"
+#include "Sector.h"
 #include "UniverseVisitor.h"
 
 using namespace Game;
+
+bool Warp::connect(Sector * from, Sector * to)
+{
+    if (from != NULL && to != NULL && from->isEmpty() && to->isEmpty())
+    {
+        Warp * a = new Warp(from);
+        a->setDestination(SectorReference(to));
+        Warp * b = new Warp(to);
+        b->setDestination(SectorReference(from));
+        from->setWarp(a);
+        to->setWarp(b);
+        return true;
+    }
+    return false;
+}
 
 Warp::~Warp()
 {

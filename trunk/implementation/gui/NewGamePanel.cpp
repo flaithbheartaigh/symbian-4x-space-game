@@ -60,13 +60,14 @@ NewGamePanel::NewGamePanel(QWidget * parent)
         {
         }
 
-        PrivateSubscriberOK(SubscribablePushButton * pushButton, QBoxLayout * playerNames, QSpinBox * npcCount, QSpinBox * universeSize, QSpinBox * universeDensity)
+        PrivateSubscriberOK(SubscribablePushButton * pushButton, QBoxLayout * playerNames, QSpinBox * npcCount, QSpinBox * universeSize, QSpinBox * universeDensity, QSpinBox * warpDensity)
             : QObject(pushButton)
             , SubscribablePushButton::Subscriber(pushButton)
             , mPlayerNames(playerNames)
             , mNPCCount(npcCount)
             , mUniverseSize(universeSize)
             , mUniverseDensity(universeDensity)
+            , mWarpDensity(warpDensity)
         {
         }
 
@@ -122,7 +123,7 @@ NewGamePanel::NewGamePanel(QWidget * parent)
                     Game::Universe::instance().game().addPlayer(comp);
                 }
 
-                Game::Universe::instance().generate(mUniverseDensity->value(), mUniverseSize->value());
+                Game::Universe::instance().generate(mUniverseDensity->value(), mUniverseSize->value(), mWarpDensity->value());
                 Game::Universe::instance().game().setCurrentPlayerIndex(0);
             }
             
@@ -140,6 +141,8 @@ NewGamePanel::NewGamePanel(QWidget * parent)
         QSpinBox * mUniverseSize;
 
         QSpinBox * mUniverseDensity;
+
+        QSpinBox * mWarpDensity;
     };
 
     class PrivateSubscriberCancel
@@ -180,6 +183,11 @@ NewGamePanel::NewGamePanel(QWidget * parent)
     universeDensity->setMaximum(20);
     universeDensity->setValue(1);
 
+    QSpinBox * warpDensity = new QSpinBox();
+    warpDensity->setMinimum(0);
+    warpDensity->setMaximum(10);
+    warpDensity->setValue(2);
+    
     QHBoxLayout * firstLayout = new QHBoxLayout();
     topLayout->addLayout(firstLayout);
 
@@ -197,8 +205,9 @@ NewGamePanel::NewGamePanel(QWidget * parent)
     rightFormFirstLayout->addRow(tr("&Universe density:"), universeDensity);
     rightBoxFirstLayout->addLayout(rightFormFirstLayout);
 
-
-
+    QFormLayout * leftFormSecondLayout = new QFormLayout();
+    leftFormSecondLayout->addRow(tr("&Warp density:"), warpDensity);
+    leftBoxFirstLayout->addLayout(leftFormSecondLayout);
 
 
     QSpinBox * humanCount = new QSpinBox();
@@ -234,7 +243,7 @@ NewGamePanel::NewGamePanel(QWidget * parent)
     topLayout->addItem(buttonLayout);
     SubscribablePushButton * okButton = new SubscribablePushButton(this, tr("OK"));
     okButton->setObjectName("okButton");
-    new PrivateSubscriberOK(okButton, mPlayerNames, npcCount, universeSize, universeDensity);
+    new PrivateSubscriberOK(okButton, mPlayerNames, npcCount, universeSize, universeDensity, warpDensity);
     SubscribablePushButton * cancelButton = new SubscribablePushButton(this, tr("Cancel"));
     cancelButton->setObjectName("cancelButton");
     new PrivateSubscriberCancel(cancelButton);
