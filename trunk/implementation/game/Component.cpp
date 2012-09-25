@@ -109,7 +109,7 @@ Component & Component::operator =(const Component & other)
     return *this;
 }
 
-bool Component::operator ==(const Component & other)
+bool Component::operator ==(const Component & other) const
 {
     if (&other == this)
     {

@@ -36,7 +36,7 @@ namespace Game
         
         Component & operator =(const Component & other);
 
-        bool operator ==(const Component & other);
+        bool operator ==(const Component & other) const;
 
         const std::string & name() const;
 

@@ -164,6 +164,8 @@ namespace Game
 
         Sector * nextSectorInPath(Sector * sector) const;
 
+        static int distance(Sector * from, Sector * to);
+
     private:
 
         void _addShip(Ship * ship);
