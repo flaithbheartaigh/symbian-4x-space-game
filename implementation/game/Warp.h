@@ -3,6 +3,9 @@
 
 #include "SectorReference.h"
 
+#include <map>
+#include <vector>
+
 namespace Game
 {
     class Sector;
@@ -12,6 +15,8 @@ namespace Game
     {
 
     public:
+
+        static std::vector<Sector *> path(Sector * from, Sector * to);
 
         static bool connect(Sector * from, Sector * to);
 

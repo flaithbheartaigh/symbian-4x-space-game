@@ -684,6 +684,11 @@ Sector * Sector::nextSectorInPath(Sector * sector) const
     return SectorReference(mStarSystem, mX + direction(dx), mY + direction(dy)).sector();
 }
 
+int Sector::distance(Sector * from, Sector * to)
+{
+    return std::max(std::abs(to->x() - from->x()), std::abs(to->y() - from->y()));
+}
+
 void Sector::_addShip(Ship * ship)
 {
     if (ship != NULL)

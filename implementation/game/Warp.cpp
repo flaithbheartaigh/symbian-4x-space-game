@@ -17,9 +17,87 @@
 
 #include "Warp.h"
 #include "Sector.h"
+#include "StarSystem.h"
 #include "UniverseVisitor.h"
+#include "Universe.h"
+#include "dijkstra.h"
 
 using namespace Game;
+
+std::vector<Sector *> Warp::path(Sector * from, Sector * to)
+{
+    std::vector<Sector *> vertices;
+    std::map<Sector *, int> indexes;
+    std::map<std::pair<Sector *, Sector *>, double> edges;
+
+    // Edges in starting system
+    indexes[from] = vertices.size();
+    vertices.push_back(from);
+    std::set<Warp *> warps = from->starSystem()->warps();
+    for (std::set<Warp *>::const_iterator it = warps.begin(); it != warps.end(); ++it)
+    {
+        if (from != (*it)->sector())
+        {
+            edges[std::pair<Sector *, Sector *>(from, (*it)->sector())] = Sector::distance(from, (*it)->sector());
+            //edges[std::pair<Sector *, Sector *>(warps[i]->sector(), from)] = Sector::distance(from, warps[i]->sector());
+        }
+    }
+    for (unsigned int i = 0; i < Universe::instance().starSystems().size(); ++i)
+    {
+        warps = Universe::instance().starSystems()[i]->warps();
+        for (std::set<Warp *>::const_iterator it = warps.begin(); it != warps.end(); ++it)
+        {
+            indexes[(*it)->sector()] = vertices.size();
+            vertices.push_back((*it)->sector());
+            // Warp to Warp between connected systems (warps)
+            if ((*it)->destination().isValid())
+            {
+                edges[std::pair<Sector *, Sector *>((*it)->sector(), (*it)->destination().sector())] = 1;
+                //edges[std::pair<Sector *, Sector *>((*it)->destination().sector(), (*it)->sector())] = 1;
+            }
+            // Warp to Warp inside systems (moves)
+            for (std::set<Warp *>::const_iterator it2 = warps.begin(); it2 != warps.end(); ++it2)
+            {
+                if (*it != *it2)
+                {
+                    edges[std::pair<Sector *, Sector *>((*it)->sector(), (*it2)->sector())] = Sector::distance((*it)->sector(), (*it2)->sector());
+                    //edges[std::pair<Sector *, Sector *>((*it2)->sector(), (*it)->sector())] = Sector::distance((*it)->sector(), (*it2)->sector());
+                }
+            }
+        }
+    }
+    // Edges in ending system
+    indexes[to] = vertices.size();
+    vertices.push_back(to);
+    warps = to->starSystem()->warps();
+    for (std::set<Warp *>::const_iterator it = warps.begin(); it != warps.end(); ++it)
+    {
+        if (to != (*it)->sector())
+        {
+            edges[std::pair<Sector *, Sector *>(to, (*it)->sector())] = Sector::distance(to, (*it)->sector());
+            //edges[std::pair<Sector *, Sector *>(warps[i]->sector(), to)] = Sector::distance(to, warps[i]->sector());
+        }
+    }
+
+    adjacency_map_t adjacency_map;
+    for (std::map<std::pair<Sector *, Sector *>, double>::const_iterator it = edges.begin(); it != edges.end(); ++it)
+    {
+        std::pair<Sector *, Sector *> sectorPair = it->first;
+        adjacency_map[indexes[sectorPair.first]].push_back(edge(indexes[sectorPair.second], it->second));
+        adjacency_map[indexes[sectorPair.second]].push_back(edge(indexes[sectorPair.first], it->second));
+    }
+    std::map<vertex_t, weight_t> min_distance;
+    std::map<vertex_t, vertex_t> previous;
+    DijkstraComputePaths(0, adjacency_map, min_distance, previous);
+    std::list<vertex_t> path = DijkstraGetShortestPathTo(indexes[to], previous);
+
+    std::vector<Sector *> pathReturn;
+    for (std::list<vertex_t>::iterator it = path.begin(); it != path.end(); ++it)
+    {
+        pathReturn.push_back(vertices[*it]);
+    }
+    return pathReturn;
+}
 
 bool Warp::connect(Sector * from, Sector * to)
 {

@@ -51,7 +51,7 @@ Elements & Elements::operator =(const Elements & other)
     return *this;
 }
 
-bool Elements::operator ==(const Elements & other)
+bool Elements::operator ==(const Elements & other) const
 {
     if (&other == this)
     {

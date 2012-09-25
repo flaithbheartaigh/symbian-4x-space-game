@@ -67,6 +67,7 @@ HEADERS += \
     ../implementation/game/DeserializeVisitor.h \
     ../implementation/game/Component.h \
     ../implementation/game/AI.h \
+    ../implementation/game/dijkstra.h \
     ../implementation/data/NamesData.h \
     ../implementation/data/AssetSerializer.h
 
@@ -120,6 +121,7 @@ SOURCES += \
     ../implementation/game/DeserializeVisitor.cpp \
     ../implementation/game/Component.cpp \
     ../implementation/game/AI.cpp \
+    ../implementation/game/dijkstra.cpp \
     ../implementation/data/NamesData.cpp \
     ../implementation/data/AssetSerializer.cpp \
     ../implementation/main/main.cpp

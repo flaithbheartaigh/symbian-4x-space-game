@@ -16,7 +16,7 @@ namespace Game
         
         Elements & operator =(const Elements & other);
 
-        bool operator ==(const Elements & other);
+        bool operator ==(const Elements & other) const;
 
         unsigned int Hydrogen;
 

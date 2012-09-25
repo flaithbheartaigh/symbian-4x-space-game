@@ -176,6 +176,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Tools"
+			>
+			<File
+				RelativePath="..\implementation\game\dijkstra.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\implementation\game\dijkstra.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\implementation\game\AI.cpp"
 			>
