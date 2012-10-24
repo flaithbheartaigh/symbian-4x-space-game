@@ -154,6 +154,14 @@ simulator:CONFIG(release, debug|release) {
     LIBS += -L../3rdparty/jsoncpp/lib_release/win32 -ljsoncpp
 }
 
+qnx:CONFIG(debug, debug|release) {
+    LIBS += -L../3rdparty/jsoncpp/lib_debug/qnx -ljsoncpp
+}
+
+qnx:CONFIG(release, debug|release) {
+    LIBS += -L../3rdparty/jsoncpp/lib_release/qnx -ljsoncpp
+}
+
 # must be found in QtSDK\Symbian\SDKs\Symbian1Qt472\epoc32\release\armv5\udeb
 # if it is not there use 3rdparty\jsoncpp\source\build\jsoncpp.pro to build
 symbian:debug {
