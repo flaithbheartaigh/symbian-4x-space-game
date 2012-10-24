@@ -1,8 +1,14 @@
 #include <json/reader.h>
 #include <json/value.h>
 #include <utility>
+#ifdef Q_OS_BLACKBERRY
+# include <stdio.h>
+#endif
 #include <cstdio>
 #include <cassert>
+#ifdef Q_OS_BLACKBERRY
+# include <string.h>
+#endif
 #include <cstring>
 #include <iostream>
 #include <stdexcept>

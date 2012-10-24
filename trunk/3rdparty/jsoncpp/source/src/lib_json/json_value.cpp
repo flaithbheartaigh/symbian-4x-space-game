@@ -3,6 +3,9 @@
 #include <json/writer.h>
 #include <utility>
 #include <stdexcept>
+#ifdef Q_OS_BLACKBERRY
+# include <string.h>
+#endif
 #include <cstring>
 #include <cassert>
 #ifdef JSON_USE_CPPTL
