@@ -23,7 +23,13 @@
 
 #include <vector>
 #include <cmath>
+#ifdef Q_OS_BLACKBERRY
+# include <time.h>
+#endif
 #include <ctime>
+#ifdef Q_OS_BLACKBERRY
+# include <stdlib.h>
+#endif
 
 namespace
 {

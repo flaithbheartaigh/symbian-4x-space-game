@@ -103,7 +103,12 @@ ComponentSelection::ComponentSelection(QWidget * parent)
             {
                 rowSet.insert((*it).row());
             }
-            for (std::set<int>::const_reverse_iterator it = rowSet.rbegin(); it != rowSet.rend(); ++it)
+#ifdef Q_OS_BLACKBERRY
+            std::set<int>::reverse_iterator it;
+#else
+            std::set<int>::const_reverse_iterator it;
+#endif
+            for (it = rowSet.rbegin(); it != rowSet.rend(); ++it)
             {
                 mComponentSelection->selectedComponentsView()->model()->removeRow(*it);
             }

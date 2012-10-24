@@ -31,7 +31,13 @@
 #include <sstream>
 #include <cmath>
 #include <algorithm>
+#ifdef Q_OS_BLACKBERRY
+# include <time.h>
+#endif
 #include <ctime>
+#ifdef Q_OS_BLACKBERRY
+# include <stdlib.h>
+#endif
 
 using namespace Game;
 

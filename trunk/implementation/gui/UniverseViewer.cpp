@@ -35,6 +35,9 @@
 #include <QListView>
 #include <QGridLayout>
 
+#ifdef Q_OS_BLACKBERRY
+# include <math.h>
+#endif
 #include <cmath>
 
 #define USE_CLIPPING 0

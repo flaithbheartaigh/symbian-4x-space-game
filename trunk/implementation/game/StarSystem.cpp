@@ -24,10 +24,16 @@
 #include "Ship.h"
 #include "UniverseVisitor.h"
 #include <string>
+#ifdef Q_OS_BLACKBERRY
+# include <math.h>
+#endif
 #include <cmath>
 #include <cstdlib>
 #include <sstream>
 #include <algorithm>
+#ifdef Q_OS_BLACKBERRY
+# include <stdlib.h>
+#endif
 
 using namespace Game;
 
