@@ -127,6 +127,7 @@ SOURCES += \
     ../implementation/main/main.cpp
 
 OTHER_FILES += \
+    ../build/bar-descriptor.xml \
     ../data/configs/parameters.json \
     ../data/configs/components.json \
     ../data/names/stars.json \

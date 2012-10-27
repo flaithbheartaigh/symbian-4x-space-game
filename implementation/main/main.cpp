@@ -35,7 +35,11 @@ int main(int argc, char **)
 #ifdef Q_OS_SYMBIAN
     Game::Resources::instance().setDataFilesPath("./data");
 #else
+#ifdef Q_OS_BLACKBERRY
+    Game::Resources::instance().setDataFilesPath("./app/native/data");
+#else
     Game::Resources::instance().setDataFilesPath("../data");
+#endif
 #endif
 
     Data::AssetSerializer::load(Game::Resources::instance().getDataFilePath("configs/technology.json"), Game::Technology::instance());
@@ -56,8 +60,12 @@ int main(int argc, char **)
 #ifdef Q_OS_SYMBIAN
     Gui::MainWindow::instance().showFullScreen();
 #else
+#ifdef Q_OS_BLACKBERRY
+    Gui::MainWindow::instance().showFullScreen();
+#else
     Gui::MainWindow::instance().resize(640,360);
     Gui::MainWindow::instance().show();
+#endif
 #endif
 
     ret = a.exec();
