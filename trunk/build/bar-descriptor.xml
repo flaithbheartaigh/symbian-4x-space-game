@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+    <id>qt4.Symbian4XSpace</id>
+    <name>Symbian4XSpace</name>
+    <versionNumber>1.0.0</versionNumber>
+    <description>DESCRIPTION</description>
+    <initialWindow>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+        <autoOrients>true</autoOrients>
+        <aspectRatio>landscape</aspectRatio>
+    </initialWindow>
+    <env value="app/native/imports" var="QML_IMPORT_PATH"/>
+    <env value="app/native/plugins:/usr/lib/qt4/plugins" var="QT_PLUGIN_PATH"/>
+    <env value="app/native/lib:/usr/lib/qt4/lib/" var="LD_LIBRARY_PATH"/>
+    <env value="app/native/lib" var="QT_QPA_PLATFORM_PLUGIN_PATH"/>
+    <asset path="Symbian4XSpace" type="Qnx/Elf" entry="true">Symbian4XSpace</asset>
+    <asset path="../data">data</asset>
+    <asset path="../build/Symbian4XSpace.png">Symbian4XSpace.png</asset>
+    <asset path="../3rdparty/qnx/qt/4.8.2">lib</asset>
+    <asset path="../3rdparty/qnx/qt/4.8.2/platforms">lib/platforms</asset>
+    <action system="true">run_native</action>
+    <icon>
+        <image>Symbian4XSpace.png</image>
+    </icon>
+</qnx>
