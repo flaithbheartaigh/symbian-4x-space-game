@@ -53,10 +53,7 @@ void NextTurnVisitor::visit(StarSystem * starSystem)
 
 void NextTurnVisitor::visit(Sector * sector)
 {
-    for (std::vector<Ship *>::const_iterator it = sector->ships().begin(); it != sector->ships().end(); ++it)
-    {
 
-    }
 }
 
 void NextTurnVisitor::visit(Star * star)

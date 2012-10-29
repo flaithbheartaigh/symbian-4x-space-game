@@ -74,6 +74,10 @@ SectorGraphicsItem::SectorGraphicsItem(QGraphicsItem * parent, Game::Sector * se
     {
         setCacheMode(QGraphicsItem::ItemCoordinateCache, QSize(boundingRect().size().width(),boundingRect().size().height()));
     }
+    if (sector->contents() != Game::Sector::NoContents)
+    {
+        contentsChanged(sector->contents());
+    }
 }
 
 void SectorGraphicsItem::contentsChanged(Game::Sector::Content changed, bool forcedRedraw)

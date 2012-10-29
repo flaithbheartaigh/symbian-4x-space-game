@@ -32,7 +32,7 @@ namespace Gui
 
     private:
 
-        void contentsChanged(Game::Sector::Content changed, bool forcedRedraw);
+        void contentsChanged(Game::Sector::Content changed, bool forcedRedraw = false);
 
         void selected();
 

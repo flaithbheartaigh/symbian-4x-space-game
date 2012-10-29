@@ -63,7 +63,7 @@ int main(int argc, char **)
 #ifdef Q_OS_BLACKBERRY
     Gui::MainWindow::instance().showFullScreen();
 #else
-    Gui::MainWindow::instance().resize(640,360);
+    Gui::MainWindow::instance().resize(1024,600);
     Gui::MainWindow::instance().show();
 #endif
 #endif

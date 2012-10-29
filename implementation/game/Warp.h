@@ -16,7 +16,7 @@ namespace Game
 
     public:
 
-        static std::vector<Sector *> path(Sector * from, Sector * to);
+        static std::vector<SectorReference> path(Sector * from, Sector * to);
 
         static bool connect(Sector * from, Sector * to);
 

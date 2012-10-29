@@ -178,6 +178,15 @@ Gui--MainWindow QTableView
     min-height: 64px;
 }
 
+Gui--MainWindow QComboBox QListView,
+Gui--MainWindow QComboBox QTableView
+{
+    color: rgb(0,0,0);
+    background: transparent;
+    min-width: 32px;
+    min-height: 32px;
+}
+
 Gui--MainWindow QListView::item,
 Gui--MainWindow QTableView::item
 {

@@ -51,9 +51,11 @@ namespace Game
 
         void setMovement(unsigned int movement);
 
-        const SectorReference & destination() const;
+        const std::vector<SectorReference> & destination() const;
 
-        void setDestination(const SectorReference & destination);
+        std::vector<SectorReference> & destination();
+
+        void setDestination(const std::vector<SectorReference> & destination);
 
         unsigned int arrival() const;
 
@@ -70,9 +72,9 @@ namespace Game
         bool canLoad() const;
 
         void load();
-
+/*
         bool canMoveTo(Sector * sector) const;
-
+*/
         bool canFight() const;
 
         bool isInTransit() const;
@@ -105,7 +107,7 @@ namespace Game
 
         bool mInTransit;
 
-        SectorReference mDestination;
+        std::vector<SectorReference> mDestination;
 
         unsigned int mArrival;
 
