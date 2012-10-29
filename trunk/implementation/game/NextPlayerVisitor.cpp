@@ -27,6 +27,7 @@
 #include "Planet.h"
 #include "Ship.h"
 #include "ShipYard.h"
+#include "ShipMovement.h"
 
 using namespace Game;
 
@@ -66,7 +67,15 @@ void NextPlayerVisitor::visit(StarSystem * starSystem)
 
 void NextPlayerVisitor::visit(Sector * sector)
 {
-
+    ShipMovement movement;
+    for (std::vector<Ship *>::const_iterator it = sector->ships().begin(); it != sector->ships().end(); ++it)
+    {
+        if ((*it)->player() == Universe::instance().game().currentPlayer())
+        {
+            movement.addShip((*it));
+        }
+    }
+    movement.run();
 }
 
 void NextPlayerVisitor::visit(Star * star)

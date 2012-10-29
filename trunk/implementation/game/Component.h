@@ -20,7 +20,11 @@ namespace Game
 
             Engine = 3,
 
-            Weapon = 4
+            Weapon = 4,
+
+            Hull = 5,
+
+            Collector = 6
 
         };
 

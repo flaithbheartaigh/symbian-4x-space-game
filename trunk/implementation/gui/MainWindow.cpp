@@ -595,10 +595,10 @@ namespace
                         {
                             if (ships[i] != NULL && ships[i]->player() == Game::Universe::instance().game().currentPlayer())
                             {
-                                if (ships[i]->canMoveTo(mSector.sector()))
-                                {
+                                //if (ships[i]->canMoveTo(mSector.sector()))
+                                //{
                                     shipMovement.addShip(ships[i]);
-                                }
+                                //}
                             }
                         }
                         shipMovement.setDestination(mSector.sector());

@@ -347,5 +347,17 @@ void UniversePainter::paintComponent(QPainter * painter, Game::Component * compo
             QSvgRenderer svgRenderer(filename);
             svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
         }
+        if (component->type() == Game::Component::Hull)
+        {
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/hull.svg"));
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
+        }
+        if (component->type() == Game::Component::Collector)
+        {
+            QString filename = QString::fromStdString(Game::Resources::instance().getDataFilePath("images/stardrive.svg"));
+            QSvgRenderer svgRenderer(filename);
+            svgRenderer.render(painter, QRectF(-QPointF(componentSize.width()/2.0f, componentSize.height() / 2.0f), componentSize));
+        }
     }
 }

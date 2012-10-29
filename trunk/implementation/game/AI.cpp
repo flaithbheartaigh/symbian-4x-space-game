@@ -235,7 +235,7 @@ void NPC::run()
             //repair(ship);
             //somethingApplies = true;
         }
-        else if (!(*it)->destination().isValid())
+        else if (!(*it)->destination().back().isValid())
         {
             if ((*it)->config().has(Component::Colony) && (*it)->population() > 0.0)
             {
@@ -249,8 +249,8 @@ void NPC::run()
                             {
                                 if ((*sit)->planet() != NULL && (*sit)->planet()->player() == NULL)
                                 {
-                                    if ((*it)->canMoveTo(*sit))
-                                    {
+                                    //if ((*it)->canMoveTo(*sit))
+                                    //{
                                         Game::ShipMovement shipDestination;
                                         shipDestination.addShip(*it);
                                         shipDestination.setDestination(*sit);
@@ -258,7 +258,7 @@ void NPC::run()
                                         shipMovement.addShip(*it);
                                         somethingApplies = true;
                                         break;
-                                    }
+                                    //}
                                 }
                             }
                             if (somethingApplies)
@@ -278,15 +278,15 @@ void NPC::run()
                     if (!player()->knows((*it2).second))
                     {
                         Sector * sector = SectorReference((*it2).second, 1, 1).sector();
-                        if ((*it)->canMoveTo(sector))
-                        {
+                        //if ((*it)->canMoveTo(sector))
+                        //{
                             Game::ShipMovement shipDestination;
                             shipDestination.addShip(*it);
                             shipDestination.setDestination(sector);
 
                             shipMovement.addShip(*it);
                             break;
-                        }
+                        //}
                     }
                 }
             }

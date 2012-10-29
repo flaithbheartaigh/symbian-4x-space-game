@@ -64,9 +64,10 @@ void DeserializeVisitor::visit(StarSystem * starSystem)
         {
             for (int x = -StarSystem::Size / 2; x <= StarSystem::Size / 2; ++x)
             {
-                if (!SectorReference(starSystem, x, y).isValid())
+                Sector * sector = SectorReference(starSystem, x, y).sector();
+                if (sector == NULL)
                 {
-                    Sector * sector = new Sector(starSystem);
+                    sector = new Sector(starSystem);
                     sector->setX(x);
                     sector->setY(y);
                     starSystem->addSector(sector);

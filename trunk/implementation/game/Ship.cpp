@@ -162,12 +162,17 @@ void Ship::setMovement(unsigned int movement)
     mMovement = movement;
 }
 
-const SectorReference & Ship::destination() const
+const std::vector<SectorReference> & Ship::destination() const
 {
     return mDestination;
 }
 
-void Ship::setDestination(const SectorReference & destination)
+std::vector<SectorReference> & Ship::destination()
+{
+    return mDestination;
+}
+
+void Ship::setDestination(const std::vector<SectorReference> & destination)
 {
     mDestination = destination;
 }
@@ -250,7 +255,7 @@ void Ship::load()
         }
     }
 }
-
+/*
 bool Ship::canMoveTo(Sector * sector) const
 {
     bool ret = true;
@@ -265,7 +270,7 @@ bool Ship::canMoveTo(Sector * sector) const
     }
     return ret;
 }
-
+*/
 bool Ship::canFight() const
 {
     bool ret = true;

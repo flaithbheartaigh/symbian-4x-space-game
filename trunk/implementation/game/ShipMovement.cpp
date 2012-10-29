@@ -73,12 +73,14 @@ void ShipMovement::setDestination(Sector * sector)
 {
     for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
     {
-        if ((*it)->canMoveTo(sector))
+        //if ((*it)->canMoveTo(sector))
+        //{
+        (*it)->setDestination(Game::Warp::path((*it)->sector(), sector));
+        if ((*it)->destination().size() > 0)
         {
-            (*it)->setDestination(sector);
-            if (sector->starSystem() != (*it)->sector()->starSystem())
+            if ((*it)->destination().back().sector()->starSystem() != (*it)->sector()->starSystem())
             {
-                if ((*it)->sector()->warp() != NULL && (*it)->sector()->warp()->destination() == SectorReference(sector))
+                if ((*it)->sector()->warp() != NULL && (*it)->sector()->warp()->destination() == (*it)->destination().back())
                 {
                     //nothing special to do
                 }
@@ -110,13 +112,21 @@ void ShipMovement::run()
         for (std::vector<Ship *>::const_iterator it = mShips.begin(); it != mShips.end(); ++it)
         {
             Ship * ship = *it;
-            if (ship->movement() >= 1 && ship->canMoveTo(ship->destination().sector()))
+            if (ship->movement() >= 1/* && ship->canMoveTo(ship->destination().sector())*/)
             {
-                Game::Sector * sector = ship->sector()->nextSectorInPath(ship->destination().sector());
+                Game::Sector * sector = NULL;
+                if (ship->destination().size() > 0)
+                {
+                    sector = ship->sector()->nextSectorInPath(ship->destination().back().sector());
+                }
                 if (sector != NULL)
                 {
                     movementMap[sector].push_back(ship);
                     ship->sector()->removeShip(ship);
+                    if (SectorReference(sector) == ship->destination().back())
+                    {
+                        ship->destination().pop_back();
+                    }
                     if (ship->movement() >= 1)
                     {
                         ship->setMovement(ship->movement() - 1);
