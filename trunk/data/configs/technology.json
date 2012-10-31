@@ -159,6 +159,7 @@
          },
          {
             "Name" : "Gas Collector I",
+            "Description" : "Collect Hydrogen",
             "Type" : 6,
             "HitPoints" : 4,
             "Cost" : 800,       
@@ -166,6 +167,7 @@
          },
          {
             "Name" : "Gas Collector II",
+            "Description" : "Collect Uranium",
             "Type" : 6,
             "HitPoints" : 4,
             "Cost" : 1200,       
@@ -173,17 +175,19 @@
          },
          {
             "Name" : "Gas Collector III",
+            "Description" : "Collect AntiHydrogen",
             "Type" : 6,
             "HitPoints" : 4,
             "Cost" : 1600,       
-            "Value" : 4.0
+            "Value" : 3.0
          },
          {
             "Name" : "Gas Collector IV",
+            "Description" : "Collect Any",
             "Type" : 6,
             "HitPoints" : 4,
             "Cost" : 2400,       
-            "Value" : 8.0
+            "Value" : 4.0
          }				 
       ]   	  
    },

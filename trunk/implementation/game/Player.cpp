@@ -159,6 +159,7 @@ Player::Player()
     , mSelectedSector()
     , mHomeSector()
     , mKnownSystems()
+    , mElements()
     , mAI(NULL)
 {
 

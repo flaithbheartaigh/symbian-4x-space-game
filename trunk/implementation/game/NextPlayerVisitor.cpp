@@ -102,18 +102,3 @@ void NextPlayerVisitor::visit(Player * player)
 {
 
 }
-
-void NextPlayerVisitor::visit(StarDriveModule * starDriveModule)
-{
-
-}
-
-void NextPlayerVisitor::visit(EngineModule * engineModule)
-{
-
-}
-
-void NextPlayerVisitor::visit(ColonyModule * colonyModule)
-{
-
-}

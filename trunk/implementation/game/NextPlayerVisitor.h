@@ -31,12 +31,6 @@ namespace Game
 
         void visit(Player * player);
 
-        void visit(StarDriveModule * starDriveModule);
-
-        void visit(EngineModule * engineModule);
-
-        void visit(ColonyModule * colonyModule);
-
     private:
         
         NextPlayerVisitor(const NextPlayerVisitor & other);

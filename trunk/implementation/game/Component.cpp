@@ -94,6 +94,7 @@ Component::Component()
     , mHitPoints(0)
     , mDamage(0)
     , mCost(0)
+    , mElements()
 {
 
 }
@@ -105,6 +106,7 @@ Component::Component(const Component & other)
     , mHitPoints(other.mHitPoints)
     , mDamage(other.mDamage)
     , mCost(other.mCost)
+    , mElements(other.mElements)
 {
 
 }
@@ -119,6 +121,7 @@ Component & Component::operator =(const Component & other)
         mHitPoints = other.mHitPoints;
         mDamage = other.mDamage;
         mCost = other.mCost;
+        mElements = other.mElements;
     }
     return *this;
 }
