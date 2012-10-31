@@ -89,6 +89,7 @@ ShipConfigBuild::ShipConfigBuild(QWidget * parent)
                         else
                         {
                             Game::Messages::instance().post("Insufficient funds.");
+                            break;
                         }
                     }
                 }

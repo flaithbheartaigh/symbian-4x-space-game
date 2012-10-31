@@ -5,6 +5,8 @@
 #include "ShipConfig.h"
 #include "SectorReference.h"
 #include "StarSystemReference.h"
+#include "Elements.h"
+
 #include <string>
 #include <vector>
 
@@ -131,6 +133,10 @@ namespace Game
 
         void addKnownSystem(const StarSystemReference & knownSystem);
 
+        Elements & elements() { return mElements; }
+
+        const Elements & elements() const { return mElements; }
+
         bool knows(StarSystem * starSystem) const;
 
         void accept(UniverseVisitor * visitor);
@@ -158,6 +164,8 @@ namespace Game
         SectorReference mHomeSector;
 
         std::vector<StarSystemReference> mKnownSystems;
+
+        Elements mElements;
 
         AI * mAI;
 

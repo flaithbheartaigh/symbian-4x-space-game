@@ -135,6 +135,28 @@ namespace
         valueTo = static_cast<unsigned int>(valueFrom.asInt());
     }
 
+    void serialize(const Game::Elements & elements, Json::Value & value)
+    {
+        static const char * PROPERTY_EL1 = "El1";
+        static const char * PROPERTY_EL2 = "El2";
+        static const char * PROPERTY_EL3 = "El3";
+
+        serialize(elements.Hydrogen, value[PROPERTY_EL1]);
+        serialize(elements.Uranium, value[PROPERTY_EL2]);
+        serialize(elements.AntiHydrogen, value[PROPERTY_EL3]);
+    }
+
+    void deserialize(const Json::Value & value, Game::Elements & elements)
+    {
+        static const char * PROPERTY_EL1 = "El1";
+        static const char * PROPERTY_EL2 = "El2";
+        static const char * PROPERTY_EL3 = "El3";
+
+        deserialize(value[PROPERTY_EL1], elements.Hydrogen);
+        deserialize(value[PROPERTY_EL2], elements.Uranium);
+        deserialize(value[PROPERTY_EL3], elements.AntiHydrogen);
+    }
+
     // Component
     void serialize(const Game::Component & component, Json::Value & value)
     {
@@ -144,6 +166,7 @@ namespace
         static const char * PROPERTY_HITPOINTS = "HitPoints";
         static const char * PROPERTY_DAMAGE = "Damage";
         static const char * PROPERTY_COST = "Cost";
+        static const char * PROPERTY_ELEMENTS = "Elements";
 
         serialize(component.name(), value[PROPERTY_NAME]);
         serialize(component.typeIndex(), value[PROPERTY_TYPE]);
@@ -151,6 +174,7 @@ namespace
         serialize(component.hitPoints(), value[PROPERTY_HITPOINTS]);
         serialize(component.damage(), value[PROPERTY_DAMAGE]);
         serialize(component.cost(), value[PROPERTY_COST]);
+        serialize(component.elements(), value[PROPERTY_ELEMENTS]);
     }
 
     void deserialize(const Json::Value & value, Game::Component & component)
@@ -161,6 +185,7 @@ namespace
         static const char * PROPERTY_HITPOINTS = "HitPoints";
         static const char * PROPERTY_DAMAGE = "Damage";
         static const char * PROPERTY_COST = "Cost";
+        static const char * PROPERTY_ELEMENTS = "Elements";
 
         deserializeObject(value[PROPERTY_NAME], component, &Game::Component::setName);
         deserializeValue(value[PROPERTY_TYPE], component, &Game::Component::setTypeIndex);
@@ -168,6 +193,7 @@ namespace
         deserializeValue(value[PROPERTY_HITPOINTS], component, &Game::Component::setHitPoints);
         deserializeValue(value[PROPERTY_DAMAGE], component, &Game::Component::setDamage);
         deserializeValue(value[PROPERTY_COST], component, &Game::Component::setCost);
+        deserialize(value[PROPERTY_ELEMENTS], component.elements());
     }
 
     // Technology
@@ -340,28 +366,6 @@ namespace
         deserializeObject(value[PROPERTY_NAME], star, &Game::Star::setName);
     }
 
-    void serialize(const Game::Elements & elements, Json::Value & value)
-    {
-        static const char * PROPERTY_EL1 = "El1";
-        static const char * PROPERTY_EL2 = "El2";
-        static const char * PROPERTY_EL3 = "El3";
-
-        serialize(elements.Hydrogen, value[PROPERTY_EL1]);
-        serialize(elements.Uranium, value[PROPERTY_EL2]);
-        serialize(elements.AntiHydrogen, value[PROPERTY_EL3]);
-    }
-
-    void deserialize(const Json::Value & value, Game::Elements & elements)
-    {
-        static const char * PROPERTY_EL1 = "El1";
-        static const char * PROPERTY_EL2 = "El2";
-        static const char * PROPERTY_EL3 = "El3";
-
-        deserialize(value[PROPERTY_EL1], elements.Hydrogen);
-        deserialize(value[PROPERTY_EL2], elements.Uranium);
-        deserialize(value[PROPERTY_EL3], elements.AntiHydrogen);
-    }
-
     void serialize(const Game::Sector & sector, Json::Value & value)
     {
         static const char * PROPERTY_X = "X";
@@ -486,6 +490,7 @@ namespace
         static const char * PROPERTY_SELECTEDSECTOR = "SelectedSector";
         static const char * PROPERTY_HOMESECTOR = "HomeSector";
         static const char * PROPERTY_KNOWNSYSTEMS = "KnownSystems";
+        static const char * PROPERTY_ELEMENTS = "Elements";
 
         serialize(player.name(), value[PROPERTY_NAME]);
         serialize(player.money(), value[PROPERTY_MONEY]);
@@ -494,6 +499,7 @@ namespace
         serialize(player.selectedSector(), value[PROPERTY_SELECTEDSECTOR]);
         serialize(player.homeSector(), value[PROPERTY_HOMESECTOR]);
         serialize(player.knownSystems(), value[PROPERTY_KNOWNSYSTEMS]);
+        serialize(player.elements(), value[PROPERTY_ELEMENTS]);
     }
 
     void deserialize(const Json::Value & value, Game::Player & player)
@@ -505,6 +511,7 @@ namespace
         static const char * PROPERTY_SELECTEDSECTOR = "SelectedSector";
         static const char * PROPERTY_HOMESECTOR = "HomeSector";
         static const char * PROPERTY_KNOWNSYSTEMS = "KnownSystems";
+        static const char * PROPERTY_ELEMENTS = "Elements";
 
         deserializeObject(value[PROPERTY_NAME], player, &Game::Player::setName);
         deserializeValue(value[PROPERTY_MONEY], player, &Game::Player::setMoney);
@@ -513,6 +520,7 @@ namespace
         deserializeObject(value[PROPERTY_SELECTEDSECTOR], player, &Game::Player::setSelectedSector);
         deserializeObject(value[PROPERTY_HOMESECTOR], player, &Game::Player::setHomeSector);
         deserializeObject(value[PROPERTY_KNOWNSYSTEMS], player, &Game::Player::setKnownSystems);
+        deserialize(value[PROPERTY_ELEMENTS], player.elements());
     }
 
     /// Object to Json

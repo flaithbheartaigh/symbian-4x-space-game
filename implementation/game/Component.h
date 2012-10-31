@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "Elements.h"
+
 namespace Game
 {
     class Component
@@ -76,6 +78,10 @@ namespace Game
 
         void setCost(int cost);
 
+        Elements & elements() { return mElements; }
+
+        const Elements & elements() const { return mElements; }
+
     private:
 
         std::string mName;
@@ -89,6 +95,8 @@ namespace Game
         unsigned int mDamage;
 
         int mCost;
+
+        Elements mElements;
 
     };
 }

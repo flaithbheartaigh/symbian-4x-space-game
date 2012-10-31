@@ -14,9 +14,6 @@ namespace Game
     class Ship;
     class Shipyard;
     class Player;
-    class StarDriveModule;
-    class EngineModule;
-    class ColonyModule;
     
     class UniverseVisitor
     {
@@ -44,13 +41,6 @@ namespace Game
         virtual void visit(Shipyard * shipyard);
 
         virtual void visit(Player * player);
-
-        virtual void visit(StarDriveModule * starDriveModule);
-
-        virtual void visit(EngineModule * engineModule);
-
-        virtual void visit(ColonyModule * colonyModule);
-
 
     private:
     

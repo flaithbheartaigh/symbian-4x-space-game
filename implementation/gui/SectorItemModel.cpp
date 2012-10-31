@@ -35,6 +35,7 @@
 #include <QPixmapCache>
 
 #include <algorithm>
+#include <sstream>
 
 using namespace Gui;
 
@@ -115,6 +116,21 @@ public:
         }
     }
 
+    Item(Game::Elements & elements)
+        : mName()
+        , mStar(NULL)
+        , mPlanet(NULL)
+        , mWarp(NULL)
+        , mShip(NULL)
+    {
+        if (!elements.isEmpty())
+        {
+            std::stringstream ss;
+            ss << "H:" << elements.Hydrogen << " | U:" << elements.Uranium << " | ~H:" << elements.AntiHydrogen;
+            mName = ss.str();
+        }
+    }
+
     const std::string & name() const
     {
         return mName;
@@ -169,6 +185,10 @@ SectorItemModel::SectorItemModel(QObject * parent, Game::Sector * sector)
 void SectorItemModel::setSector(Game::Sector * sector)
 {
     mItems.clear();
+    if (sector != NULL && !sector->elements().isEmpty())
+    {
+        mItems.push_back(Item(sector->elements()));
+    }
 
     class PrivateSectorVisitor
         : private Game::UniverseVisitor

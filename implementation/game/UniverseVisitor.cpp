@@ -73,18 +73,3 @@ void UniverseVisitor::visit(Player * player)
 {
 
 }
-
-void UniverseVisitor::visit(StarDriveModule * starDriveModule)
-{
-
-}
-
-void UniverseVisitor::visit(EngineModule * engineModule)
-{
-
-}
-
-void UniverseVisitor::visit(ColonyModule * colonyModule)
-{
-
-}

@@ -76,6 +76,46 @@ void NextTurnVisitor::visit(Planet * planet)
 
 void NextTurnVisitor::visit(Ship * ship)
 {
+    if ((ship->sector()->contents() & Game::Sector::HasWarp) && ship->config().has(Game::Component::Collector))
+    {
+        std::vector<Component> collectors = ship->config().components(Game::Component::Collector);
+        for (std::vector<Component>::size_type i = 0; i < collectors.size(); ++i)
+        {
+            class ElementTransfer
+            {
+            public:
+                static bool doIt(unsigned int & from, unsigned int & to)
+                {
+                    if (from > 1)
+                    {
+                        --from;
+                        ++to;
+                        return true;
+                    }
+                    return false;
+                }
+            };
+            const int level = static_cast<int>(collectors[i].value());
+            switch (level)
+            {
+            case 1:
+                ElementTransfer::doIt(ship->sector()->elements().Hydrogen, ship->player()->elements().Hydrogen);
+                break;
+            case 2:
+                ElementTransfer::doIt(ship->sector()->elements().Uranium, ship->player()->elements().Uranium);
+                break;
+            case 3:
+                ElementTransfer::doIt(ship->sector()->elements().AntiHydrogen, ship->player()->elements().AntiHydrogen);
+                break;
+            case 4:
+                ElementTransfer::doIt(ship->sector()->elements().Hydrogen, ship->player()->elements().Hydrogen);
+                ElementTransfer::doIt(ship->sector()->elements().Uranium, ship->player()->elements().Uranium);
+                ElementTransfer::doIt(ship->sector()->elements().AntiHydrogen, ship->player()->elements().AntiHydrogen);
+                break;
+            }                
+        }
+    }
+
     ship->setMovement(ship->config().maximumMovement());
 }
 
