@@ -1,6 +1,8 @@
 #ifndef ELEMENTS_H
 #define ELEMENTS_H
 
+#include <string>
+
 namespace Game
 {
     class Elements
@@ -25,6 +27,8 @@ namespace Game
         unsigned int AntiHydrogen;
 
         bool isEmpty() const { return Hydrogen == 0 && Uranium == 0 && AntiHydrogen == 0; }
+
+        std::string toString() const;
     };
 }
 

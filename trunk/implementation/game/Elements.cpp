@@ -17,6 +17,8 @@
 
 #include "Elements.h"
 
+#include <sstream>
+
 using namespace Game;
 
 Elements::~Elements()
@@ -62,4 +64,16 @@ bool Elements::operator ==(const Elements & other) const
         return false;
     }
     return true;
+}
+
+std::string Elements::toString() const
+{
+    std::string text;
+    if (!isEmpty())
+    {
+        std::stringstream ss;
+        ss << "H:" << Hydrogen << " | U:" << Uranium << " | ~H:" << AntiHydrogen;
+        text = ss.str();
+    }
+    return text;
 }

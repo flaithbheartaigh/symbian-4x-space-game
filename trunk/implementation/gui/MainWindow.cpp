@@ -78,6 +78,7 @@ namespace
             : QFrame(parent)
             , mName(new QLabel(this))
             , mMoney(new QLabel(this))
+            , mElements(new QLabel(this))
             , mPlanets(new QLabel(this))
             , mPopulation(new QLabel(this))
             , mShips(new QLabel(this))
@@ -89,6 +90,7 @@ namespace
             QFormLayout * formLayout = new QFormLayout();
             formLayout->addRow(tr("&Name:"), mName);
             formLayout->addRow(tr("&Money:"), mMoney);
+            formLayout->addRow(tr("&Materials:"), mElements);
             formLayout->addRow(tr("&Planets:"), mPlanets);
             formLayout->addRow(tr("&Population:"), mPopulation);
             formLayout->addRow(tr("&Ships:"), mShips);
@@ -108,6 +110,7 @@ namespace
                 Game::Universe::instance().accept(&stats);
                 mName->setText(QString::fromStdString(player->name()));
                 mMoney->setText(QString("%1").arg(player->money()));
+                mElements->setText(QString::fromStdString(player->elements().toString()));
                 mPlanets->setText(QString("%1").arg(stats.mPlanets.size()));
                 mPopulation->setText(QString("%1").arg(stats.mPopulation));
                 mShips->setText(QString("%1").arg(stats.mShips.size()));
@@ -130,6 +133,8 @@ namespace
         QLabel * mName;
 
         QLabel * mMoney;
+
+        QLabel * mElements;
 
         QLabel * mPlanets;
 
