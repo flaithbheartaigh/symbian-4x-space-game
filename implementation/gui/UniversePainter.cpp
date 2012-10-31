@@ -244,7 +244,7 @@ void UniversePainter::paintSector(QPainter * painter, Game::Sector * sector, con
             }
             if (known)
             {
-                if (oneShipPerPlayer.size() == 1 && sector->star() == NULL && sector->planet() == NULL && sector->warp() == NULL)
+                if (oneShipPerPlayer.size() == 1 && sector->star() == NULL && sector->planet() == NULL && sector->warp() == NULL && sector->elements().isEmpty())
                 {
                     painter->setOpacity(oneShipPerPlayer.begin()->second->isInTransit() ? 0.6 : 1.0);
                     paintBadge(painter, oneShipPerPlayer.begin()->first, size);

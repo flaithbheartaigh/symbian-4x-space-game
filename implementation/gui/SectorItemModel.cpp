@@ -123,12 +123,7 @@ public:
         , mWarp(NULL)
         , mShip(NULL)
     {
-        if (!elements.isEmpty())
-        {
-            std::stringstream ss;
-            ss << "H:" << elements.Hydrogen << " | U:" << elements.Uranium << " | ~H:" << elements.AntiHydrogen;
-            mName = ss.str();
-        }
+        mName = elements.toString();
     }
 
     const std::string & name() const

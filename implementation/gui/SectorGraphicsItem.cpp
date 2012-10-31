@@ -85,12 +85,15 @@ void SectorGraphicsItem::contentsChanged(Game::Sector::Content changed, bool for
     update();
     if (Gui::MainWindow::Settings_SkipEmptyTiles)
     {
-        if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
+        if (flags() & QGraphicsItem::ItemHasNoContents)
         {
-            setFlag(QGraphicsItem::ItemHasNoContents, false);
-            QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
+            if (!scene()->views()[0]->property("NoForce").toBool() || Game::Universe::instance().game().currentPlayer()->isHuman())
+            {
+                setFlag(QGraphicsItem::ItemHasNoContents, false);
+                QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
+            }
+            setFlag(QGraphicsItem::ItemHasNoContents, sector()->isEmpty() && !mIsSelected);
         }
-        setFlag(QGraphicsItem::ItemHasNoContents, sector()->isEmpty() && !mIsSelected);
     }
     else if (forcedRedraw)
     {

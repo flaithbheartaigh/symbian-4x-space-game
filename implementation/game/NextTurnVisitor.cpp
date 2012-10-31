@@ -76,7 +76,7 @@ void NextTurnVisitor::visit(Planet * planet)
 
 void NextTurnVisitor::visit(Ship * ship)
 {
-    if ((ship->sector()->contents() & Game::Sector::HasWarp) && ship->config().has(Game::Component::Collector))
+    if (!ship->sector()->elements().isEmpty() && ship->config().has(Game::Component::Collector))
     {
         std::vector<Component> collectors = ship->config().components(Game::Component::Collector);
         for (std::vector<Component>::size_type i = 0; i < collectors.size(); ++i)
@@ -112,11 +112,16 @@ void NextTurnVisitor::visit(Ship * ship)
                 ElementTransfer::doIt(ship->sector()->elements().Uranium, ship->player()->elements().Uranium);
                 ElementTransfer::doIt(ship->sector()->elements().AntiHydrogen, ship->player()->elements().AntiHydrogen);
                 break;
-            }                
+            }  
         }
+        ship->sector()->notifyChanged();
     }
 
-    ship->setMovement(ship->config().maximumMovement());
+    if (ship->movement() != ship->config().maximumMovement())
+    {
+        ship->setMovement(ship->config().maximumMovement());
+        ship->sector()->notifyChanged();
+    }
 }
 
 void NextTurnVisitor::visit(Shipyard * shipyard)

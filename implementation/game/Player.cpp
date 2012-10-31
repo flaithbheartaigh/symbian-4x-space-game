@@ -345,6 +345,9 @@ bool Player::isHuman() const
 
 int Player::revenue() const
 {
+    static const float TaxRate = 0.10f;
+    static const float MaintenanceRate = 0.01f;
+
     int rev = 0;
     Game::StatsVisitor stats(this);
     Game::Universe::instance().accept(&stats);        
@@ -352,14 +355,14 @@ int Player::revenue() const
     {
         if (stats.mPlanets[i] != NULL)
         {
-            rev += int(stats.mPlanets[i]->population() / 10);
+            rev += int(stats.mPlanets[i]->population() * TaxRate);
         }
     }
     for (unsigned int i = 0; i < stats.mShips.size(); ++i)
     {
         if (stats.mShips[i] != NULL)
         {
-            rev -= int(stats.mShips[i]->config().cost() / 10);
+            rev -= int(stats.mShips[i]->config().cost() * MaintenanceRate);
         }
     }
 
